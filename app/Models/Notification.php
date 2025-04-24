@@ -4,7 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 class Notification extends Model
 {
     use HasFactory;
@@ -19,6 +23,7 @@ class Notification extends Model
         'status',
         'date',
     ];
+<<<<<<< HEAD
 
 
 public function user()
@@ -28,3 +33,6 @@ public function user()
 
 
 }
+=======
+}
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

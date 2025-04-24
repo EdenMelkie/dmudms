@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Registrar') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?><!DOCTYPE html>
+=======
+<!DOCTYPE html>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <html lang="en">
 
 <head>
@@ -91,12 +95,20 @@ if (session('userType') !== 'Registrar') {
                                 </a>
                             </li>
                             <li>
+<<<<<<< HEAD
                                 <a class="dropdown-item" href="{{ route('registrar.notify') }}">
+=======
+                                <a class="dropdown-item" href="{{ route('notifications') }}">
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-check-circle"></i> Manage Notifications
                                 </a>
                             </li>
                             <li>
+<<<<<<< HEAD
                                 <a class="dropdown-item" href="{{ route('registrar.notify') }}">
+=======
+                                <a class="dropdown-item" href="{{ route('notifications') }}">
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-file-alt"></i> Policies & Regulations
                                 </a>
                             </li>
@@ -111,15 +123,24 @@ if (session('userType') !== 'Registrar') {
                             <i class="fas fa-user"></i> <!-- Person Icon -->
                             <!-- Displaying username from session -->
                             @if(session('username'))
+<<<<<<< HEAD
                             Welcome, {{ session('username') }}
+=======
+                                Welcome, {{ session('username') }}
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                             @endif
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                             <!-- Edit Profile Option -->
+<<<<<<< HEAD
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="fas fa-edit"></i> Edit Profile
                                 </a>
                             </li>
+=======
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-edit"></i>
+                                    Edit Profile</a></li>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
                             <!-- Logout Option -->
                             <li>
@@ -140,4 +161,8 @@ if (session('userType') !== 'Registrar') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

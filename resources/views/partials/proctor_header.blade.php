@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Proctor') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?>
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <!DOCTYPE html>
 <html lang="en">
 
@@ -146,6 +149,7 @@ if (session('userType') !== 'Proctor') {
                             <i class="fas fa-cogs"></i> Dormitory Management
                         </a>
                         <ul class="dropdown-menu">
+<<<<<<< HEAD
                             <li><a class="dropdown-item" href="{{ route('proctor') }}">
                                     <i class="fas fa-door-open"></i> View Rooms</a></li>
                             <li><a class="dropdown-item" href="{{ route('proctor') }}">
@@ -153,6 +157,15 @@ if (session('userType') !== 'Proctor') {
                             <li><a class="dropdown-item" href="{{ route('proctor') }}">
                                     <i class="fas fa-exclamation-triangle"></i> Report Property Issues</a></li>
                             <li><a class="dropdown-item" href="{{ route('proctor') }}">
+=======
+                            <li><a class="dropdown-item" href="{{ route('proctor.viewRooms') }}">
+                                    <i class="fas fa-door-open"></i> View Rooms</a></li>
+                            <li><a class="dropdown-item" href="{{ route('proctor.approveRequests') }}">
+                                    <i class="fas fa-check-circle"></i> Approve Requests</a></li>
+                            <li><a class="dropdown-item" href="{{ route('proctor.reportProperty') }}">
+                                    <i class="fas fa-exclamation-triangle"></i> Report Property Issues</a></li>
+                            <li><a class="dropdown-item" href="{{ route('proctor.updateStudentStatus') }}">
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-user-edit"></i> Update Student Status</a></li>
                         </ul>
                     </li>

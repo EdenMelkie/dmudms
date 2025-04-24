@@ -22,6 +22,7 @@ class Block extends Model
         'capacity',
         'reserved_for',
     ];
+<<<<<<< HEAD
     // app/Models/Block.php
 
     // app/Models/Block.php
@@ -45,3 +46,6 @@ class Block extends Model
 }
 
 }
+=======
+}
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

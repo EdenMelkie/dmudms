@@ -13,6 +13,7 @@ class ProfileController extends Controller
 {
     public function edit()
     {
+<<<<<<< HEAD
         // In your controller
         $layouts = [
             'Admin' => 'layouts.appadd',
@@ -39,21 +40,46 @@ class ProfileController extends Controller
 
         // Pass the user and employee data to the view
         return view('profile.edit', compact('user', 'employee'))->with('layout', $layout);
+=======
+        // Manually set the employee_id for now (can be changed for testing)
+        $employee_id = 'Emp5'; // Replace this with your desired employee ID
+        
+        // Fetch the corresponding employee details using employee_id
+        $employee = Employee::where('employee_id', $employee_id)->first();
+        
+        // Get the authenticated user
+        $user = Auth::user();
+        
+        // Pass the user and employee data to the view
+        return view('profile.edit', compact('user', 'employee'));
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     }
 
     public function update(Request $request)
     {
         // Use a static employee_id 'Emp5'
+<<<<<<< HEAD
         $employee_id = session('username'); // Replace this with your desired employee ID
 
         // Fetch the employee details using employee_id
         $employee = Employee::where('employee_id', $employee_id)->first();
 
+=======
+        $employee_id = 'Emp5';
+    
+        // Fetch the employee details using employee_id
+        $employee = Employee::where('employee_id', $employee_id)->first();
+    
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         if (!$employee) {
             // Handle the case where the employee with this ID doesn't exist
             return redirect()->back()->with('error', 'Employee not found.');
         }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         // Validate the input data
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:50',
@@ -66,12 +92,20 @@ class ProfileController extends Controller
             'username' => 'required|string|max:50',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         // If validation fails, redirect back with errors
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         // Update employee details
         $employee->update([
             'first_name' => $request->first_name,
@@ -82,15 +116,28 @@ class ProfileController extends Controller
             'address' => $request->address,
             'citizenship' => $request->citizenship,
         ]);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         // If password is provided, update the password (optional)
         if ($request->filled('password')) {
             $employee->user()->update([
                 'password' => Hash::make($request->password),
             ]);
         }
+<<<<<<< HEAD
 
         // Redirect back with a success message
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
     }
+=======
+    
+        // Redirect back with a success message
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
+    }
+    
+
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 }

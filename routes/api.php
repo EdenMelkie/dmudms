@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use App\Models\Room;
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+<<<<<<< HEAD
 Route::get('/available-rooms', function(Request $request) {
     $validated = $request->validate([
         'block' => 'required|exists:block,block_id',
@@ -59,6 +63,8 @@ Route::get('/available-rooms', function(Request $request) {
     return response()->json($rooms);
 });
 
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

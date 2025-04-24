@@ -2,6 +2,7 @@
 
 @section('content')
 <style>
+<<<<<<< HEAD
     body {
         background: url('/path-to-your-image.jpg') no-repeat center center fixed;
         background-size: cover;
@@ -79,6 +80,65 @@
 <!-- Loading indicator (hidden by default, shown via JS) -->
 <div class="loading" style="display: none;">Loading...</div>
 
+=======
+body {
+    background: url('/path-to-your-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-link {
+    color: #007bff;
+}
+
+.btn-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.form-check-label {
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+</style>
+
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -86,17 +146,30 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+<<<<<<< HEAD
+=======
+                    <!-- Display the error message in red if there is an error -->
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                     @if(session('error'))
                     <div class="error-message">
                         {{ session('error') }}
                     </div>
                     @endif
 
+<<<<<<< HEAD
                     <form method="POST" action="{{ route('login') }}" id="loginForm">
                         @csrf
 
                         <div class="row mb-3">
                             <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
+=======
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <label for="username"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
                             <div class="col-md-6">
                                 <input id="username" type="text"
@@ -112,7 +185,12 @@
                         </div>
 
                         <div class="row mb-3">
+<<<<<<< HEAD
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+=======
+                            <label for="password"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
                             <div class="col-md-6">
                                 <input id="password" type="password"
@@ -160,6 +238,7 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 <script>
     // Show loading immediately when page starts loading
     document.addEventListener('DOMContentLoaded', function() {
@@ -206,4 +285,6 @@
         }
     });
 </script>
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 @endsection

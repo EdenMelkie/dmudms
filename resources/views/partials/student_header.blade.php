@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Student') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?>
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +50,11 @@ if (session('userType') !== 'Student') {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="{{ route('student') }}">
+<<<<<<< HEAD
             <i class="fas fa-user-graduate"></i> Student Page
+=======
+            <i class="fas fa-user-graduate"></i> Student Panel
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         </a>
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -66,6 +73,7 @@ if (session('userType') !== 'Student') {
                             <i class="fas fa-tasks"></i> Student Services
                         </a>
                         <ul class="dropdown-menu">
+<<<<<<< HEAD
                             <li><a class="dropdown-item" href="{{ route('student') }}">
                                     <i class="fas fa-bed"></i> View Placement</a></li>
                             <li><a class="dropdown-item" href="{{ route('student') }}">
@@ -73,6 +81,15 @@ if (session('userType') !== 'Student') {
                             <li><a class="dropdown-item" href="{{ route('student') }}">
                                     <i class="fas fa-exclamation-triangle"></i> Manage Emergency</a></li>
                             <li><a class="dropdown-item" href="{{ route('student') }}">
+=======
+                            <li><a class="dropdown-item" href="{{ route('student.placement') }}">
+                                    <i class="fas fa-bed"></i> View Placement</a></li>
+                            <li><a class="dropdown-item" href="{{ route('student.replacement') }}">
+                                    <i class="fas fa-exchange-alt"></i> Request Replacement</a></li>
+                            <li><a class="dropdown-item" href="{{ route('student.emergency') }}">
+                                    <i class="fas fa-exclamation-triangle"></i> Manage Emergency</a></li>
+                            <li><a class="dropdown-item" href="{{ route('student.clearance') }}">
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-file-signature"></i> Fill Clearance</a></li>
                         </ul>
                     </li>

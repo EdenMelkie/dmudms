@@ -3,6 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
+<<<<<<< HEAD
       // Laravel default paths
       './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
       './storage/framework/views/*.php',
@@ -27,3 +28,21 @@ module.exports = {
     },
     plugins: [],
   }
+=======
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.jsx',
+    ],
+
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
+
+    plugins: [require('@tailwindcss/forms')],
+};
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

@@ -63,7 +63,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+<<<<<<< HEAD
             'username' => 'username',
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         ],
 
         // 'users' => [

@@ -6,13 +6,26 @@
 
         <form action="{{ route('directorate.blocks.store') }}" method="POST">
             @csrf
+<<<<<<< HEAD
            
+=======
+            <div class="form-group">
+                <label for="block_id">Block ID</label>
+                <input type="text" class="form-control" id="block_id" name="block_id" required maxlength="10">
+            </div>
+
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
             <!-- Disable Group select box -->
             <div class="form-group">
                 <label for="disable_group">Disable Group</label>
                 <select class="form-control" id="disable_group" name="disable_group" required>
+<<<<<<< HEAD
                     <option value="No">Normal</option>
                     <option value="Yes">Disabled</option>
+=======
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                 </select>
             </div>
 
@@ -20,8 +33,14 @@
             <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="status" name="status" required>
+<<<<<<< HEAD
                     <option value="Available">Available</option>
                     <option value="Unavailable">Unavailable</option>
+=======
+                    <option value="Free">Free</option>
+                    <option value="OutOf">OutOf</option>
+                    <option value="Can't">Can't</option>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                 </select>
             </div>
 

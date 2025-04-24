@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<<<<<<< HEAD
     <title>dmu dms</title>
+=======
+    <title>Laravel</title>
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
     <!-- Fonts -->
     <!-- <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"> -->

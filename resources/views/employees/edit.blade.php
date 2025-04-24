@@ -8,7 +8,11 @@
                 <div class="card-header">{{ __('Update Account') }}</div>
 
                 <div class="card-body">
+<<<<<<< HEAD
                     <form method="POST" action="{{ route('employees.update', $employee->employee_id) }}">
+=======
+                    <form method="POST" action="{{ route('account.update', $employee->employee_id) }}">
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                         @csrf
                         @method('PUT')
 

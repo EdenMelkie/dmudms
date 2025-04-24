@@ -1,6 +1,7 @@
 @extends('layouts.appdirectorate')
 
 @section('content')
+<<<<<<< HEAD
 <div class="container mt-4">
     <h1 class="text-center">Directorate Reports</h1>
 
@@ -31,12 +32,38 @@
                 <td>{{ $notification->message }}</td>
                 <td>
                     <span class="badge 
+=======
+    <div class="container mt-4">
+        <h1 class="text-center">Directorate Reports</h1>
+        
+        <!-- Report Table -->
+        <table class="table table-bordered mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Notification ID</th>
+                    <th>Registrar ID</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($notifications as $notification)
+                    <tr>
+                        <td>{{ $notification->notification_id }}</td>
+                        <td>{{ $notification->registrar_id }}</td>
+                        <td>{{ $notification->message }}</td>
+                        <td>
+                            <span class="badge 
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                 @if($notification->status == 'Read') 
                                     bg-success
                                 @elseif($notification->status == 'Unread')
                                     bg-warning text-dark
                                 @endif
                             ">
+<<<<<<< HEAD
                         {{ $notification->status }}
                     </span>
                 </td>
@@ -58,3 +85,26 @@
     </table>
 </div>
 @endsection
+=======
+                                {{ $notification->status }}
+                            </span>
+                        </td>
+                        <td>{{ $notification->date }}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <strong>There are no notifications</strong>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+@endsection
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

@@ -10,16 +10,28 @@
         "@popperjs/core": "^2.11.6",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-react": "^3.0.0",
+<<<<<<< HEAD
         "autoprefixer": "^10.4.21",
+=======
+        "autoprefixer": "^10.4.12",
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         "axios": "^1.1.2",
         "bootstrap": "^5.2.3",
         "laravel-vite-plugin": "^0.7.2",
         "lodash": "^4.17.19",
+<<<<<<< HEAD
         "postcss": "^8.5.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "sass": "^1.56.1",
         "tailwindcss": "^3.4.17",
+=======
+        "postcss": "^8.4.18",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "sass": "^1.56.1",
+        "tailwindcss": "^3.2.1",
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         "vite": "^4.5.5"
     }
 }

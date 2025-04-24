@@ -8,16 +8,24 @@ use App\Http\Controllers\{
     AdminController,
     DirectorateController,
     ProctorController,
+<<<<<<< HEAD
     CoordinatorController,
     NotificationController,
     BlockController,
     RegistrarController,
     MaintainerController,
     PlacementController
+=======
+    EmployeeController,
+    NotificationController,
+    BlockController,
+    RegistrarController
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 };
 use Illuminate\Support\Facades\Route;
 
 /**
+<<<<<<< HEAD
  * Static Pages
  * Route::view('/view-student-assignment', 'welcome')->name('view_student_assignment');
  */
@@ -29,12 +37,41 @@ Route::view('/about', 'about')->name('about');
 Route::view('/help', 'help')->name('help');
 
 /**
+=======
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
  * Authentication Routes
  */
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+<<<<<<< HEAD
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+=======
+
+/**
+ * Registration Routes
+ */
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
+/**
+ * Employee Management
+ */
+Route::prefix('employees')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+    Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+});
+
+/**
+ * Static Pages
+ */
+Route::view('/', 'home')->name('home');
+Route::view('/home', 'home');
+Route::view('/welcome', 'welcome')->name('welcome');
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
 /**
  * Role-Based Dashboards
@@ -48,6 +85,7 @@ Route::view('/maintenance_page', 'maintenance.homepage')->name('maintenance');
 Route::view('/admin_page', 'admin.admin')->name('admin');
 
 /**
+<<<<<<< HEAD
  * Profile Routes
  */
 Route::prefix('profile')->group(function () {
@@ -103,6 +141,32 @@ Route::prefix('directorate')->group(function () {
 
         // // Student Assignment
         // Route::post('/{student_id}/assign', [DirectorateController::class, 'assignStudent'])->name('directorate.student.assign');
+=======
+ * Admin Routes
+ */
+Route::prefix('admin')->group(function () {
+    Route::get('/create-account', [AdminController::class, 'create'])->name('admin.create_account');
+    Route::get('/update-account', [AdminController::class, 'update'])->name('admin.update_account');
+    Route::get('/reset-account', [AdminController::class, 'reset'])->name('admin.reset_account');
+});
+
+/**
+ * Directorate Routes
+ */
+Route::middleware(['auth'])->prefix('directorate')->group(function () {
+    Route::get('/', [DirectorateController::class, 'index'])->name('directorate.dashboard');
+    Route::get('/reports', [DirectorateController::class, 'viewReports'])->name('directorate.reports');
+    Route::get('/placement', [DirectorateController::class, 'viewPlacement'])->name('directorate.placement');
+    Route::get('/assign', [DirectorateController::class, 'assignStudent'])->name('directorate.assign');
+    Route::get('/proctor', [DirectorateController::class, 'manageProctors'])->name('directorate.proctor');
+
+    // Student Management
+    Route::prefix('students')->group(function () {
+        Route::get('/', [DirectorateController::class, 'showStudents'])->name('directorate.students.index');
+        Route::get('/{id}/edit', [DirectorateController::class, 'editStudent'])->name('directorate.students.edit');
+        Route::post('/{id}/update', [DirectorateController::class, 'updateStudent'])->name('directorate.students.update');
+        Route::delete('/{id}/delete', [DirectorateController::class, 'deleteStudent'])->name('directorate.students.delete');
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     });
 
     // Block Management
@@ -117,6 +181,7 @@ Route::prefix('directorate')->group(function () {
 });
 
 /**
+<<<<<<< HEAD
  * Placement Routes
  */
 Route::prefix('placements')->name('placements.')->group(function () {
@@ -160,11 +225,37 @@ Route::prefix('registrar')->group(function () {
         Route::get('/register', [RegistrarController::class, 'showRegistrationForm'])->name('students.register');
         Route::post('/register', [RegistrarController::class, 'storeStudent'])->name('students.store');
         Route::get('/upload', [RegistrarController::class, 'showUploadForm'])->name('students.upload.form');
+=======
+ * Proctor Routes
+ */
+Route::middleware(['auth'])->prefix('proctor')->group(function () {
+    Route::get('/view-rooms', [ProctorController::class, 'viewRooms'])->name('proctor.viewRooms');
+});
+
+/**
+ * Registrar Routes
+ */
+Route::prefix('registrar')->group(function () {
+    // Registrar Dashboard
+    Route::get('/', [RegistrarController::class, 'index'])->name('registrar.dashboard');
+
+    // Student Management
+    Route::prefix('students')->group(function () {
+        Route::get('/', [RegistrarController::class, 'showStudents'])->name('registrar.students');
+        Route::get('/{id}/edit', [RegistrarController::class, 'editStudent'])->name('registrar.students.edit');
+        Route::post('/{id}/update', [RegistrarController::class, 'updateStudent'])->name('registrar.students.update');
+        Route::delete('/{id}/delete', [RegistrarController::class, 'deleteStudent'])->name('registrar.students.delete');
+
+        // Registration (manual and upload)
+        Route::get('/register', [RegistrarController::class, 'showRegistrationForm'])->name('students.register');
+        Route::post('/register', [RegistrarController::class, 'storeStudent'])->name('students.store');
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         Route::post('/upload', [RegistrarController::class, 'uploadStudents'])->name('students.upload');
     });
 });
 
 /**
+<<<<<<< HEAD
  * Maintenance Routes
  */
 Route::get('/maintainer', [MaintainerController::class, 'index'])->name('maintainer');
@@ -173,3 +264,16 @@ Route::get('/maintainer', [MaintainerController::class, 'index'])->name('maintai
  * Notification Routes
  */
 Route::get('/students', [StudentController::class, 'index'])->name('students');
+=======
+ * Profile Routes
+ */
+Route::middleware(['auth'])->prefix('profile')->group(function () {
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+/**
+ * Notifications
+ */
+Route::middleware(['auth'])->get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+>>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
