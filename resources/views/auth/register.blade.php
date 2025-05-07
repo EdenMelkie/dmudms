@@ -110,7 +110,6 @@
                         </div>
 
                         <div class="row mb-3">
-<<<<<<< HEAD
                             <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Gender') }}</label>
 
                             <div class="col-md-6">
@@ -130,8 +129,6 @@
                         </div>
 
                         <div class="row mb-3">
-=======
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                             <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
 
                             <div class="col-md-6">

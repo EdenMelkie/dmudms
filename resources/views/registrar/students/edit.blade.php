@@ -4,7 +4,6 @@
 <div class="container">
     <h2>Edit Student</h2>
 
-<<<<<<< HEAD
     
     <form action="{{ route('registrar.students.update', $student->student_id) }}" method="POST">
         @csrf
@@ -33,13 +32,6 @@
         <div class="mb-3">
             <label for="batch" class="form-label">Batch</label>
             <input type="batch" class="form-control" id="batch" name="batch" value="{{ $student->batch }}" required>
-=======
-    <form action="{{ route('students.update', $student->id) }}" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label for="full_name" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ $student->full_name }}" required>
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         </div>
 
         <div class="mb-3">
@@ -51,7 +43,6 @@
         </div>
 
         <div class="mb-3">
-<<<<<<< HEAD
             <label for="disability_status" class="form-label">Disability Status</label>
             <select class="form-control" id="disability_status" name="disability_status">
                 <option value="No" {{ $student->disability_status == 'None' ? 'selected' : '' }}>None</option>
@@ -71,19 +62,6 @@
 
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('registrar.students') }}" class="btn btn-secondary">Back</a>
-=======
-            <label for="department" class="form-label">Department</label>
-            <input type="text" class="form-control" id="department" name="department" value="{{ $student->department }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="room_number" class="form-label">Room Number</label>
-            <input type="text" class="form-control" id="room_number" name="room_number" value="{{ $student->room_number }}" required>
-        </div>
-
-        <button type="submit" class="btn btn-success">Update</button>
-        <a href="{{ route('students.index') }}" class="btn btn-secondary">Back</a>
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     </form>
 </div>
 @endsection

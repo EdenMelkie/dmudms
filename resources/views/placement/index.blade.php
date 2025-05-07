@@ -1,5 +1,32 @@
 @extends('layouts.appdirectorate')
+@section('style')
+<style>
+    .unassign-form {
+        display: inline;
+    }
 
+    .unassign-btn {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        color: #007bff;
+        font-size: 16px;
+        text-decoration: underline;
+        cursor: pointer;
+        transition: color 0.3s, text-decoration 0.3s;
+    }
+
+    .unassign-btn:hover {
+        color: #0056b3;
+        text-decoration: none;
+    }
+
+    .unassign-btn:focus {
+        outline: none;
+    }
+</style>
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -13,7 +40,16 @@
                     @endif
 
                     <div class="table-responsive">
-                        <h4>Assigned Students</h4>
+                        <h4>
+                            <span style="float: left;"> Assigned Students </span>
+                            <span style="float: right;">
+                                <form method="POST" action="{{ route('placements.unassignAll') }}" class="unassign-form" onsubmit="return confirm('Are you sure you want to unassign all students?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-link unassign-btn">Unassign all</button>
+                                </form>
+                            </span>
+                        </h4>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

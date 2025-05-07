@@ -25,6 +25,11 @@
             </select>
         </div>
 
+        <div>
+            <label for="year">Enter Year</label>
+            <input type="year" name="year" id="year"/>
+</div>
+
         <button type="submit" class="btn btn-primary mt-3">Assign Proctor</button>
     </form>
 </div>

@@ -24,4 +24,9 @@ class Emergency extends Model
         'kebele',
         'mother_name',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
 }

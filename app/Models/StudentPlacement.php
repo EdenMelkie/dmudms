@@ -20,7 +20,6 @@ class StudentPlacement extends Model
         'status',
         'year',
     ];
-<<<<<<< HEAD
 
     public function student()
     {
@@ -34,6 +33,3 @@ class StudentPlacement extends Model
                    ->whereColumn('student_placement.block', 'rooms.block');
     }
 }
-=======
-}
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276

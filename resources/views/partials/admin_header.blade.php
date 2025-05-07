@@ -1,20 +1,15 @@
-<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Admin') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?>
-=======
-<!-- resources/views/layouts/admin_header.blade.php -->
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <title>Admin Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -67,49 +62,6 @@ if (session('userType') !== 'Admin') {
         .btn-logout:hover {
             background-color: #C0392B;
         }
-=======
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-    /* Custom Styling */
-    .navbar {
-        background-color: #2C3E50;
-    }
-
-    .navbar-brand {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .navbar-nav .nav-link {
-        color: white;
-        margin-right: 15px;
-    }
-
-    .dropdown-menu {
-        background-color: #34495E;
-    }
-
-    .dropdown-menu .dropdown-item {
-        color: white;
-    }
-
-    .dropdown-menu .dropdown-item:hover {
-        background-color: #1ABC9C;
-    }
-
-    .btn-logout {
-        background-color: #E74C3C;
-        color: white;
-        border-radius: 5px;
-    }
-
-    .btn-logout:hover {
-        background-color: #C0392B;
-    }
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     </style>
 </head>
 
@@ -142,11 +94,7 @@ if (session('userType') !== 'Admin') {
                             <i class="fas fa-user-cog"></i> Account Management
                         </a>
                         <ul class="dropdown-menu">
-<<<<<<< HEAD
                             <li><a class="dropdown-item" href="{{ route('admin.create_account') }}">
-=======
-                            <li><a class="dropdown-item" href="{{ route('register') }}">
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-user-plus"></i> Create Account</a></li>
                             <li><a class="dropdown-item" href="{{ route('employees.index') }}">
                                     <i class="fas fa-user-edit"></i> View Employees</a></li>
@@ -157,7 +105,6 @@ if (session('userType') !== 'Admin') {
 
                     <!-- Profile Dropdown -->
                     <li class="nav-item dropdown">
-<<<<<<< HEAD
 
                         <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -166,11 +113,6 @@ if (session('userType') !== 'Admin') {
                             @if(session('username'))
                             Welcome, {{ session('username') }}
                             @endif
-=======
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> <!-- Person Icon -->
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                             <!-- Edit Profile Option -->

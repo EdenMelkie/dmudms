@@ -1,0 +1,5 @@
+first_name,second_name,last_name,email,gender,batch,disability_status
+John,Doe,Smith,john.doe@example.com,Male,1,No
+Jane,Ann,Johnson,jane.johnson@example.com,Female,1,Yes
+Mark,Lee,Brown,mark.brown@example.com,Male,1,No
+Mary,Lou,Adams,mary.adams@example.com,Female,1,Yes

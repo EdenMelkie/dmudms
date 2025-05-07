@@ -10,6 +10,7 @@
                 <th>Proctor Name</th>
                 <th>Block</th>
                 <th>Assigned Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,11 @@
                 <td>{{ $assignment->proctor_id }}</td>
                 <td>{{ $assignment->block }}</td>
                 <td>{{ $assignment->first_entry }}</td>
+                <td>
+                    <a href="{{ route('reassign.form', $assignment->placement_id) }}" class="btn btn-warning btn-sm">
+                        Reassign
+                    </a>
+                </td>
             </tr>
             @endforeach
         </tbody>

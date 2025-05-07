@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Block;
-<<<<<<< HEAD
 use App\Models\Room;
 use Illuminate\Support\Facades\DB;
-=======
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 use Illuminate\Http\Request;
 
 class BlockController extends Controller
 {
     // Display all blocks
-<<<<<<< HEAD
    
     public function index()
     {
@@ -22,13 +18,6 @@ class BlockController extends Controller
         return view('directorate.blocks.index', compact('blocks'));
     }
     
-=======
-    public function index()
-    {
-        $blocks = Block::all(); // Retrieve all blocks from the database
-        return view('directorate.blocks.index', compact('blocks'));
-    }
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
     // Show the form to create a new block
     public function create()
@@ -36,7 +25,6 @@ class BlockController extends Controller
         return view('directorate.blocks.create');
     }
 
-<<<<<<< HEAD
     public function store(Request $request)
     {
         $request->validate([
@@ -60,28 +48,12 @@ class BlockController extends Controller
         // Create the block
         $block = Block::create([
             'block_id' => $newBlockId,
-=======
-    // Store a newly created block
-    public function store(Request $request)
-    {
-        $request->validate([
-            'block_id' => 'required|string|max:10',
-            'disable_group' => 'required|string|max:10',
-            'status' => 'required|string|max:10',
-            'capacity' => 'required|Integer',
-            'reserved_for' => 'required|string|max:10',
-        ]);
-
-        Block::create([
-            'block_id' => $request->block_id,
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
             'disable_group' => $request->disable_group,
             'status' => $request->status,
             'capacity' => $request->capacity,
             'reserved_for' => $request->reserved_for,
         ]);
 
-<<<<<<< HEAD
 
         // Create rooms based on the block's capacity
         for ($i = 1; $i <= $block->capacity; $i++) {
@@ -98,11 +70,6 @@ class BlockController extends Controller
 
 
 
-=======
-        return redirect()->route('directorate.blocks')->with('success', 'Block created successfully.');
-    }
-
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     // Show the form to edit an existing block
     public function edit($id)
     {

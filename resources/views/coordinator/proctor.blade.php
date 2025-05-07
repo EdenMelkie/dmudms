@@ -9,16 +9,16 @@
                 <th>Proctor ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Assigned Rooms</th>
+                <th>Assigned Block</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($proctors as $proctor)
             <tr>
-                <td>{{ $proctor->id }}</td>
-                <td>{{ $proctor->name }}</td>
+                <td>{{ $proctor->proctor_id }}</td>
+                <td>{{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}</td>
                 <td>{{ $proctor->email }}</td>
-                <td>{{ $proctor->assignedRooms->count() }}</td> <!-- Assuming a relationship exists -->
+                <td> {{ $proctor->block }} only {{ $proctor->block_count }} block </td>
             </tr>
             @endforeach
         </tbody>

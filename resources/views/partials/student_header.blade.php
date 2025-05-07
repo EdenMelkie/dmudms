@@ -1,12 +1,9 @@
-<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Student') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?>
-=======
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,44 +14,40 @@ if (session('userType') !== 'Student') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-    .navbar {
-        background-color: lightblue;
-        color: black;
-    }
+        .navbar {
+            background-color: lightblue;
+            color: black;
+        }
 
-    .navbar-brand {
-        color: black;
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
+        .navbar-brand {
+            color: black;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    .navbar-nav .nav-link {
-        color: black;
-        margin-right: 15px;
-    }
+        .navbar-nav .nav-link {
+            color: black;
+            margin-right: 15px;
+        }
 
-    .dropdown-menu {
-        background-color: lightgray;
-    }
+        .dropdown-menu {
+            background-color: lightgray;
+        }
 
-    .dropdown-menu .dropdown-item {
-        color: black;
-    }
+        .dropdown-menu .dropdown-item {
+            color: black;
+        }
 
-    .dropdown-menu .dropdown-item:hover {
-        background-color: red;
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: red;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="{{ route('student') }}">
-<<<<<<< HEAD
             <i class="fas fa-user-graduate"></i> Student Page
-=======
-            <i class="fas fa-user-graduate"></i> Student Panel
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         </a>
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -73,24 +66,17 @@ if (session('userType') !== 'Student') {
                             <i class="fas fa-tasks"></i> Student Services
                         </a>
                         <ul class="dropdown-menu">
-<<<<<<< HEAD
-                            <li><a class="dropdown-item" href="{{ route('student') }}">
+                            <li><a class="dropdown-item" href="{{ route('view1') }}">
                                     <i class="fas fa-bed"></i> View Placement</a></li>
                             <li><a class="dropdown-item" href="{{ route('student') }}">
                                     <i class="fas fa-exchange-alt"></i> Request Replacement</a></li>
-                            <li><a class="dropdown-item" href="{{ route('student') }}">
+                            <li><a class="dropdown-item" href="{{ route('emergency.create') }}">
                                     <i class="fas fa-exclamation-triangle"></i> Manage Emergency</a></li>
-                            <li><a class="dropdown-item" href="{{ route('student') }}">
-=======
-                            <li><a class="dropdown-item" href="{{ route('student.placement') }}">
-                                    <i class="fas fa-bed"></i> View Placement</a></li>
-                            <li><a class="dropdown-item" href="{{ route('student.replacement') }}">
-                                    <i class="fas fa-exchange-alt"></i> Request Replacement</a></li>
-                            <li><a class="dropdown-item" href="{{ route('student.emergency') }}">
-                                    <i class="fas fa-exclamation-triangle"></i> Manage Emergency</a></li>
-                            <li><a class="dropdown-item" href="{{ route('student.clearance') }}">
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
-                                    <i class="fas fa-file-signature"></i> Fill Clearance</a></li>
+                            <li><a class="dropdown-item" href="{{ route('emergency.index') }}">
+                                    <i class="fas fa-file-signature"></i> View Emergency</a></li>
+                            <li><a class="dropdown-item" href="{{ route('requests.create') }}">
+                                    <i class="fas fa-file-signature"></i> Submit Requests</a></li>
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -99,7 +85,7 @@ if (session('userType') !== 'Student') {
                             <i class="fas fa-user"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-edit"></i>
+                            <li><a class="dropdown-item" href="{{ route('student.edit') }}"><i class="fas fa-edit"></i>
                                     Profile</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="m-0">

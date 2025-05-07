@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-<<<<<<< HEAD
     public function index(Request $request)
     {
         $query = Notification::with('user.employee'); // nested eager loading
@@ -28,14 +27,4 @@ class NotificationController extends Controller
     }
     
       
-=======
-    public function index()
-    {
-        // Fetch all notifications
-        $notifications = Notification::all();
-
-        // Return the notifications view with the data
-        return view('directorate.notification', compact('notifications'));
-    }
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 }

@@ -67,11 +67,7 @@ return new class extends Migration {
             $table->id('notification_id');
             $table->string('registrar_id', 50);
             $table->string('message', 100);
-<<<<<<< HEAD
             $table->enum('status', ['Read', 'Unread'])->default('Unread');
-=======
-            $table->string('status', 10);
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
             $table->date('date');
         });
 
@@ -86,14 +82,15 @@ return new class extends Migration {
             $table->id('request_id');
             $table->string('student_id', 50);
             $table->string('message', 400);
-            $table->string('status', 10);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->date('request_date');
             $table->string('approved_by', 50);
             $table->date('approved_date');
+            $table->timestamps(); // Add timestamps for created_at and updated_at
+
         });
 
         Schema::create('room', function (Blueprint $table) {
-<<<<<<< HEAD
             $table->bigInteger('room_id');
             $table->string('block', 10);  // Using 'block' as column name
             $table->enum('status', ['Free', 'Occupied', 'Partially Occupied', 'Unavailable']);
@@ -109,12 +106,6 @@ return new class extends Migration {
         
           
         
-=======
-            $table->id('room_id');
-            $table->string('block', 10);
-            $table->string('status', 10);
-        });
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
         Schema::create('students', function (Blueprint $table) {
             $table->string('student_id', 50)->primary();
@@ -125,17 +116,13 @@ return new class extends Migration {
             $table->string('gender', 10);
             $table->string('disability_status', 10);
             $table->string('status', 10);
-<<<<<<< HEAD
             $table->string('password', 100);
 
-=======
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         });
 
         Schema::create('student_placement', function (Blueprint $table) {
             $table->id('placement_id');
             $table->string('student_id', 50);
-<<<<<<< HEAD
             $table->string('block', 10);  // Matches rooms.block
             $table->bigInteger('room');   // Matches rooms.room_id
             $table->string('status', 10);
@@ -145,12 +132,6 @@ return new class extends Migration {
             $table->foreign(['room', 'block'])
                   ->references(['room_id', 'block'])
                   ->on('rooms');
-=======
-            $table->string('block', 10);
-            $table->unsignedInteger('room');
-            $table->string('status', 10);
-            $table->year('year');
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         });
 
         Schema::create('users', function (Blueprint $table) {

@@ -20,10 +20,7 @@ class Employee extends Model
         'first_name',
         'second_name',
         'last_name',
-<<<<<<< HEAD
         'gender',
-=======
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
         'email',
         'phone',
         'address',

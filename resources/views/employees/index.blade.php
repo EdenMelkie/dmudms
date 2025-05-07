@@ -3,11 +3,7 @@
 @section('content')
 <div class="container">
     <h2>Employee List</h2>
-<<<<<<< HEAD
     <a href="{{ route('admin.create_account') }}" class="btn btn-primary mb-3">Add Employee</a>
-=======
-    <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3">Add Employee</a>
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif

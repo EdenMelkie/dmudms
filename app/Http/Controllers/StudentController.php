@@ -9,7 +9,6 @@ use App\Models\StudentPlacement;
 
 class StudentController extends Controller
 {
-<<<<<<< HEAD
     public function index()
     {
         $students = Student::all();
@@ -17,15 +16,6 @@ class StudentController extends Controller
     }
 
     public function index2()
-=======
-    public function index2()
-    {
-        $students = Student::all();
-        return view('students.index', compact('students'));
-    }
-
-    public function index()
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     {
         // Fetch students and check if they are assigned
         $students = Student::all()->map(function ($student) {
@@ -34,11 +24,7 @@ class StudentController extends Controller
             return $student;
         });
 
-<<<<<<< HEAD
         return view('registrar.students.index', compact('students'));
-=======
-        return view('students.index', compact('students'));
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     }
 
     // Assign student
@@ -95,11 +81,7 @@ class StudentController extends Controller
 
         Student::create($request->all());
 
-<<<<<<< HEAD
         return redirect()->route('registrar.students.index');
-=======
-        return redirect()->route('students.index');
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
     }
 
     public function show($id)
@@ -140,4 +122,5 @@ class StudentController extends Controller
 
         return redirect()->route('students.index');
     }
+    
 }

@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 <?php
 if (session('userType') !== 'Maintenance') {
     header("Location: " . url('/invalid'));
     exit();
 }
 ?><!DOCTYPE html>
-=======
-<!DOCTYPE html>
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 <html lang="en">
 
 <head>
@@ -89,15 +85,9 @@ if (session('userType') !== 'Maintenance') {
                             <i class="fas fa-cogs"></i> Maintenance Services
                         </a>
                         <ul class="dropdown-menu">
-<<<<<<< HEAD
                             <li><a class="dropdown-item" href="{{ route('maintainer') }}">
                                     <i class="fas fa-list"></i> View Maintenance Requests</a></li>
                             <li><a class="dropdown-item" href="{{ route('maintainer') }}">
-=======
-                            <li><a class="dropdown-item" href="{{ route('maintainer.viewRequests') }}">
-                                    <i class="fas fa-list"></i> View Maintenance Requests</a></li>
-                            <li><a class="dropdown-item" href="{{ route('maintainer.updateRequest') }}">
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
                                     <i class="fas fa-sync-alt"></i> Update Request Status</a></li>
                         </ul>
                     </li>

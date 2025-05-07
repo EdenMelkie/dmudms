@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<<<<<<< HEAD
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name', 'DMU_DMS') }}</a>
 
@@ -48,31 +47,6 @@
         </div>
     </nav>
 
-=======
-    <div class="container">
-        <!-- Brand -->
-        <a class="navbar-brand"><i>Dormitory Management Systems</i></a>
-
-        <!-- Toggler for responsive navbar -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navigation Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Login -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
-                </li>
-
-
-            </ul>
-        </div>
-    </div>
-</nav>
->>>>>>> 2f20f73a4a564310b533c9bd07a33dddc6cdf276
 
 <style>
 /* General navbar styles */
