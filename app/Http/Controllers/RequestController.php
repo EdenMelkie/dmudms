@@ -27,6 +27,7 @@ class RequestController extends Controller
             'message'      => $validated['message'],
             'status'       => 'pending',
             'request_date' => Carbon::now(), // or date('Y-m-d')
+            
         ]);
 
         return redirect()->back()->with('success', 'Request submitted successfully!');

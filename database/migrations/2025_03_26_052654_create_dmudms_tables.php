@@ -61,6 +61,7 @@ return new class extends Migration {
             $table->unsignedInteger('tiras');
             $table->unsignedInteger('tables');
             $table->unsignedInteger('chibud');
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('notification', function (Blueprint $table) {
@@ -96,16 +97,16 @@ return new class extends Migration {
             $table->enum('status', ['Free', 'Occupied', 'Partially Occupied', 'Unavailable']);
             $table->integer('capacity')->default(6);
             $table->timestamps();
-            
+
             // Define composite primary key
             $table->primary(['room_id', 'block']);
-            
+
             // Foreign key reference (assuming 'block' table has 'block_id' as PK)
             $table->foreign('block')->references('block_id')->on('block');
         });
-        
-          
-        
+
+
+
 
         Schema::create('students', function (Blueprint $table) {
             $table->string('student_id', 50)->primary();
@@ -117,7 +118,6 @@ return new class extends Migration {
             $table->string('disability_status', 10);
             $table->string('status', 10);
             $table->string('password', 100);
-
         });
 
         Schema::create('student_placement', function (Blueprint $table) {
@@ -127,11 +127,11 @@ return new class extends Migration {
             $table->bigInteger('room');   // Matches rooms.room_id
             $table->string('status', 10);
             $table->year('year');
-            
+
             // Composite foreign key
             $table->foreign(['room', 'block'])
-                  ->references(['room_id', 'block'])
-                  ->on('rooms');
+                ->references(['room_id', 'block'])
+                ->on('rooms');
         });
 
         Schema::create('users', function (Blueprint $table) {

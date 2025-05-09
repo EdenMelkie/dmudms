@@ -195,6 +195,22 @@ Route::post('/activate/{placement_id}', [PlacementController::class, 'activate']
 Route::get('/emergency', [EmergencyController::class, 'index'])->name('emergency.index');
 Route::get('/emergency/create', [EmergencyController::class, 'create'])->name('emergency.create');
 Route::post('/emergency/store', [EmergencyController::class, 'store'])->name('emergency.store');
+Route::get('/emergency/{emergency}/edit', [EmergencyController::class, 'editEmergency'])->name('emergency.edit');
+Route::post('/emergency/{emergency}/update', [EmergencyController::class, 'updateEmergemcy'])->name('emergency.update');
+
+
+/**
+ * Materials
+ */
+Route::get('/materials/create', [ProctorController::class, 'create'])->name('materials.create');
+Route::post('/materials/store', [ProctorController::class, 'store'])->name('materials.store');
+Route::get('/get-rooms/{block}', [ProctorController::class, 'getRooms']);
+Route::get('/materials/view', [ProctorController::class, 'view'])->name('materials.view');
+Route::get('materials/{id}/edit', [ProctorController::class, 'edit'])->name('materials.edit');
+Route::put('materials/{id}', [ProctorController::class, 'update'])->name('materials.update');
+Route::delete('materials/{id}', [ProctorController::class, 'destroy'])->name('materials.destroy');
+Route::get('/proctor/placed-students', [ProctorController::class, 'viewPlacedStudents'])->name('proctor.viewPlacedStudents');
+
 
 // Route::get('/student/profile', [EmergencyController::class, 'profile'])->name('student.profile');
 Route::get('/student/edit', [EmergencyController::class, 'edit'])->name('student.edit');

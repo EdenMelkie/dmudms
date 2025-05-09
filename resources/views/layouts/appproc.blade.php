@@ -14,8 +14,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-    @yield('styles') 
-
+    @yield('styles')
+    @stack('scripts')
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -38,7 +38,6 @@
             @include('partials.footer')
         </div>
 </body>
-
 
 
 </html>

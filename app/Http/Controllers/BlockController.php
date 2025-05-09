@@ -34,17 +34,17 @@ class BlockController extends Controller
             'reserved_for' => 'required|string|max:10',
         ]);
 
-        // Auto-generate block_id like B001, B002, etc.
-        $latestBlock = Block::orderByDesc('block_id')->first();
-        $lastNumber = 0;
+        $latestBlock = Block::orderBy('block_id', 'desc')->first();
+        $lastBlockId = $latestBlock ? (int) substr($latestBlock->employee_id, 3) : 0; // Cast to int to handle the id properly
+        $newBlockId = 'B' . str_pad($lastBlockId + 1, 3, '0', STR_PAD_LEFT);
 
-        if ($latestBlock) {
-            // Extract the number from block_id
-            $lastNumber = (int) substr($latestBlock->block_id, 1);
+        // Ensure employee_id is unique
+        while (Block::where('block_id', $newBlockId)->exists()) {
+            $lastBlockId++;
+            $newBlockId = 'B' . str_pad($lastBlockId + 1, 3, '0', STR_PAD_LEFT);
         }
 
-        $newBlockId = 'B' . str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
-
+       
         // Create the block
         $block = Block::create([
             'block_id' => $newBlockId,

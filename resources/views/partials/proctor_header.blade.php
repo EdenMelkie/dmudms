@@ -150,10 +150,10 @@ if (session('userType') !== 'Proctor') {
                                     <i class="fas fa-door-open"></i> View Placement</a></li>
                             <li><a class="dropdown-item" href="{{ route('requests.proctor') }}">
                                     <i class="fas fa-check-circle"></i> Manage Requests</a></li>
-                            <li><a class="dropdown-item" href="{{ route('proctor') }}">
+                            <li><a class="dropdown-item" href="{{ route('materials.view') }}">
                                     <i class="fas fa-exclamation-triangle"></i> Report Property Issues</a></li>
-                            <li><a class="dropdown-item" href="{{ route('proctor') }}">
-                                    <i class="fas fa-user-edit"></i> Update Student Status</a></li>
+                            <li><a class="dropdown-item" href="{{ route('proctor.viewPlacedStudents') }}">
+                                    <i class="fas fa-user-edit"></i> view Student placement</a></li>
                         </ul>
                     </li>
 

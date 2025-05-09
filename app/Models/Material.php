@@ -24,5 +24,10 @@ class Material extends Model
         'tiras',
         'tables',
         'chibud',
+        'created_at',
+    ];
+
+     protected $casts = [
+        'created_at' => 'datetime',
     ];
 }
