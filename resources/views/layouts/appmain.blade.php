@@ -21,21 +21,27 @@
 <body>
     <div id="app">
 
+        @include('partials.maintenance_header')
 
-        <div>
-            @include('partials.maintenance_header')
+        <main class="py-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar Column -->
+                    <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
+                        @include('partials.sidebar_main')
+                    </div>
 
-        </div>
+                    <!-- Main Content Column -->
+                    <div class="col-md-9 col-lg-10">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </main>
 
-        <div>
+        @include('partials.footer')
 
-            <main class="py-4">
-                @yield('content')
-            </main>
-            @include('partials.footer')
-        </div>
+    </div>
 </body>
-
-
 
 </html>

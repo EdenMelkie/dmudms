@@ -7,11 +7,21 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::all();
+        $search = $request->get('search');
+        $employees = Employee::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('second_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->paginate(10);
+
         return view('employees.index', compact('employees'));
     }
+
 
     public function create()
     {

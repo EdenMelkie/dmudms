@@ -2,29 +2,31 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Assignments</h2>
+    <h2>Manage Proctors and Assignments</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Assignment ID</th>
-                <th>Proctor Name</th>
-                <th>Block</th>
+                <th>Proctor ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Blocks</th>
+                <th>Assigned Block</th>
                 <th>Assigned Date</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($assignments as $assignment)
+            @foreach ($proctors as $proctor)
             <tr>
-                <td>{{ $assignment->placement_id }}</td>
-                <td>{{ $assignment->proctor_id }}</td>
-                <td>{{ $assignment->block }}</td>
-                <td>{{ $assignment->first_entry }}</td>
-                <td>
-                    <a href="{{ route('reassign.form', $assignment->placement_id) }}" class="btn btn-warning btn-sm">
-                        Reassign
-                    </a>
-                </td>
+                <td>{{ $proctor->employee_id }}</td>
+                <td>{{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}</td>
+                <td>{{ $proctor->email }}</td>
+                <td>{{ $proctor->block_count }}</td>
+                <td>{{ $proctor->blocks }}</td>
+                <td>{{ $proctor->first_entry }}</td>
+               <td>
+                <a href="{{ route('proctor.edit1',$proctor->employee_id) }}"> Edit </a>
+               </td>
             </tr>
             @endforeach
         </tbody>

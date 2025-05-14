@@ -139,7 +139,7 @@ class RegisterController extends Controller
             'first_name' => 'required|string',
             'second_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|string|email|unique:employees,email,' . $employee->id,
+            'email' => 'required|string|email|unique:employees,email,' . $employee->employee_id . ',employee_id',
             'phone' => 'required|string',
             'address' => 'required|string',
             'citizenship' => 'required|string',
@@ -155,7 +155,7 @@ class RegisterController extends Controller
             'citizenship' => $request->citizenship,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Account updated successfully.');
+        return redirect()->route('employees.index')->with('success', 'Account updated successfully.');
     }
 
     public function viewEmployees()

@@ -43,7 +43,7 @@
                 <select class="form-select" name="block" class="custom-select" required>
                     <option value="">-- Choose Block --</option>
                     @foreach ($availableBlocks as $block)
-                    <option style="background-color: white; color: black" value="{{ $block->block_name }}">{{ $block->block_name }}</option>
+                    <option style="background-color: white; color: black" value="{{ $block->block_id }}">{{ $block->block_id }}</option>
                     @endforeach
                 </select>
             </div>

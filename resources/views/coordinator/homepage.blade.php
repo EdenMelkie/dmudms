@@ -3,7 +3,26 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar (Full Height) -->
+        <!-- Main Content (Shifted to the left) -->
+        <div class="col-md-9">
+            <div class="card min-vh-100 d-flex flex-column justify-content-center align-items-center">
+                <div class="card-body text-center">
+                    <h1 class="mt-3">This is Coordinator's Home Page.</h1>
+
+                    @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+
+                    <p class="text-muted">
+                        {{ __('You are logged in as a Coordinator! Do your task freely and securely.') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar (Moved to the right) -->
         <div class="col-md-3 bg-light min-vh-100 d-flex flex-column p-3">
             <h4 class="text-center">Coordinator Tasks</h4>
             <hr>
@@ -20,26 +39,6 @@
                 <a href="{{ route('coordinator.proctor.assign') }}" class="list-group-item list-group-item-action">
                     <i class="fas fa-file-alt"></i> Assign Proctors
                 </a>
-            </div>
-        </div>
-
-
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="card min-vh-100 d-flex flex-column justify-content-center align-items-center">
-                <div class="card-body text-center">
-                    <h1 class="mt-3">This is Coordinator's Home Page.</h1>
-
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-
-                    <p class="text-muted">
-                        {{ __('You are logged in as a Coordinator! Do your task freely and securely.') }}
-                    </p>
-                </div>
             </div>
         </div>
     </div>

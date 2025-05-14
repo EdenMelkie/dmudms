@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-@yield('style')
+    @yield('style')
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -30,7 +30,19 @@
         <div>
 
             <main class="py-4">
-                @yield('content')
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Sidebar Column -->
+                        <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
+                            @include('partials.sidebar_direct')
+                        </div>
+
+                        <!-- Main Content Column -->
+                        <div class="col-md-9 col-lg-10">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
             </main>
             @include('partials.footer')
         </div>

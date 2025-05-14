@@ -1,9 +1,3 @@
-<?php
-if (session('userType') !== 'Student') {
-    header("Location: " . url('/invalid'));
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,10 +24,19 @@ if (session('userType') !== 'Student') {
             margin-right: 15px;
         }
 
+        /* Ensure that the dropdown menu appears on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Initially hide the dropdown menu */
         .dropdown-menu {
+            display: none;  /* Initially hidden */
+            position: absolute;
             background-color: lightgray;
         }
 
+        /* Dropdown items styling */
         .dropdown-menu .dropdown-item {
             color: black;
         }
@@ -76,7 +79,6 @@ if (session('userType') !== 'Student') {
                                     <i class="fas fa-file-signature"></i> View Emergency</a></li>
                             <li><a class="dropdown-item" href="{{ route('requests.create') }}">
                                     <i class="fas fa-file-signature"></i> Submit Requests</a></li>
-
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

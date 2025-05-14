@@ -37,7 +37,6 @@ Route::view('/help', 'help')->name('help');
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /**
  * Role-Based Dashboards
@@ -133,24 +132,33 @@ Route::prefix('placements')->name('placements.')->group(function () {
     Route::post('/search', [PlacementController::class, 'search'])->name('search');
 });
 
+Route::get('/fetch-rooms-for-replace', [DirectorateController::class, 'fetchAvailableRooms']);
+Route::post('/students/multi-replace', [DirectorateController::class, 'multiReplace'])->name('students.multiReplace');
 
 /**
  * Coordinator Routes
  */
 Route::prefix('coordinator')->group(function () {
-    Route::get('/placement', [CoordinatorController::class, 'viewAssignments'])->name('coordinator.placement');
-    Route::get('/proctor', [CoordinatorController::class, 'manageProctors'])->name('coordinator.proctor');
+    Route::get('/placement', [CoordinatorController::class, 'manageProctorsAndAssignments'])->name('coordinator.placement');
+    Route::get('/proctor', [CoordinatorController::class, 'manageProctorsAndAssignments'])->name('coordinator.proctor');
     Route::get('/blocks', [CoordinatorController::class, 'viewBlocks'])->name('coordinator.blocks');
     Route::get('/proctor/assign', [CoordinatorController::class, 'assignProctors'])->name('coordinator.proctor.assign');
-    Route::post('/proctor/assign', [CoordinatorController::class, 'assignProctors'])->name('coordinator.proctor.assign');
+    Route::post('coordinator/proctors/store', [CoordinatorController::class, 'store'])->name('coordinator.proctors.store');
     Route::get('/proctor/reassign/{placement_id}', [ProctorController::class, 'showReassignForm'])->name('reassign.form');
-    Route::put('/proctor/reassign/{placement_id}', [ProctorController::class, 'updateReassignment'])->name('reassign.update');
-    Route::post('/proctor/store', [ProctorController::class, 'storeProctorPlacement'])->name('coordinator.proctor.store');
+    Route::get('proctor/edit/{employee_id}', [CoordinatorController::class, 'edit'])->name('proctor.edit');
+    Route::delete('proctor/delete/{employee_id}', [CoordinatorController::class, 'destroy'])->name('proctor.delete');
+    Route::put('/proctor/update/{id}', [ProctorController::class, 'update'])->name('proctor.update');
+    Route::get('/view-students', [CoordinatorController::class, 'viewPlacedStudents'])->name('coordinator.view_students');
+    Route::put('/proctor/update1/{id}', [CoordinatorController::class, 'updateproc'])->name('proctor.update1');
+    Route::get('/proctor/place/{block_id}', [CoordinatorController::class, 'assignForm'])->name('proctor.place');
+    Route::get('/proctor/edit1/{id}', [CoordinatorController::class, 'edit1'])->name('proctor.edit1');
 });
 
+Route::post('/coordinator/proctor/place/{block_id}', [CoordinatorController::class, 'assignStore'])
+    ->name('proctor.place.store');
 
 
-/**
+/** 
  * Registrar Routes
  */
 Route::prefix('registrar')->group(function () {
@@ -185,7 +193,7 @@ Route::get('/students', [StudentController::class, 'index'])->name('students');
 Route::get('/students/placements/view', [PlacementController::class, 'viewPlacement'])->name('view1');
 Route::get('/searchForms', [PlacementController::class, 'viewRoom'])->name('view');
 Route::post('/searchForm', [PlacementController::class, 'viewRooms'])->name('rooms');
-Route::get('/searchForm', [PlacementController::class, 'viewPlacement'])->name('search.form');
+Route::get('/searchForm1', [PlacementController::class, 'viewPlacement'])->name('search.form');
 Route::post('/activate/{placement_id}', [PlacementController::class, 'activate'])->name('activate');
 
 

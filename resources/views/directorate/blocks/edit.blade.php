@@ -1,57 +1,94 @@
 @extends('layouts.appdirectorate')
 
 @section('content')
-    <div class="container mt-4">
-        <h1 class="text-center">Edit Block</h1>
+    <style>
+        .edit-block-container {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-        <form action="{{ route('directorate.blocks.update', $block->block_id) }}" method="POST">
-            @csrf
-            @method('PUT')
+        .edit-block-container h1 {
+            margin-bottom: 30px;
+            color: #343a40;
+            font-weight: 600;
+        }
 
-            <div class="form-group">
-                <label for="block_id">Block ID</label>
-                <input type="text" class="form-control" id="block_id" name="block_id" value="{{ $block->block_id }}" required maxlength="10">
-            </div>
+        .form-label {
+            font-weight: 500;
+        }
 
-            <!-- Disable Group select box -->
-            <div class="form-group">
-                <label for="disable_group">Disable Group</label>
-                <select class="form-control" id="disable_group" name="disable_group" required>
-                    <option value="Yes" {{ $block->disable_group == 'Yes' ? 'selected' : '' }}>Yes</option>
-                    <option value="No" {{ $block->disable_group == 'No' ? 'selected' : '' }}>No</option>
-                </select>
-            </div>
+        .form-control {
+            border-radius: 8px;
+        }
 
-            <!-- Status select box -->
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select class="form-control" id="status" name="status" required>
-                    <option value="Free" {{ $block->status == 'Free' ? 'selected' : '' }}>Free</option>
-                    <option value="OutOf" {{ $block->status == 'OutOf' ? 'selected' : '' }}>OutOf</option>
-                    <option value="Can't" {{ $block->status == "Can't" ? 'selected' : '' }}>Can't</option>
-                </select>
-            </div>
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 8px;
+        }
 
-            <!-- Capacity select box -->
-            <div class="form-group">
-                <label for="capacity">Capacity</label>
-                <select class="form-control" id="capacity" name="capacity" required>
-                    <option value="24" {{ $block->capacity == 24 ? 'selected' : '' }}>24</option>
-                    <option value="29" {{ $block->capacity == 29 ? 'selected' : '' }}>29</option>
-                    <option value="79" {{ $block->capacity == 79 ? 'selected' : '' }}>79</option>
-                </select>
-            </div>
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 
-            <!-- Reserved For select box -->
-            <div class="form-group">
-                <label for="reserved_for">Reserved For</label>
-                <select class="form-control" id="reserved_for" name="reserved_for" required>
-                    <option value="Male" {{ $block->reserved_for == 'Male' ? 'selected' : '' }}>Male</option>
-                    <option value="Female" {{ $block->reserved_for == 'Female' ? 'selected' : '' }}>Female</option>
-                </select>
-            </div>
+    <div class="container mt-5">
+        <div class="edit-block-container">
+            <h1 class="text-center">Edit Block</h1>
 
-            <button type="submit" class="btn btn-primary mt-3">Update Block</button>
-        </form>
+            <form action="{{ route('directorate.blocks.update', $block->block_id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-3">
+                    <label for="block_id" class="form-label">Block ID</label>
+                    <input type="text" class="form-control" id="block_id" name="block_id" value="{{ $block->block_id }}" required maxlength="10">
+                </div>
+
+                <div class="mb-3">
+                    <label for="disable_group" class="form-label">Disable Group</label>
+                    <select class="form-control" id="disable_group" name="disable_group" required>
+                        <option value="Yes" {{ $block->disable_group == 'Yes' ? 'selected' : '' }}>Yes</option>
+                        <option value="No" {{ $block->disable_group == 'No' ? 'selected' : '' }}>No</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-control" id="status" name="status" required>
+                        <option value="Free" {{ $block->status == 'Free' ? 'selected' : '' }}>Free</option>
+                        <option value="Out of" {{ $block->status == 'Out Of' ? 'selected' : '' }}>Out Of Service</option>
+                        <option value="Occupied" {{ $block->status == "Occupied" ? 'selected' : '' }}>Occupied</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="capacity" class="form-label">Capacity</label>
+                    <select class="form-control" id="capacity" name="capacity" required>
+                        <option value="24" {{ $block->capacity == 24 ? 'selected' : '' }}>24</option>
+                        <option value="29" {{ $block->capacity == 29 ? 'selected' : '' }}>29</option>
+                        <option value="79" {{ $block->capacity == 79 ? 'selected' : '' }}>79</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="reserved_for" class="form-label">Reserved For</label>
+                    <select class="form-control" id="reserved_for" name="reserved_for" required>
+                        <option value="Male" {{ $block->reserved_for == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ $block->reserved_for == 'Female' ? 'selected' : '' }}>Female</option>
+                    </select>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Update Block</button>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

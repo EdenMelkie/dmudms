@@ -1,20 +1,21 @@
-<!-- resources/views/placement/search.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Search Placement Records</div>
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Search Placement Records</h4>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('placements.search') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-4">
                             <div class="col-md-3">
-                                <select class="form-control" name="search_by" id="search_by" required>
+                                <select class="form-control form-select" name="search_by" id="search_by" required>
                                     <option value="">Select Field</option>
                                     <option value="student_id">Student ID</option>
                                     <option value="block">Block</option>
@@ -30,8 +31,8 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary">
-                                    Search
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-search"></i> Search
                                 </button>
                             </div>
                         </div>
@@ -39,15 +40,15 @@
 
                     @if(isset($placements))
                         <hr>
-                        
+
                         @if($placements->isEmpty())
                             <div class="alert alert-info mt-3">
                                 No records found matching your criteria.
                             </div>
                         @else
                             <div class="table-responsive mt-3">
-                                <table class="table table-bordered">
-                                    <thead>
+                                <table class="table table-striped table-hover">
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th>Placement ID</th>
                                             <th>Student ID</th>
@@ -81,7 +82,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Optional: Add some interactivity
         const searchBy = document.getElementById('search_by');
         const searchValue = document.getElementById('search_value');
         

@@ -1,10 +1,3 @@
-<?php
-if (session('userType') !== 'Coordinator') {
-    header("Location: " . url('/invalid'));
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,26 +10,29 @@ if (session('userType') !== 'Coordinator') {
     <style>
     /* Custom Styling */
     .navbar {
-        /* background-color: lightslategray; */
         background-color: aqua;
         color: black;
     }
 
     .navbar-brand {
         color: black;
-        /*   lightgrey */
         font-size: 1.5rem;
         font-weight: bold;
     }
 
     .navbar-nav .nav-link {
         color: black;
-        /* lightpink */
         margin-right: 15px;
     }
 
     .dropdown-menu {
         background-color: goldenrod;
+        display: none; /* Initially hide the dropdown */
+    }
+
+    /* Show dropdown on hover */
+    .nav-item:hover .dropdown-menu {
+        display: block;
     }
 
     .dropdown-menu .dropdown-item {
@@ -86,15 +82,14 @@ if (session('userType') !== 'Coordinator') {
 
                     <!-- Directorate Management Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="directorateDropdown" role="button"
-                            data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="directorateDropdown" role="button">
                             <i class="fas fa-tasks"></i> Proctor Management
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('coordinator.placement') }}">
+                            <li><a class="dropdown-item" href="{{ route('coordinator.view_students') }}">
                                     <i class="fas fa-chart-line"></i> View Assignment</a></li>
-                            <li><a class="dropdown-item" href="{{ route('coordinator.proctor') }}">
-                                    <i class="fas fa-check-circle"></i>Manage  Proctors</a></li>
+                            <li><a class="dropdown-item" href="{{ route('coordinator.placement') }}">
+                                    <i class="fas fa-check-circle"></i> Manage  Proctors</a></li>
                             <li><a class="dropdown-item" href="{{ route('coordinator.blocks') }}">
                                     <i class="fas fa-check-circle"></i> View Blocks</a></li>
                             <li><a class="dropdown-item" href="{{ route('coordinator.proctor.assign') }}">
@@ -104,8 +99,7 @@ if (session('userType') !== 'Coordinator') {
 
                     <!-- Profile Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button">
                             <i class="fas fa-user"></i> <!-- Person Icon -->
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="profileDropdown">

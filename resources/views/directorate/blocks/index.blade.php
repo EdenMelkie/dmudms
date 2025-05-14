@@ -13,6 +13,7 @@
                 <th>Status</th>
                 <th>Capacity</th>
                 <th>Reserved For</th>
+                <th>Actions</th> <!-- Added the Actions column -->
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,10 @@
                 <td>{{ $block->status }}</td>
                 <td>{{ $block->capacity }}</td>
                 <td>{{ $block->reserved_for }}</td>
+                <td>
+                    <!-- Edit button -->
+                    <a href="{{ route('directorate.blocks.edit', $block->block_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                </td>
             </tr>
             @endforeach
         </tbody>
@@ -37,7 +42,7 @@
         <div class="card-body">
             <p><strong>Total Capacity:</strong> {{ $block->capacity }}</p>
             <p><strong>Free Rooms:</strong>
-                {{ $block->rooms->where('status', 'free')->count() }}
+                {{ $block->rooms->where('status', 'Free')->count() }}
             </p>
             <p><strong>Assigned Students:</strong>
                 {{ $block->assignedStudents->count() }}
@@ -55,7 +60,6 @@
         </div>
     </div>
     @endforeach
-
 
 </div>
 @endsection

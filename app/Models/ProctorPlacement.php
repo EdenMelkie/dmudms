@@ -14,6 +14,7 @@ class ProctorPlacement extends Pivot
         'proctor_id',
         'year',
         'first_entry',
+        'block',
     ];
 
     // Define the relationship to the Proctor (Employee) model

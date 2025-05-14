@@ -13,6 +13,7 @@ if (session('userType') !== 'Registrar') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        /* Navbar Styling */
         .navbar {
             background-color: lightseagreen;
             color: black;
@@ -22,29 +23,54 @@ if (session('userType') !== 'Registrar') {
             color: black;
             font-size: 1.5rem;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
         }
 
         .navbar-nav .nav-link {
             color: black;
             margin-right: 15px;
+            font-size: 1.1rem;
         }
 
+        .navbar-nav .nav-link:hover {
+            color: white;
+        }
+
+        /* Dropdown Menu Styling */
         .dropdown-menu {
-            background-color: lightgray;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .dropdown-menu .dropdown-item {
             color: black;
+            padding: 10px 20px;
         }
 
         .dropdown-menu .dropdown-item:hover {
-            background-color: red;
+            background-color: lightcoral;
+            color: white;
         }
 
+        /* Show dropdown menu on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Button Styles */
         .btn-logout {
             background-color: #E74C3C;
             color: black;
             border-radius: 5px;
+            padding: 8px 16px;
+            font-size: 1rem;
         }
 
         .btn-logout:hover {
@@ -53,6 +79,18 @@ if (session('userType') !== 'Registrar') {
 
         .pagess {
             color: black;
+        }
+
+        /* Responsive Navbar for smaller screens */
+        @media (max-width: 768px) {
+            .navbar-nav .nav-link {
+                font-size: 1rem;
+                margin-right: 10px;
+            }
+
+            .navbar-toggler-icon {
+                background-color: black;
+            }
         }
     </style>
 </head>
@@ -92,7 +130,7 @@ if (session('userType') !== 'Registrar') {
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('registrar.notify') }}">
-                                    <i class="fas fa-check-circle"></i> Manage Notifications
+                                    <i class="fas fa-bell"></i> Manage Notifications
                                 </a>
                             </li>
                             <li>
@@ -101,7 +139,6 @@ if (session('userType') !== 'Registrar') {
                                 </a>
                             </li>
                         </ul>
-
                     </li>
 
                     <!-- Profile Dropdown -->

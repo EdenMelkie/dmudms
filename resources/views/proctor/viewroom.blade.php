@@ -16,8 +16,8 @@
     }
 
     table th {
-        background-color: #007bff; /* Bootstrap blue */
-        color: #fff; /* White text */
+        background-color: #007bff;
+        color: #fff;
         font-weight: bold;
     }
 
@@ -31,7 +31,7 @@
     }
 
     h3 {
-        margin-bottom: 15px;
+        margin-top: 25px;
         color: #333;
     }
 </style>
@@ -40,14 +40,13 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
 
-                <div class="card-body">
-                    
-
+            <div class="card-body">
+                @forelse ($blocks as $block)
                     <h3>Proctors assigned to Block: {{ $block }}</h3>
 
-                    <table border="1">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Full Name</th>
@@ -60,26 +59,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($proctors as $proctor)
-                            <tr>
-                                <td>{{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}</td>
-                                <td>{{ $proctor->gender }}</td>
-                                <td>{{ $proctor->phone }}</td>
-                                <td>{{ $proctor->email }}</td>
-                                <td>{{ $proctor->proctor_id }}</td>
-                                <td>{{ $proctor->year }}</td>
-                                <td>{{ $proctor->first_entry }}</td>
-                            </tr>
+                            @php
+                                $proctorsInBlock = $proctors->where('block', $block);
+                            @endphp
+
+                            @forelse ($proctorsInBlock as $proctor)
+                                <tr>
+                                    <td>{{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}</td>
+                                    <td>{{ $proctor->gender }}</td>
+                                    <td>{{ $proctor->phone }}</td>
+                                    <td>{{ $proctor->email }}</td>
+                                    <td>{{ $proctor->proctor_id }}</td>
+                                    <td>{{ $proctor->year }}</td>
+                                    <td>{{ $proctor->first_entry }}</td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="7">No proctors found for this block.</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="7">No proctors found for this block.</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
-
-                </div>
+                @empty
+                    <p>No blocks assigned.</p>
+                @endforelse
             </div>
+
+        </div>
     </div>
 </div>
 @endsection

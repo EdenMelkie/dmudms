@@ -18,23 +18,23 @@ use Illuminate\Support\Facades\Log;
 
 class ProctorController extends Controller
 {
-        public function viewPlacedStudents()
-{
-    // Get the current proctor's ID from the session
-    $proctor_id = session('username');
+    public function viewPlacedStudents()
+    {
+        // Get the current proctor's ID from the session
+        $proctor_id = session('username');
 
-    // Fetch blocks assigned to the current proctor
-    $blocks = ProctorPlacement::where('proctor_id', $proctor_id)
-                              ->pluck('block'); // Get blocks assigned to the proctor
+        // Fetch blocks assigned to the current proctor
+        $blocks = ProctorPlacement::where('proctor_id', $proctor_id)
+            ->pluck('block'); // Get blocks assigned to the proctor
 
-    // Fetch students with a studentPlacement in those blocks
-   $placements = StudentPlacement::whereIn('block', $blocks)
-    ->with('student') // Eager load the student data
-    ->get();
+        // Fetch students with a studentPlacement in those blocks
+        $placements = StudentPlacement::whereIn('block', $blocks)
+            ->with('student') // Eager load the student data
+            ->get();
 
 
-    return view('proctor.view_placed_students', compact('placements'));
-}
+        return view('proctor.view_placed_students', compact('placements'));
+    }
 
 
     public function showReassignForm($placement_id)
@@ -62,23 +62,22 @@ class ProctorController extends Controller
     {
         $proctorId = session('username');
 
-        // Step 1: Get current proctor's block
-        $placement = DB::table('proctor_placement')
+        // Step 1: Get all blocks assigned to current proctor
+        $placements = DB::table('proctor_placement')
             ->where('proctor_id', $proctorId)
-            ->first();
+            ->pluck('block'); // returns a collection of block names
 
-        if (!$placement) {
+        if ($placements->isEmpty()) {
             return redirect()->back()->with('error', 'Proctor not assigned to any block.');
         }
 
-        $block = $placement->block;
-
-        // Step 2: Get all proctors in the same block
+        // Step 2: Get all proctors in the same blocks
         $proctors = DB::table('proctor_placement')
             ->join('employees', 'proctor_placement.proctor_id', '=', 'employees.employee_id')
-            ->where('proctor_placement.block', $block)
+            ->whereIn('proctor_placement.block', $placements)
             ->select(
                 'proctor_placement.proctor_id',
+                'proctor_placement.block',
                 'proctor_placement.year',
                 'proctor_placement.first_entry',
                 'employees.first_name',
@@ -90,8 +89,12 @@ class ProctorController extends Controller
             )
             ->get();
 
-        return view('proctor.viewroom', compact('proctors', 'block'));
+        return view('proctor.viewroom', [
+            'proctors' => $proctors,
+            'blocks' => $placements, // pass all blocks if needed
+        ]);
     }
+
 
 
     public function index()
@@ -134,25 +137,25 @@ class ProctorController extends Controller
 
         return view('proctor.register_materials', compact('blocks'));
     }
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'block' => 'required|string|max:10',
-        'room' => 'required|integer|unique:materials,room,NULL,NULL,block,' . $request->block, // Unique combination
-        'unlocker' => 'required|in:Original,Copy',
-        'locker' => 'required|integer|between:0,6',
-        'chair' => 'required|integer|between:0,6',
-        'pure_foam' => 'required|integer|between:0,6',
-        'damaged_foam' => 'required|integer|between:0,6',
-        'tiras' => 'required|integer|between:0,6',
-        'tables' => 'required|integer|between:0,6',
-        'chibud' => 'required|integer|between:0,6',
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'block' => 'required|string|max:10',
+            'room' => 'required|integer|unique:materials,room,NULL,NULL,block,' . $request->block, // Unique combination
+            'unlocker' => 'required|in:Original,Copy',
+            'locker' => 'required|integer|between:0,6',
+            'chair' => 'required|integer|between:0,6',
+            'pure_foam' => 'required|integer|between:0,6',
+            'damaged_foam' => 'required|integer|between:0,6',
+            'tiras' => 'required|integer|between:0,6',
+            'tables' => 'required|integer|between:0,6',
+            'chibud' => 'required|integer|between:0,6',
+        ]);
 
-    Material::create($validated);
+        Material::create($validated);
 
-    return redirect()->route('materials.view')->with('success', 'Material registered successfully.');
-}
+        return redirect()->route('materials.view')->with('success', 'Material registered successfully.');
+    }
 
 
     public function getRooms($blockId)
@@ -165,46 +168,62 @@ public function store(Request $request)
     }
 
     public function view()
-    {
-        $materials = Material::orderByDesc('registration_id')->get();
-        return view('proctor.materials', compact('materials'));
+{
+    // Step 1: Get the current proctor's username from session
+    $proctorId = session('username');
+
+    // Step 2: Fetch the block assigned to the proctor
+    $proctorPlacement = ProctorPlacement::where('proctor_id', $proctorId)->first();
+
+    // If no block is assigned, return empty or with a message
+    if (!$proctorPlacement) {
+        return view('proctor.materials', ['materials' => collect()]);
     }
 
+    // Step 3: Get the block and fetch materials for that block
+    $block = $proctorPlacement->block;
+    $materials = Material::where('block', $block)
+        ->orderByDesc('registration_id')
+        ->get();
+
+    return view('proctor.materials', compact('materials'));
+}
+
+
     public function edit($id)
-{
-    $material = Material::findOrFail($id);
-    $blocks = Block::pluck('block_id'); // adjust if needed
-    $rooms = Room::pluck('room_id'); // adjust if needed
+    {
+        $material = Material::findOrFail($id);
+        $blocks = Block::pluck('block_id'); // adjust if needed
+        $rooms = Room::pluck('room_id'); // adjust if needed
 
-    return view('proctor.edit_materials', compact('material', 'blocks', 'rooms'));
-}
-public function update(Request $request, $id)
-{
-    $validated = $request->validate([
-        'block' => 'required|string|max:10',
-        'room' => 'required|integer|unique:materials,room,NULL,NULL,block,' . $request->block . ',id,' . $id, // Unique combination
-        'unlocker' => 'required|in:Original,Copy',
-        'locker' => 'required|integer|min:0|max:6',
-        'chair' => 'required|integer|min:0|max:6',
-        'pure_foam' => 'required|integer|min:0|max:6',
-        'damaged_foam' => 'required|integer|min:0|max:6',
-        'tiras' => 'required|integer|min:0|max:6',
-        'tables' => 'required|integer|min:0|max:6',
-        'chibud' => 'required|integer|min:0|max:6',
-    ]);
+        return view('proctor.edit_materials', compact('material', 'blocks', 'rooms'));
+    }
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'block' => 'required|string|max:10',
+            'room' => 'required|integer|unique:materials,room,NULL,NULL,block,' . $request->block . ',id,' . $id, // Unique combination
+            'unlocker' => 'required|in:Original,Copy',
+            'locker' => 'required|integer|min:0|max:6',
+            'chair' => 'required|integer|min:0|max:6',
+            'pure_foam' => 'required|integer|min:0|max:6',
+            'damaged_foam' => 'required|integer|min:0|max:6',
+            'tiras' => 'required|integer|min:0|max:6',
+            'tables' => 'required|integer|min:0|max:6',
+            'chibud' => 'required|integer|min:0|max:6',
+        ]);
 
-    $material = Material::findOrFail($id);
-    $material->update($validated);
+        $material = Material::findOrFail($id);
+        $material->update($validated);
 
-    return redirect()->route('materials.view')->with('success', 'Material updated successfully.');
-}
+        return redirect()->route('materials.view')->with('success', 'Material updated successfully.');
+    }
 
-public function destroy($id)
-{
-    $material = Material::findOrFail($id);
-    $material->delete();
+    public function destroy($id)
+    {
+        $material = Material::findOrFail($id);
+        $material->delete();
 
-    return redirect()->route('materials.view')->with('success', 'Material deleted successfully.');
-}
-
+        return redirect()->route('materials.view')->with('success', 'Material deleted successfully.');
+    }
 }

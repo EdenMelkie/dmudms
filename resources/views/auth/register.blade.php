@@ -113,7 +113,6 @@
                             <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Gender') }}</label>
 
                             <div class="col-md-6">
-
                                 <select class="form-control @error('gender') is-invalid @enderror" name="gender" id="gender">
                                     <option value="{{ old('gender') }}" required autocomplete="gender">Select Gender</option>
                                     <option value="Male">Male</option>
@@ -189,7 +188,6 @@
                             </div>
                         </div>
 
-
                         <div class="row mb-3">
                             <label for="password"
                                 class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
@@ -231,4 +229,100 @@
         </div>
     </div>
 </div>
-@endsection
+
+<!-- Add Custom Styles -->
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    .card-body {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .row {
+        margin-bottom: 15px;
+    }
+
+    .col-md-4 {
+        text-align: right;
+        padding-top: 10px;
+    }
+
+    .col-md-6 input,
+    .col-md-6 select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+    }
+
+    .col-md-6 input:focus,
+    .col-md-6 select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .invalid-feedback {
+        font-size: 12px;
+        color: red;
+    }
+
+    button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    button[type="submit"]:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 15px;
+        }
+
+        .col-md-4,
+        .col-md-6 {
+            text-align: left;
+        }
+
+        .col-md-6 input,
+        .col-md-6 select {
+            font-size: 14px;
+        }
+
+        button[type="submit"] {
+            font-size: 14px;
+            padding: 12px;
+        }
+    }
+</style> @endsection

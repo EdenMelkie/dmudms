@@ -30,4 +30,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Employee::class, 'employee_id', 'username');
     }
+
+    public function assignedProctors()
+    {
+        return $this->hasMany(ProctorPlacement::class, 'proctor_id', 'username');
+    }
 }

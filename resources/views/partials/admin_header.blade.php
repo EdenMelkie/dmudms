@@ -62,6 +62,18 @@ if (session('userType') !== 'Admin') {
         .btn-logout:hover {
             background-color: #C0392B;
         }
+
+        /* Show dropdown on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+            /* Optional: adjust dropdown position */
+        }
+
+        /* Optional: remove the caret if it's misleading */
+        .nav-item.dropdown .dropdown-toggle::after {
+            display: none;
+        }
     </style>
 </head>
 
@@ -89,11 +101,10 @@ if (session('userType') !== 'Admin') {
 
                     <!-- Account Management Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
-                            data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button">
                             <i class="fas fa-user-cog"></i> Account Management
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="{{ route('admin.create_account') }}">
                                     <i class="fas fa-user-plus"></i> Create Account</a></li>
                             <li><a class="dropdown-item" href="{{ route('employees.index') }}">

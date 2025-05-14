@@ -1,4 +1,8 @@
 @extends('layouts.appdirectorate')
+@section('scripts')
+<script src="{{ asset('js/replaceModal.js') }}"></script>
+
+@endsection
 @section('style')
 <style>
     .unassign-form {
@@ -27,6 +31,7 @@
     }
 </style>
 @endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -34,12 +39,25 @@
             <div class="card">
                 <div class="card-header">All Placements</div>
 
+                @if(session('error'))
+                <script>
+                    alert("{{ session('error') }}"); // Simple alert for the error message
+                </script>
+                @endif
+
+                @if(session('success'))
+                <script>
+                    alert("{{ session('success') }}"); // Success message if operation was successful
+                </script>
+                @endif
+
                 <div class="card-body">
                     @if(session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
 
                     <div class="table-responsive">
+                        <!-- ASSIGNED STUDENTS TABLE -->
                         <h4>
                             <span style="float: left;"> Assigned Students </span>
                             <span style="float: right;">
@@ -77,48 +95,53 @@
                                         </form>
 
                                         <!-- Replace Modal Trigger -->
-                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#replaceModal{{ $placement->student_id }}">
+                                        <button type="button" class="btn btn-warning btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#replaceModal{{ $placement->student_id }}"
+                                            data-gender="{{ $placement->student->gender }}"
+                                            data-disability="{{ $placement->student->disability_status }}">
                                             Replace
                                         </button>
 
                                         <!-- Replace Modal -->
-                                        <div class="modal fade" id="replaceModal{{ $placement->student_id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form method="POST" action="{{ route('placements.replace', $placement->student_id) }}">
-                                                        @csrf
+                                        <div class="modal fade" id="replaceModal{{ $placement->student_id }}" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog" role="document">
+                                                <form method="POST" action="{{ route('placements.replace', $placement->student_id) }}">
+                                                    @csrf
+                                                    <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Replace {{ $placement->student->first_name }}'s Room</h5>
+                                                            <h5 class="modal-title">Replace Student {{ $placement->student_id }}</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
+
                                                         <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Current Room</label>
-                                                                <input type="text" class="form-control" value="{{ $placement->block }} / {{ $placement->room }}" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">New Block</label>
-                                                                <select name="block" class="form-select" required>
+                                                            <div class="form-group">
+                                                                <label for="block">Block</label>
+                                                                <select name="block" id="blockSelect{{ $placement->student_id }}" class="form-control" required>
                                                                     @foreach($blocks as $block)
-                                                                    <option value="{{ $block->block_id }}" {{ $block->block_id == $placement->block ? 'selected' : '' }}>
-                                                                        Block {{ $block->block_id }}
-                                                                    </option>
+                                                                    <option value="{{ $block->block_id }}">{{ $block->block_id }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Available Rooms</label>
-                                                                <select name="room_id" class="form-select" required>
-                                                                    <option value="">Loading available rooms...</option>
+
+                                                            <div class="form-group">
+                                                                <label for="room_id">Room</label>
+                                                                <select name="room_id" class="form-control" required>
+                                                                    @foreach($freeRooms as $room)
+                                                                    @if($room->block === $placement->block)
+                                                                    <option value="{{ $room->room_id }}">{{ $room->room_id }} ({{ $room->block }})</option>
+                                                                    @endif
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                         </div>
+
                                                         <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-success">Replace</button>
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-primary">Replace</button>
                                                         </div>
-                                                    </form>
-                                                </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>
@@ -127,6 +150,7 @@
                             </tbody>
                         </table>
 
+                        <!-- UNASSIGNED STUDENTS TABLE -->
                         <h4>Unassigned Students</h4>
                         <table class="table table-bordered">
                             <thead>
@@ -164,62 +188,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Replace Modal -->
+    <div class="modal fade" id="replaceModal{{ $placement->student_id }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ route('placements.replace', $placement->student_id) }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Replace Student {{ $placement->student_id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="block">Block</label>
+                            <select name="block" id="blockSelect{{ $placement->student_id }}" class="form-control" required>
+                                @foreach($blocks as $block)
+                                <option value="{{ $block->block_id }}">{{ $block->block_id }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="room_id">Room</label>
+                            <select name="room_id" class="form-control" required>
+                                @foreach($freeRooms as $room)
+                                @if($room->block === $placement->block)
+                                <option value="{{ $room->room_id }}">{{ $room->room_id }} ({{ $room->block }})</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- Replace Button - Trigger form submission -->
+                        <button type="submit" class="btn btn-success">Replace</button>
+
+                        <!-- Cancel Button - Close the modal -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 @endsection
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('[id^="replaceModal"]').forEach(modal => {
-            const blockSelect = modal.querySelector('select[name="block"]');
-            const roomSelect = modal.querySelector('select[name="room_id"]');
-            const studentRow = modal.closest('tr');
-            const studentGender = studentRow.getAttribute('data-gender') || '';
-            const studentDisability = studentRow.getAttribute('data-disability') || '';
-
-            blockSelect.addEventListener('change', function() {
-                fetchAvailableRooms(this.value, studentGender, studentDisability, roomSelect);
-            });
-
-            // Initialize on modal open
-            modal.addEventListener('show.bs.modal', function() {
-                fetchAvailableRooms(blockSelect.value, studentGender, studentDisability, roomSelect);
-            });
-        });
-
-        function fetchAvailableRooms(blockId, gender, disability, roomSelect) {
-            fetch(`/api/available-rooms?block=${blockId}&gender=${gender}&disability=${disability}`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(rooms => {
-                    roomSelect.innerHTML = '';
-
-                    if (!rooms || rooms.length === 0) {
-                        const option = document.createElement('option');
-                        option.value = '';
-                        option.textContent = 'No available rooms matching criteria';
-                        roomSelect.appendChild(option);
-                        return;
-                    }
-
-                    rooms.forEach(room => {
-                        const option = document.createElement('option');
-                        option.value = room.room_id;
-                        option.textContent = `Room ID: ${room.room_id} (${room.status}) - ${room.available_beds}/${room.capacity} beds available`;
-                        roomSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching rooms:', error);
-                    roomSelect.innerHTML = '';
-                    const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'Error loading rooms';
-                    roomSelect.appendChild(option);
-                });
-        }
-    });
+    // JavaScript for modal logic, multi-replace, etc.
 </script>
 @endsection

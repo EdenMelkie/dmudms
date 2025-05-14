@@ -1,0 +1,79 @@
+<div class="p-4 bg-light border rounded-3 shadow-sm">
+    <h5 class="mb-4 text-uppercase text-muted font-weight-bold">Tasks</h5>
+    <ul class="nav flex-column">
+        <!-- Home Link -->
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('home') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                <i class="fas fa-home me-2"></i> Home
+            </a>
+        </li>
+
+        <!-- View Assignments -->
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('placements.search') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                <i class="fas fa-search me-2"></i> View Assignments
+            </a>
+        </li>
+
+        <!-- Proctor Specific Links -->
+        @if(session('userType') === 'Proctor')
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('proctor.viewRooms') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                    <i class="fas fa-bed me-2"></i> View Rooms
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('proctor.assignRoom') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                    <i class="fas fa-user-plus me-2"></i> Assign Room
+                </a>
+            </li>
+        @endif
+
+        <!-- Coordinator Specific Links -->
+        @if(session('userType') === 'Coordinator')
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('coordinator.viewRooms') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                    <i class="fas fa-building me-2"></i> View Blocks and Rooms
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('coordinator.assignProctor') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                    <i class="fas fa-user-cog me-2"></i> Assign Proctor
+                </a>
+            </li>
+        @endif
+
+        <!-- About Section -->
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('about') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                <i class="fas fa-info-circle me-2"></i> About
+            </a>
+        </li>
+
+        <!-- Help Section -->
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('help') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                <i class="fas fa-question-circle me-2"></i> Help
+            </a>
+        </li>
+
+        <!-- Auth Section: Login or Logout -->
+        @guest
+            <li class="nav-item mt-4">
+                <a class="btn btn-outline-success w-100 py-2 text-center rounded-pill hover-shadow" href="{{ route('login') }}">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                </a>
+            </li>
+        @else
+            <li class="nav-item mt-4">
+                <a class="btn btn-outline-danger w-100 py-2 text-center rounded-pill hover-shadow" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
+        @endguest
+    </ul>
+</div>

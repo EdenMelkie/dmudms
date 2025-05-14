@@ -61,7 +61,7 @@ class BlockController extends Controller
             DB::table('room')->insert([
                 'room_id' => $i,  // Room number within the block
                 'block' => $block->block_id,  // Block ID
-                'status' => 'free',  // Default status
+                'status' => 'Free',  // Default status
             ]);
         }
 

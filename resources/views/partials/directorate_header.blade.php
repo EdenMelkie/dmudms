@@ -14,107 +14,93 @@ if (session('userType') !== 'Directorate') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-    /* Remove default body padding and margin */
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-    }
+        /* Reset body and html margins/paddings */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    /* Ensure navbar spans full width */
-    .navbar {
-        background-color: lightcoral;
-        color: black;
-        width: 100%;
-        margin: 0;
-    }
+        /* Navbar styling */
+        .navbar {
+            background-color: lightcoral;
+            color: black;
+            width: 100%;
+            margin: 0;
+        }
 
-    /* Remove padding from the container */
-    .container-fluid {
-        padding-left: 0;
-        padding-right: 0;
-        width: 100vw;
-        /* Ensures full width */
-    }
+        .navbar-brand {
+            color: black;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    /* Navbar styling */
-    .navbar-brand {
-        color: black;
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
+        .navbar-nav .nav-link {
+            color: black;
+            margin-right: 15px;
+            font-size: 1.1rem;
+        }
 
-    .navbar-nav .nav-link {
-        color: black;
-        margin-right: 15px;
-    }
+        .dropdown-menu {
+            background-color: lightgray;
+            border-radius: 5px;
+        }
 
-    .dropdown-menu {
-        background-color: lightgray;
-    }
+        .dropdown-menu .dropdown-item {
+            color: black;
+            padding: 10px;
+        }
 
-    .dropdown-menu .dropdown-item {
-        color: black;
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: red;
+            color: white;
+        }
 
-    .dropdown-menu .dropdown-item:hover {
-        background-color: red;
-    }
+        .btn-logout {
+            background-color: #E74C3C;
+            color: black;
+            border-radius: 5px;
+        }
 
-    .btn-logout {
-        background-color: #E74C3C;
-        color: black;
-        border-radius: 5px;
-    }
+        .btn-logout:hover {
+            background-color: #C0392B;
+        }
 
-    .btn-logout:hover {
-        background-color: #C0392B;
-    }
+        .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 100%;
+        }
 
-    .pagess {
-        color: black;
-    }
-
-    /* Navbar links adjustments for mobile responsiveness */
-    .navbar-toggler {
-        border-color: transparent;
-    }
-
-    /* Side dropdown adjustments */
-    .dropdown-menu {
-        position: absolute;
-        top: 50px;
-        left: -200px;
-        /* Adjust left position */
-        width: 200px;
-        z-index: 1000;
-    }
-
-    .dropdown-item {
-        width: 100%;
-    }
-
-    /* Adjust dropdown items for side menu */
-    .dropdown-menu.show {
-        display: block;
-    }
-
-    /* Custom styling for the side dropdown */
-    .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 100%;
-    }
-
-    /* Media query for mobile */
-    @media (max-width: 768px) {
+        /* Navbar mobile styling */
         .navbar-toggler {
             border-color: transparent;
         }
-    }
+
+        /* Adjustments for mobile */
+        @media (max-width: 768px) {
+            .navbar-toggler {
+                border-color: transparent;
+            }
+
+            .navbar-nav .nav-item .dropdown-menu {
+                width: 100%;
+                left: 0;
+            }
+        }
+
+        .pagess {
+            color: black;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        /* Navbar toggle button */
+        .navbar-toggler-icon {
+            background-color: white;
+        }
     </style>
 </head>
 
@@ -128,7 +114,6 @@ if (session('userType') !== 'Directorate') {
         </div>
 
         <div class="container-fluid">
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -143,8 +128,7 @@ if (session('userType') !== 'Directorate') {
 
                     <!-- Directorate Management Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="directorateDropdown" role="button"
-                            data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="directorateDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-tasks"></i> Directorate Management
                         </a>
                         <ul class="dropdown-menu">
@@ -175,11 +159,8 @@ if (session('userType') !== 'Directorate') {
                             <i class="fas fa-user"></i> <!-- Person Icon -->
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                            <!-- Edit Profile Option -->
-                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-edit"></i>
-                                    Profile</a></li>
-
-                            <!-- Logout Option -->
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="fas fa-edit"></i> Profile</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="m-0">
                                     @csrf
@@ -189,7 +170,6 @@ if (session('userType') !== 'Directorate') {
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>

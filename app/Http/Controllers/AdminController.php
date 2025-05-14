@@ -27,6 +27,7 @@ class AdminController extends Controller
      */
     public function reset()
     {
+        
         return view('admin.reset_account');
     }
 }

@@ -13,47 +13,56 @@ if (session('userType') !== 'Maintenance') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-    .navbar {
-        background-color: lightgreen;
-        color: black;
-    }
+        /* Navbar styling */
+        .navbar {
+            background-color: lightgreen;
+            color: black;
+        }
 
-    .navbar-brand {
-        color: black;
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
+        .navbar-brand {
+            color: black;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    .navbar-nav .nav-link {
-        color: black;
-        margin-right: 15px;
-    }
+        .navbar-nav .nav-link {
+            color: black;
+            margin-right: 15px;
+        }
 
-    .dropdown-menu {
-        background-color: lightgray;
-    }
+        .dropdown-menu {
+            background-color: lightgray;
+            display: none; /* Initially hidden */
+        }
 
-    .dropdown-menu .dropdown-item {
-        color: black;
-    }
+        .dropdown-menu .dropdown-item {
+            color: black;
+        }
 
-    .dropdown-menu .dropdown-item:hover {
-        background-color: red;
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: red;
+        }
 
-    .btn-logout {
-        background-color: #E74C3C;
-        color: black;
-        border-radius: 5px;
-    }
+        /* Show dropdown menu on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
 
-    .btn-logout:hover {
-        background-color: #C0392B;
-    }
+        /* Logout button styling */
+        .btn-logout {
+            background-color: #E74C3C;
+            color: black;
+            border-radius: 5px;
+        }
 
-    .pagess {
-        color: black;
-    }
+        .btn-logout:hover {
+            background-color: #C0392B;
+        }
+
+        /* Page text color */
+        .pagess {
+            color: black;
+        }
     </style>
 </head>
 
@@ -74,7 +83,7 @@ if (session('userType') !== 'Maintenance') {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('maintainer') }}">
-                            <i class="fas fa-home"></i> Dashboard
+                            <i class="fas fa-home"></i> Homepage
                         </a>
                     </li>
 
