@@ -51,19 +51,23 @@
 <style>
 /* General navbar styles */
 .navbar {
-    background: linear-gradient(135deg, #4caf50, #1b6e1e);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 15px;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 0;
+    border-radius: 0 0 10px 10px;
 }
 
+/* Brand/logo styles */
 .navbar-brand {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: purple;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff !important;
     text-transform: uppercase;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
 }
 
+/* Toggler styles */
 .navbar-toggler {
     border: none;
 }
@@ -72,57 +76,67 @@
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23fff" viewBox="0 0 30 30"><path d="M4 7h22v2H4zm0 7h22v2H4zm0 7h22v2H4z"/></svg>');
 }
 
-.navbar-nav {
-    margin-left: auto;
-    /* Pushes the links to the right */
-}
-
+/* Nav links */
 .navbar-nav .nav-link {
     color: #fff !important;
     font-size: 1rem;
-    margin: 0 10px;
     font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 8px 12px;
+    margin: 0 6px;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
 }
 
+/* Hover effect for nav links */
 .navbar-nav .nav-link:hover {
-    color: #ffd700 !important;
-    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffeb3b !important;
+    transform: scale(1.05);
 }
 
+/* Underline animation */
 .navbar-nav .nav-item {
     position: relative;
 }
 
 .navbar-nav .nav-item::after {
-    content: "";
+    content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: 3px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: #ffd700;
+    background: #ffeb3b;
     transition: width 0.3s ease;
 }
 
 .navbar-nav .nav-item:hover::after {
-    width: 100%;
+    width: 80%;
 }
 
+/* Login/Logout button style */
+.navbar-nav .btn {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    border-radius: 20px;
+}
+
+
+/* Container width */
 .container {
     max-width: 1200px;
 }
 
-/* Responsive adjustments */
+/* Responsive styles */
 @media (max-width: 768px) {
     .navbar-brand {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     .navbar-nav .nav-link {
-        margin: 5px 0;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        margin: 4px 0;
     }
 
     .navbar-nav .nav-item::after {

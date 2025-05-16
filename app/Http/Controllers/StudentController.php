@@ -31,10 +31,10 @@ class StudentController extends Controller
     public function assign($student_id)
     {
         $student = Student::findOrFail($student_id);
-        
+
         // Create a record in the student_placement table
         StudentPlacement::create(['student_id' => $student->student_id, 'assigned_at' => now()]);
-        
+
         return redirect()->route('students')->with('success', 'Student assigned successfully');
     }
 
@@ -42,10 +42,10 @@ class StudentController extends Controller
     public function reassign($student_id)
     {
         $student = Student::findOrFail($student_id);
-        
+
         // Reassign the student, you can add more logic if needed
         StudentPlacement::where('student_id', $student->student_id)->update(['assigned_at' => now()]);
-        
+
         return redirect()->route('students')->with('success', 'Student reassigned successfully');
     }
 
@@ -53,11 +53,11 @@ class StudentController extends Controller
     public function delete($student_id)
     {
         $student = Student::findOrFail($student_id);
-        
+
         // Delete student and their placement record
         StudentPlacement::where('student_id', $student->student_id)->delete();
         $student->delete();
-        
+
         return redirect()->route('students')->with('success', 'Student deleted successfully');
     }
 
@@ -122,5 +122,24 @@ class StudentController extends Controller
 
         return redirect()->route('students.index');
     }
-    
+
+
+    public function showStudents()
+    {
+        $students = Student::where('status', '!=', 'Registered')->get();
+        return view('admin.students', compact('students'));
+    }
+
+    public function activateStudent($id)
+    {
+        Student::where('student_id', $id)->update(['status' => 'Registered']);
+        return redirect()->route('admin.students')->with('success', 'Student activated successfully.');
+    }
+
+   public function activateAllStudents()
+{
+    Student::where('status', 'unactivated')->update(['status' => 'Registered']);
+    return redirect()->route('admin.students')->with('success', 'All unactivated students have been activated.');
+}
+
 }

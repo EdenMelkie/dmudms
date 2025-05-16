@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProctorController extends Controller
 {
+
     public function viewPlacedStudents()
     {
         // Get the current proctor's ID from the session
@@ -108,25 +109,25 @@ class ProctorController extends Controller
         // Step 1: Get proctor username from session
         $username = session('username');
 
-        // Step 2: Find the proctor's assigned block
-        $proctorPlacement = ProctorPlacement::where('proctor_id', $username)->first();
+        // Step 2: Get all blocks assigned to this proctor
+        $proctorBlocks = ProctorPlacement::where('proctor_id', $username)
+            ->pluck('block');
 
-        if (!$proctorPlacement) {
-            return response()->json(['message' => 'Proctor block not found'], 404);
+        if ($proctorBlocks->isEmpty()) {
+            return response()->json(['message' => 'No blocks assigned to this proctor'], 404);
         }
 
-        $proctorsBlock = $proctorPlacement->block;
-
-        // Step 3: Get student IDs in that block
-        $studentIds = StudentPlacement::where('block', $proctorsBlock)
+        // Step 3: Get student IDs in those blocks
+        $studentIds = StudentPlacement::whereIn('block', $proctorBlocks)
             ->pluck('student_id');
 
         // Step 4: Fetch requests from those students
         $requests = StudentRequest::whereIn('student_id', $studentIds)->get();
 
-        // Step 5: Display or return the requests
-        return view('coordinator.requests', compact('requests'));
+        // Step 5: Pass the blocks to the view
+        return view('coordinator.requests', compact('requests', 'proctorBlocks'));
     }
+
 
     public function create()
     {
@@ -168,26 +169,26 @@ class ProctorController extends Controller
     }
 
     public function view()
-{
-    // Step 1: Get the current proctor's username from session
-    $proctorId = session('username');
+    {
+        // Step 1: Get the current proctor's username from session
+        $proctorId = session('username');
 
-    // Step 2: Fetch the block assigned to the proctor
-    $proctorPlacement = ProctorPlacement::where('proctor_id', $proctorId)->first();
+        // Step 2: Fetch the block assigned to the proctor
+        $proctorPlacement = ProctorPlacement::where('proctor_id', $proctorId)->first();
 
-    // If no block is assigned, return empty or with a message
-    if (!$proctorPlacement) {
-        return view('proctor.materials', ['materials' => collect()]);
+        // If no block is assigned, return empty or with a message
+        if (!$proctorPlacement) {
+            return view('proctor.materials', ['materials' => collect()]);
+        }
+
+        // Step 3: Get the block and fetch materials for that block
+        $block = $proctorPlacement->block;
+        $materials = Material::where('block', $block)
+            ->orderByDesc('registration_id')
+            ->get();
+
+        return view('proctor.materials', compact('materials'));
     }
-
-    // Step 3: Get the block and fetch materials for that block
-    $block = $proctorPlacement->block;
-    $materials = Material::where('block', $block)
-        ->orderByDesc('registration_id')
-        ->get();
-
-    return view('proctor.materials', compact('materials'));
-}
 
 
     public function edit($id)

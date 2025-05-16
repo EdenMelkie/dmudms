@@ -37,4 +37,9 @@ class Student extends Model
     {
         return $this->hasOne(Emergency::class, 'student_id', 'student_id');
     }
+
+     public function request()
+    {
+        return $this->hasMany(Request::class, 'student_id', 'student_id');
+    }
 }

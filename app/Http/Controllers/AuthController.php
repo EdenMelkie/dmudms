@@ -52,7 +52,10 @@ class AuthController extends Controller
         }
 
         // If not found in users, check the students table
-        $student = DB::table('students')->where('student_id', $request->username)->first();
+        $student = DB::table('students')
+            ->where('student_id', $request->username)
+            ->where('status', '!=', 'unactivated')
+            ->first();
 
         if ($student && Hash::check($request->password, $student->password)) {
             Auth::loginUsingId($student->student_id); // Log the student in
@@ -74,13 +77,11 @@ class AuthController extends Controller
         session()->forget('userType');
         session()->forget('username');
         session()->flush();
-    
+
         // Logout the user from Auth
         Auth::logout();
-    
+
         // Redirect the user to the login page after logout
         return redirect()->route('login');
     }
-    
-    
 }

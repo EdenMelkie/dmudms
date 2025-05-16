@@ -1,12 +1,6 @@
 <div class="p-4 bg-light border rounded-3 shadow-sm">
     <h5 class="mb-4 text-uppercase text-muted font-weight-bold">Registrar Tasks</h5>
     <ul class="nav flex-column">
-        <!-- Dashboard Link -->
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('registrar') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
-                <i class="fas fa-home me-2"></i> Dashboard
-            </a>
-        </li>
 
         <!-- Manage Students -->
         <li class="nav-item">
@@ -24,8 +18,8 @@
 
         <!-- Policies & Regulations -->
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('registrar.notify') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
-                <i class="fas fa-file-alt me-2"></i> Policies & Regulations
+            <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+                <i class="fas fa-file-alt me-2"></i> Edit Profile
             </a>
         </li>
 

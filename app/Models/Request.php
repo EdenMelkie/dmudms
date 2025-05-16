@@ -21,4 +21,9 @@ class Request extends Model
         'approved_by',
         'approved_date',
     ];
+
+     public function student()
+    {
+        return $this->hasOne(Student::class, 'student_id', 'student_id');
+    }
 }

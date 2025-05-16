@@ -612,13 +612,13 @@ class PlacementController extends Controller
         // Update the placement with the new room and block
         $placement->room = $room->room_id;
         $placement->block = $block->block_id;
-        $placement->status = 'Assigned'; // Ensure the status is set to "Assigned"
+        $placement->status = 'assigned'; // Ensure the status is set to "Assigned"
         $placement->save();
 
         // Count students assigned to this room
         $assignedCount = StudentPlacement::where('room', $room->room_id)
             ->where('block', $room->block)
-            ->where('status', 'Assigned')
+            ->where('status', 'assigned')
             ->count();
 
         // Determine room status

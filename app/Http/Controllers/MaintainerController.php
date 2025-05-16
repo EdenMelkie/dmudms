@@ -13,10 +13,17 @@ class MaintainerController extends Controller
      */
     public function index()
     {
-        // Fetch all the requests from the database
-        $requests = Request::all(); // Use the Request model (your custom model)
+        $requests = Request::where('status', 'approved')
+            ->join('employees', 'request.approved_by', '=', 'employees.employee_id')
+            ->select(
+                'request.*',
+                'employees.first_name',
+                'employees.second_name',
+                'employees.last_name',
+                'employees.email'
+            )
+            ->get();
 
-        // Return the view with the fetched data
         return view('maintainer.index', compact('requests'));
     }
 }

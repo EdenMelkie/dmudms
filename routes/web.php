@@ -73,6 +73,10 @@ Route::prefix('admin')->group(function () {
         Route::put('/{employee}', [RegisterController::class, 'update'])->name('employees.update');
         Route::delete('/{employee}', [RegisterController::class, 'destroy'])->name('employees.destroy');
     });
+    Route::get('/students', [AdminController::class, 'showStudents'])->name('admin.students');
+    Route::patch('/students/activate/{id}', [AdminController::class, 'activateStudent'])->name('admin.students.activate');
+    Route::post('/students/activate-all', [AdminController::class, 'activateAllStudents'])->name('admin.students.activateAll');
+    Route::patch('/admin/students/{id}/deactivate', [AdminController::class, 'deactivateStudent'])->name('admin.students.deactivate');
 });
 
 /**
@@ -91,7 +95,7 @@ Route::get('/notifications', [NotificationController::class, 'index'])->name('no
 Route::prefix('directorate')->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('directorate.dashboard');
     Route::get('/reports', [StudentController::class, 'viewReports'])->name('directorate.reports');
-    Route::get('/placement', [StudentController::class, 'viewPlacement'])->name('directorate.placement');
+    // Route::get('/placement', [StudentController::class, 'viewPlacement'])->name('directorate.placement');
     Route::get('/proctor', [StudentController::class, 'manageProctors'])->name('directorate.proctor');
 
     // Student Management
@@ -229,12 +233,12 @@ Route::get('/student/edit/{student_id}', [EmergencyController::class, 'editProfi
 
 
 /*
-* maintainer routes
+* requests routes
 */
 Route::get('/requests', [MaintainerController::class, 'index'])->name('requests.index');
 Route::get('/proctor/block-proctors', [ProctorController::class, 'viewProctorsInBlock'])->name('proctor.blockProctors');
 Route::get('/proctor/requests', [ProctorController::class, 'fetchProctorRequests'])->name('requests.proctor');
 
-
 Route::get('/requests/create', [RequestController::class, 'create'])->name('requests.create');
 Route::post('/requests/store', [RequestController::class, 'store'])->name('requests.store');
+Route::post('/requests/approve', [RequestController::class, 'approveRequest'])->name('requests.approve');

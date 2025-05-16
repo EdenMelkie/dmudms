@@ -15,7 +15,8 @@ if (session('userType') !== 'Directorate') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* Reset body and html margins/paddings */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -109,8 +110,9 @@ if (session('userType') !== 'Directorate') {
     <!-- Directorate Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="navbar-brand text-center w-100">
-            <i class="fas fa-briefcase"></i>
-            <span class="pagess">Debremarkos University Student Service Directorate Page</span>
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('registrar') }}">
+                <img src="{{ asset('images/dmu-logo.png') }}" alt="DMU Logo" style="height: 40px; margin-right: 10px;">
+                <span class="pagess">Debremarkos University Student Service Directorate Page</span> </a>
         </div>
 
         <div class="container-fluid">
@@ -120,11 +122,6 @@ if (session('userType') !== 'Directorate') {
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('directorate') }}">
-                            <i class="fas fa-home"></i> Page
-                        </a>
-                    </li>
 
                     <!-- Directorate Management Dropdown -->
                     <li class="nav-item dropdown">
@@ -138,8 +135,7 @@ if (session('userType') !== 'Directorate') {
                                     <i class="fas fa-check-circle"></i> Manage Students</a></li>
                             <li><a class="dropdown-item" href="{{ route('notifications') }}">
                                     <i class="fas fa-check-circle"></i> View Notifications</a></li>
-                            <li><a class="dropdown-item" href="{{ route('notifications') }}">
-                                    <i class="fas fa-file-alt"></i> Policies & Regulations</a></li>
+                            <!-- <li><a class="dropdown-item" href="{{ route('notifications') }}">   <i class="fas fa-file-alt"></i> Policies & Regulations</a></li> -->
                         </ul>
                     </li>
 

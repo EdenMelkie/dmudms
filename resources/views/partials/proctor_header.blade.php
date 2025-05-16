@@ -1,79 +1,94 @@
 <head>
-    <style>
-        /* Ensure the dropdown menus are hidden by default */
-        .nav-item.dropdown .dropdown-menu {
-            display: none;
-            position: absolute;
-            z-index: 1000;
-        }
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
-        /* Show dropdown menu on hover */
+    <style>
+        /* Custom dropdown on hover */
         .nav-item.dropdown:hover .dropdown-menu {
             display: block;
+            margin-top: 0.5rem;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        /* Optional: Add some spacing between the dropdown and other elements */
-        .nav-item.dropdown .dropdown-menu {
-            margin-top: 10px;
+        .dropdown-menu {
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
         }
 
-        /* Optional: Style the dropdown menu to improve visibility */
-        .nav-item.dropdown .dropdown-menu {
-            background-color: #f8f9fa; /* Light background */
-            border-radius: 0.25rem;
+        .dropdown-item {
+            transition: all 0.2s;
         }
 
-        /* Style for each item in the dropdown */
-        .nav-item.dropdown .dropdown-item {
-            color: #333;
-        }
-
-        /* Hover effect on the dropdown items */
-        .nav-item.dropdown .dropdown-item:hover {
-            background-color: #007bff;
+        .dropdown-item:hover {
+            background-color: #dc3545;
             color: #fff;
+        }
+
+        .navbar-brand img {
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
         }
     </style>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="{{ route('proctor') }}">
-            <i class="fas fa-user-shield"></i> Proctor Page
+        <!-- Logo and brand -->
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route('proctor') }}">
+            <img src="{{ asset('images/dmu-logo.png') }}" alt="Logo"> DMU Dormitory Management System Proctor Page
         </a>
+
+        <!-- Toggler for mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <!-- Navigation links -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('proctor') }}"><i class="fas fa-home"></i> Home</a>
-                </li>
-
+                <!-- Management Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="proctorDropdown" role="button" aria-expanded="false">
-                        <i class="fas fa-cogs"></i> Management
+                    <a class="nav-link dropdown-toggle" href="#" id="proctorDropdown" role="button">
+                        <i class="fas fa-cogs me-1"></i> Management
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="proctorDropdown">
-                        <li><a class="dropdown-item" href="{{ route('proctor.blockProctors') }}">View Placement</a></li>
-                        <li><a class="dropdown-item" href="{{ route('requests.proctor') }}">Manage Requests</a></li>
-                        <li><a class="dropdown-item" href="{{ route('materials.view') }}">Report Issues</a></li>
-                        <li><a class="dropdown-item" href="{{ route('proctor.viewPlacedStudents') }}">Student Placement</a></li>
+                        <li><a class="dropdown-item" href="{{ route('proctor.blockProctors') }}"><i class="fas fa-users-cog me-1"></i> View Placement</a></li>
+                        <li><a class="dropdown-item" href="{{ route('requests.proctor') }}"><i class="fas fa-envelope-open-text me-1"></i> Manage Requests</a></li>
+                        <li><a class="dropdown-item" href="{{ route('materials.view') }}"><i class="fas fa-tools me-1"></i> Report Issues</a></li>
+                        <li><a class="dropdown-item" href="{{ route('proctor.viewPlacedStudents') }}"><i class="fas fa-user-graduate me-1"></i> Student Placement</a></li>
                     </ul>
                 </li>
 
-                <!-- Profile -->
+                <!-- Profile Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button">
                         <i class="fas fa-user"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-edit me-1"></i> Edit Profile</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST" class="m-0">
                                 @csrf
-                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
                             </form>
                         </li>
                     </ul>
@@ -82,27 +97,3 @@
         </div>
     </div>
 </nav>
-
-<script>
-    // Ensure dropdown toggles when clicked
-    document.addEventListener('DOMContentLoaded', function () {
-        var dropdownToggle = document.querySelectorAll('.dropdown-toggle');
-        
-        dropdownToggle.forEach(function (toggle) {
-            toggle.addEventListener('click', function (e) {
-                var dropdownMenu = this.nextElementSibling;
-                
-                // If dropdown is already open, close it
-                if (dropdownMenu.style.display === 'block') {
-                    dropdownMenu.style.display = 'none';
-                } else {
-                    // Otherwise, show the dropdown menu
-                    dropdownMenu.style.display = 'block';
-                }
-                
-                // Prevent the default link behavior
-                e.preventDefault();
-            });
-        });
-    });
-</script>

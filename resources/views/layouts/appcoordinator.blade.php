@@ -34,9 +34,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         <!-- Sidebar Column -->
-                        <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
+                        <div class="col-md-3 col-lg-2 sidebar-light-green border-end" style="min-height: 100vh;">
                             @include('partials.sidebarcord')
                         </div>
+
+
 
                         <!-- Main Content Column -->
                         <div class="col-md-9 col-lg-10">

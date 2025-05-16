@@ -93,7 +93,7 @@ class RegistrarController extends Controller
             'last_name' => $validatedData['last_name'],
             'email' => $validatedData['email'],
             'gender' => $validatedData['gender'],
-            'status' => 'Registered',
+            'status' => 'unactivated',
             'batch' => $validatedData['batch'],
             'disability_status' => $validatedData['disability_status'] ?? 'No',
             'password' => $password,
@@ -136,7 +136,7 @@ class RegistrarController extends Controller
                     'email' => $row[3],
                     'gender' => $row[4],
                     'batch' => '1',
-                    'status' => 'Registered',
+                    'status' => 'unactivated',
                     'disability_status' => $row[6] ?? 'No',
                     'password' => $password,
                 ]);
