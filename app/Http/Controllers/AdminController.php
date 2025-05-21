@@ -47,8 +47,10 @@ class AdminController extends Controller
 
             if ($oldRoom) {
                 // Mark old room as Free
-                $oldRoom->status = 'Free';
-                $oldRoom->save();
+                // $oldRoom->status = 'Free';
+                Room::where('room_id', $oldRoom)
+                    ->where('block', $placement->block)
+                    ->update(['status' => 'Free']);
             }
 
             // Optionally delete or update placement status
