@@ -13,7 +13,7 @@
                 <th>Message</th>
                 <th>Status</th>
                 <th>Date</th>
-                <th>Actions</th>
+                <!-- <th>Actions</th> -->
             </tr>
         </thead>
         <tbody>
@@ -41,11 +41,11 @@
                     </span>
                 </td>
                 <td>{{ $notification->date }}</td>
-                <td>
+                <!-- <td>
                     <button class="btn btn-danger btn-sm">
                         <i class="fa fa-trash"></i> Delete
                     </button>
-                </td>
+                </td> -->
             </tr>
             @empty
             <tr>

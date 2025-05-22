@@ -76,7 +76,7 @@ class RegistrarController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:students,email',
             'gender' => 'required|string',
-            'batch' => 'required|integer|min:1',
+            'batch' => 'required|integer|min:1|max:7',
             'disability_status' => 'nullable|string',
         ]);
 

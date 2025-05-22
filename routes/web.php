@@ -242,3 +242,12 @@ Route::get('/proctor/requests', [ProctorController::class, 'fetchProctorRequests
 Route::get('/requests/create', [RequestController::class, 'create'])->name('requests.create');
 Route::post('/requests/store', [RequestController::class, 'store'])->name('requests.store');
 Route::post('/requests/approve', [RequestController::class, 'approveRequest'])->name('requests.approve');
+
+Route::get('/request/replacements', [RequestController::class, 'index'])->name('replacements.index');
+
+Route::post('/requests', [RequestController::class, 'store1'])->name('replacements.store');
+
+Route::get('replacements/{id}/edit', [RequestController::class, 'edit'])->name('replacements.edit');
+Route::put('replacements/{id}', [RequestController::class, 'update'])->name('replacements.update');
+
+Route::delete('/requests/{id}', [RequestController::class, 'destroy'])->name('replacements.destroy');

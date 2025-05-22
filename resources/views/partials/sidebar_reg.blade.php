@@ -4,21 +4,21 @@
 
         <!-- Manage Students -->
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('registrar.students') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+            <a class="nav-link {{ request()->routeIs('registrar.students') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('registrar.students') }}">
                 <i class="fas fa-users me-2"></i> Manage Students
             </a>
         </li>
 
         <!-- Manage Notifications -->
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('registrar.notify') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+            <a class="nav-link {{ request()->routeIs('registrar.notify') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('registrar.notify') }}">
                 <i class="fas fa-bell me-2"></i> Manage Notifications
             </a>
         </li>
 
         <!-- Policies & Regulations -->
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow">
+            <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('profile.edit') }}">
                 <i class="fas fa-file-alt me-2"></i> Edit Profile
             </a>
         </li>

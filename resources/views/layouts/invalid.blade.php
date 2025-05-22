@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +35,10 @@
             z-index: 1040;
             display: block;
             /* Show the overlay on page load */
+        }
+
+        main {
+            margin-bottom: 40px;
         }
     </style>
 </head>

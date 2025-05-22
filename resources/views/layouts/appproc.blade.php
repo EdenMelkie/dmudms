@@ -25,7 +25,8 @@
             width: 250px;
             height: 100vh;
             position: fixed;
-            top: 56px; /* header height */
+            top: 56px;
+            /* header height */
             left: 0;
             background-color: #343a40;
             padding-top: 1rem;
@@ -44,6 +45,10 @@
 
         .sidebar .nav-link:hover {
             background-color: #495057;
+        }
+
+        main {
+            margin-bottom: 40px;
         }
     </style>
 

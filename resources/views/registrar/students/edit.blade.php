@@ -55,7 +55,7 @@
             <select class="form-control" id="status" name="status">
                 <option value="Registered" {{ $student->status == 'Active' ? 'selected' : '' }}>Registered</option>
                 <option value="Desciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Desciplined</option>
-                <option value="Desciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Transferred</option>
+                <option value="Transfered" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Transferred</option>
                 <!-- <option value="Desciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Desciplined</option> -->
             </select>
         </div>

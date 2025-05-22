@@ -10,12 +10,12 @@
             
             <div class="form-group">
                 <label for="first_name">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ old('first_name', $student->first_name) }}" required>
+                <input readonly type="text" class="form-control" id="first_name" name="first_name" value="{{ old('first_name', $student->first_name) }}" required>
             </div>
 
             <div class="form-group">
-                <label for="last_name">Password</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name', $student->last_name) }}" required>
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="password" name="password" value="{{ old('password', $student->password) }}" required>
             </div>
 
             <div class="form-group">

@@ -33,7 +33,7 @@
 
                     <div class="mt-4">
                         <p class="text-muted fs-6">
-                            <small>Need assistance? <a href="#" class="text-decoration-none">Contact Support</a></small>
+                            <small>Need assistance? <a href="help" class="text-decoration-none">Contact Support</a></small>
                         </p>
                     </div>
                 </div>

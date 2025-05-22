@@ -110,7 +110,7 @@ if (session('userType') !== 'Directorate') {
     <!-- Directorate Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="navbar-brand text-center w-100">
-            <a class="navbar-brand d-flex align-items-center" href="{{ route('registrar') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('directorate') }}">
                 <img src="{{ asset('images/dmu-logo.png') }}" alt="DMU Logo" style="height: 40px; margin-right: 10px;">
                 <span class="pagess">Debremarkos University Student Service Directorate Page</span> </a>
         </div>

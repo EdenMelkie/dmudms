@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Block;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Room;
 use App\Models\StudentPlacement;
@@ -34,24 +35,27 @@ class PlacementController extends Controller
 
     public function viewRooms(Request $request)
     {
-        $searchBy = $request->input('search_by');
-        $searchValue = $request->input('search_value');
+        // Use session value for searchValue
+        $searchValue = session('username');
+        Log::info('Session username retrieved for placement lookup.', ['username' => $searchValue]);
 
         // Fetch student placements based on search criteria
         $placements = DB::table('student_placement')
-            ->join('students', 'student_placement.student_id', '=', 'students.student_id') // Join students table
-            ->where('student_placement.student_id', 'LIKE', '%' . $searchValue . '%') // Specify the table for the column
-            ->select('student_placement.*', 'students.first_name', 'students.second_name', 'students.last_name') // Include names
+            ->join('students', 'student_placement.student_id', '=', 'students.student_id')
+            ->where('student_placement.student_id', 'LIKE', '%' . $searchValue . '%')
+            ->select('student_placement.*', 'students.first_name', 'students.second_name', 'students.last_name')
             ->get();
 
+        Log::info('Student placements fetched.', ['placements_count' => $placements->count()]);
 
         $roommates = collect(); // Default empty collection
-        $proctors = collect(); // Default empty collection
+        $proctors = collect();  // Default empty collection
 
-        // If search is by student ID and a result is found
-        if ($searchBy === 'student_id' && $placements->isNotEmpty()) {
+        if ($placements->isNotEmpty()) {
             $room = $placements->first()->room;
             $block = $placements->first()->block;
+
+            Log::info('Room and block identified from placement.', ['room' => $room, 'block' => $block]);
 
             // Fetch all students in the same room and block
             $roommates = DB::table('student_placement')
@@ -62,7 +66,7 @@ class PlacementController extends Controller
                 ->select('student_placement.*', 'students.first_name', 'students.second_name', 'students.last_name')
                 ->get();
 
-
+            Log::info('Roommates fetched.', ['roommates_count' => $roommates->count()]);
 
             // Fetch assigned proctors for the block
             $proctors = DB::table('proctor_placement')
@@ -70,11 +74,23 @@ class PlacementController extends Controller
                 ->join('employees', 'proctor_placement.proctor_id', '=', 'employees.employee_id')
                 ->select('employees.first_name', 'employees.second_name', 'employees.last_name', 'employees.email', 'employees.phone', 'employees.gender')
                 ->get();
+
+            Log::info('Proctors fetched for block.', ['proctors_count' => $proctors->count()]);
+        } else {
+            Log::warning('No placements found for the given username.', ['username' => $searchValue]);
         }
 
         // Pass the fetched data to the view
+        Log::info('Passing data to view.', [
+            'placements_count' => $placements->count(),
+            'roommates_count' => $roommates->count(),
+            'proctors_count' => $proctors->count()
+        ]);
+
         return view('students.placement', compact('placements', 'roommates', 'proctors'));
     }
+
+
 
     public function viewPlacement()
     {
@@ -118,47 +134,91 @@ class PlacementController extends Controller
     public function assignStudentToPlacement($student_id)
     {
         $student = Student::findOrFail($student_id);
-        $block = Block::where('status', 'available')->first();
 
-        if (!$block) {
-            return back()->with('error', 'No available blocks.');
+        // Get blocks matching student's gender, disability status, and are free
+        if ($student->disability_status === 'Yes') {
+            $blocks = Block::where('disable_group', 'Yes')
+                ->where('reserved_for', $student->gender)
+                ->where('status', 'Free')
+                ->get();
+        } else {
+            $blocks = Block::where('reserved_for', $student->gender)
+                ->where('status', 'Free')
+                ->get();
         }
 
-        $room = Room::where('block', $block->block_id)
-            ->orderBy('room_id')
-            ->get()
-            ->first(function ($r) {
-                $count = StudentPlacement::where('block', $r->block)
-                    ->where('room', $r->room_id)
+        if ($blocks->isEmpty()) {
+            return back()->with('error', 'No available blocks matching student\'s gender and disability status.');
+        }
+
+        // Collect eligible rooms with less than 6 students assigned
+        $eligibleRooms = collect();
+
+        foreach ($blocks as $block) {
+            // Determine room ID limit if disabled student
+            $roomLimit = null;
+            if ($student->disability_status === 'Yes') {
+                if ($block->capacity == 79) {
+                    $roomLimit = 25;
+                } elseif ($block->capacity == 25) {
+                    $roomLimit = 10;
+                } elseif ($block->capacity == 24) {
+                    $roomLimit = 7;
+                }
+            }
+
+            // Fetch rooms with status Free and (if disabled) below roomLimit
+            $roomsQuery = Room::where('block', $block->block_id)
+                ->where('status', 'Free');
+
+            if ($roomLimit !== null) {
+                $roomsQuery->where('room_id', '<', $roomLimit);
+            }
+
+            $rooms = $roomsQuery->orderBy('room_id')->get();
+
+            foreach ($rooms as $room) {
+                $assignedCount = StudentPlacement::where('block', $room->block)
+                    ->where('room', $room->room_id)
+                    ->where('status', 'assigned')
                     ->count();
-                return $count < 6;
-            });
 
-        if (!$room) {
-            return back()->with('error', 'All rooms are full in this block.');
+                // Only add rooms with fewer than 6 assigned students
+                if ($assignedCount < 6) {
+                    $eligibleRooms->push($room);
+                }
+            }
         }
+
+        if ($eligibleRooms->isEmpty()) {
+            return back()->with('error', 'No available rooms with capacity found for the student.');
+        }
+
+        // Pick the first room that has available capacity
+        $room = $eligibleRooms->first();
 
         $student->status = 'assigned';
 
         StudentPlacement::updateOrCreate(
             ['student_id' => $student->student_id],
             [
-                'block' => $block->block_id,
+                'block' => $room->block,
                 'room' => $room->room_id,
                 'status' => 'assigned',
                 'year' => now()->year,
             ]
         );
 
-        // Update room status
+        // Update room status: 'Occupied' if 6 or more, otherwise 'Free'
         $placementCount = StudentPlacement::where('block', $room->block)
             ->where('room', $room->room_id)
+            ->where('status', 'assigned')
             ->count();
 
         Room::where('room_id', $room->room_id)
             ->where('block', $room->block)
             ->update([
-                'status' => $placementCount >= 6 ? 'Occupied' : 'Partially',
+                'status' => $placementCount >= 6 ? 'Occupied' : 'Free',
             ]);
 
         $student->save();
@@ -166,6 +226,7 @@ class PlacementController extends Controller
         return redirect()->route('placements.index')
             ->with('success', 'Student assigned to placement successfully.');
     }
+
 
     public function unassignAll()
     {
@@ -204,7 +265,7 @@ class PlacementController extends Controller
                 ->count();
 
             // Step 4: Prepare room status update
-            $roomStatusUpdates[$room_id][$block] = $otherPlacementsCount > 0 ? 'Partially' : 'Free';
+            $roomStatusUpdates[$room_id][$block] = $otherPlacementsCount > 0 ? 'Free' : 'Free';
 
             // Step 5: Prepare student status update
             $studentStatusUpdates[$placement->student_id] = 'Registered';
@@ -261,7 +322,7 @@ class PlacementController extends Controller
             if ($otherPlacements > 0) {
                 Room::where('room_id', $room_id)
                     ->where('block', $block)
-                    ->update(['status' => 'Partially']);
+                    ->update(['status' => 'Free']);
             } else {
                 // Update the room status to 'Free' only if no other students are placed
                 Room::where('room_id', $room_id)
@@ -340,98 +401,114 @@ class PlacementController extends Controller
 
 
     // Handle auto-assigning students to placements (you can customize this further)
-    public function autoAssignStudents()
-    {
-        // Fetch disabled students first, then normal students
-        $disabledStudents = Student::where('status', 'Registered')
+ public function autoAssignStudents()
+{
+    // Fetch all blocks with their rooms sorted by room_id once
+    $blocks = Block::with(['rooms' => function ($query) {
+        $query->orderBy('room_id');
+    }])->get();
+
+    while (true) {
+        // Fetch one unassigned disabled student first
+        $student = Student::where('status', 'Registered')
             ->whereDoesntHave('placement')
             ->where('disability_status', 'Yes')
             ->orderBy('batch')
-            ->get();
+            ->first();
 
-        $normalStudents = Student::where('status', 'Registered')
-            ->whereDoesntHave('placement')
-            ->where('disability_status', 'No')
-            ->orderBy('batch')
-            ->get();
+        // If no disabled student found, try a normal student
+        if (!$student) {
+            $student = Student::where('status', 'Registered')
+                ->whereDoesntHave('placement')
+                ->where('disability_status', 'No')
+                ->orderBy('batch')
+                ->first();
+        }
 
-        // Merge the two lists so disabled students are processed first
-        $students = $disabledStudents->merge($normalStudents);
+        // If no student left to assign, break the loop
+        if (!$student) {
+            break;
+        }
 
-        $blocks = Block::with(['rooms' => function ($query) {
-            $query->orderBy('room_id');
-        }])->get();
+        // Try to assign this student to a suitable block and room
+        $assigned = false;
 
-        foreach ($students as $student) {
-            foreach ($blocks as $block) {
-                // Skip blocks based on disability and gender compatibility
-                if (
-                    ($block->disability_group === 'Yes' && $student->disability_status !== 'Yes') ||
-                    ($block->disability_group === 'No' && $student->disability_status === 'Yes') ||
-                    ($block->reserved_for && $block->reserved_for !== $student->gender)
-                ) {
+        foreach ($blocks as $block) {
+            // Skip blocks incompatible with student's disability status or gender
+            if (
+                ($block->disability_group === 'Yes' && $student->disability_status !== 'Yes') ||
+                ($block->disability_group === 'No' && $student->disability_status === 'Yes') ||
+                ($block->reserved_for && $block->reserved_for !== $student->gender)
+            ) {
+                continue;
+            }
+
+            // Determine max room number based on block capacity
+            $capacity = $block->capacity;
+            if ($capacity === 79) {
+                $maxRoom = 26;
+            } elseif ($capacity === 24) {
+                $maxRoom = 7;
+            } elseif ($capacity === 29) {
+                $maxRoom = 10;
+            } else {
+                $maxRoom = 6;  // Default fallback
+            }
+
+            foreach ($block->rooms as $room) {
+                // For disability group, only assign ground floor rooms
+                if ($block->disability_group === 'Yes' && !$room->is_ground_floor) {
                     continue;
                 }
 
-                // Determine room limit based on block capacity
-                $capacity = $block->capacity;
-                if ($capacity === 79) {
-                    $maxRoom = 26;
-                } elseif ($capacity === 24) {
-                    $maxRoom = 7;
-                } elseif ($capacity === 29) {
-                    $maxRoom = 10;
-                } else {
-                    $maxRoom = 6;  // Default fallback
+                // Skip rooms that exceed max room number
+                if ($room->room_id > $maxRoom) {
+                    continue;
                 }
 
-                foreach ($block->rooms as $room) {
-                    // Only assign ground floor rooms for disability groups
-                    if ($block->disability_group === 'Yes' && !$room->is_ground_floor) {
-                        continue;
-                    }
+                // Count current students in this room and block
+                $currentCount = StudentPlacement::where('block', $block->block_id)
+                    ->where('room', $room->room_id)
+                    ->count();
 
-                    // Skip rooms exceeding capacity limit
-                    if ($room->room_id > $maxRoom) {
-                        continue;
-                    }
+                // Assign if room has capacity
+                if ($currentCount < 6) {
+                    StudentPlacement::create([
+                        'student_id' => $student->student_id,
+                        'block' => $block->block_id,
+                        'room' => $room->room_id,
+                        'status' => 'assigned',
+                        'year' => now()->year,
+                    ]);
 
-                    $currentCount = StudentPlacement::where('block', $block->block_id)
-                        ->where('room', $room->room_id)
-                        ->count();
-
-                    if ($currentCount < 6) {
-                        StudentPlacement::create([
-                            'student_id' => $student->student_id,
-                            'block' => $block->block_id,
-                            'room' => $room->room_id,
-                            'status' => 'assigned',
-                            'year' => now()->year,
+                    // Update room status based on new count
+                    $newCount = $currentCount + 1;
+                    Room::where('block', $block->block_id)
+                        ->where('room_id', $room->room_id)
+                        ->update([
+                            'status' => $newCount >= 6 ? 'Occupied' : 'Free',
                         ]);
 
-                        // Update room status
-                        $newCount = $currentCount + 1;
-                        Room::where('block', $block->block_id)
-                            ->where('room_id', $room->room_id)
-                            ->update([
-                                'status' => $newCount >= 6 ? 'Occupied' : 'Partially',
-                            ]);
+                    // Update student status
+                    $student->status = 'assigned';
+                    $student->save();
 
-                        // Mark student assigned
-                        $student->status = 'assigned';
-                        $student->save();
-
-                        continue 3; // Move to next student
-                    }
+                    $assigned = true;
+                    break 2;  // Break out of both room and block loops to assign next student
                 }
             }
         }
 
-        return redirect()->route('placements.index')
-            ->with('success', 'Auto assignment completed');
+        // If we couldn’t assign this student anywhere, stop or handle accordingly
+        if (!$assigned) {
+            // Could break here to avoid infinite loop if no assignments possible
+            break;
+        }
     }
 
-
+    return redirect()->route('placements.index')
+        ->with('success', 'Auto assignment completed');
+}
 
 
     public function showStudents()
@@ -533,7 +610,7 @@ class PlacementController extends Controller
         if ($currentOccupancy + 1 >= 6) {
             $room->update(['status' => 'Occupied']);
         } else {
-            $room->update(['status' => 'Partially']);
+            $room->update(['status' => 'Free']);
         }
 
         return redirect()->route('placements.index')
@@ -542,12 +619,16 @@ class PlacementController extends Controller
 
     public function replace(Request $request, $studentId)
     {
+        Log::info("Replace operation started for student ID: {$studentId}", ['request' => $request->all()]);
+
         // Find the student's current placement
         $placement = StudentPlacement::where('student_id', $studentId)->first();
 
         if (!$placement) {
+            Log::warning("Student placement not found", ['student_id' => $studentId]);
             return back()->with('error', 'Student placement not found.');
         }
+        Log::info("Current placement found", ['placement' => $placement]);
 
         // Find the selected room based on the room ID and block
         $room = Room::where('room_id', $request->room_id)
@@ -555,47 +636,53 @@ class PlacementController extends Controller
             ->first();
 
         if (!$room) {
+            Log::warning("Selected room not found or invalid block", ['room_id' => $request->room_id, 'block' => $request->block]);
             return back()->with('error', 'Selected room not found or does not belong to the specified block.');
         }
+        Log::info("Selected room found", ['room' => $room]);
 
         // Find the selected block
         $block = Block::find($request->block);
 
         if (!$block) {
+            Log::warning("Selected block not found", ['block_id' => $request->block]);
             return back()->with('error', 'Selected block not found.');
         }
+        Log::info("Selected block found", ['block' => $block]);
 
         // Check if the room is available (status == 'Free')
         if ($room->status !== 'Free') {
+            Log::warning("Selected room not available", ['room_id' => $room->room_id, 'status' => $room->status]);
             return back()->with('error', 'Selected room is not available for assignment.');
         }
+        Log::info("Selected room is available", ['room_id' => $room->room_id]);
 
         // Gender check (applies for both disabled and non-disabled students)
         if ($placement->student->gender != $block->reserved_for) {
+            Log::warning("Gender mismatch for block", [
+                'student_gender' => $placement->student->gender,
+                'block_reserved_for' => $block->reserved_for
+            ]);
             return back()->with('error', 'The selected block is not reserved for your gender.');
         }
+        Log::info("Gender check passed");
 
-        // Check the block's capacity and apply room assignment rules for disabled students
+        // Disability-specific room checks
         if ($placement->student->disability_status == 'Yes') {
-            // For disabled students, check the block's capacity and assign rooms accordingly
             if ($block->capacity == 79 && $room->room_id >= 25) {
+                Log::warning("Room not suitable for disabled student (capacity 79)", ['room_id' => $room->room_id]);
                 return back()->with('error', 'This room is not suitable for students with a disability (block capacity is 79).');
             }
-
             if ($block->capacity == 24 && $room->room_id != 7) {
+                Log::warning("Room not suitable for disabled student (capacity 24)", ['room_id' => $room->room_id]);
                 return back()->with('error', 'This room is not suitable for students with a disability (block capacity is 24).');
             }
-
             if ($block->capacity == 29 && $room->room_id >= 10) {
+                Log::warning("Room not suitable for disabled student (capacity 29)", ['room_id' => $room->room_id]);
                 return back()->with('error', 'This room is not suitable for students with a disability (block capacity is 29).');
             }
         }
-
-        // For non-disabled students, any free room can be assigned based on gender and reserved_for compatibility
-        if ($placement->student->disability_status == 'No') {
-            // For non-disabled students, any free room can be assigned based on gender and reserved_for compatibility
-            // This is already handled in the earlier gender check
-        }
+        Log::info("Disability check passed");
 
         // Get the previous room assigned to the student
         $oldRoom = Room::where('room_id', $placement->room)
@@ -603,23 +690,27 @@ class PlacementController extends Controller
             ->first();
 
         if ($oldRoom) {
-            // Make the old room free again
+            Log::info("Old room found, setting status to Free", ['old_room_id' => $oldRoom->room_id]);
             Room::where('room_id', $oldRoom->room_id)
                 ->where('block', $oldRoom->block)
                 ->update(['status' => 'Free']);
+        } else {
+            Log::info("No old room found for the student");
         }
 
         // Update the placement with the new room and block
         $placement->room = $room->room_id;
         $placement->block = $block->block_id;
-        $placement->status = 'assigned'; // Ensure the status is set to "Assigned"
+        $placement->status = 'assigned';
         $placement->save();
+        Log::info("Placement updated", ['placement_id' => $placement->id, 'new_room' => $room->room_id, 'new_block' => $block->block_id]);
 
         // Count students assigned to this room
         $assignedCount = StudentPlacement::where('room', $room->room_id)
             ->where('block', $room->block)
             ->where('status', 'assigned')
             ->count();
+        Log::info("Assigned student count for room", ['room_id' => $room->room_id, 'count' => $assignedCount]);
 
         // Determine room status
         $status = ($assignedCount >= 6) ? 'Occupied' : 'Free';
@@ -628,9 +719,13 @@ class PlacementController extends Controller
         Room::where('room_id', $room->room_id)
             ->where('block', $room->block)
             ->update(['status' => $status]);
+        Log::info("Room status updated", ['room_id' => $room->room_id, 'new_status' => $status]);
+
+        Log::info("Replace operation completed successfully for student ID: {$studentId}");
 
         return redirect()->route('placements.index')->with('success', 'Student replaced successfully.');
     }
+
 
 
 

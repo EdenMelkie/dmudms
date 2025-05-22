@@ -18,7 +18,7 @@
             <!-- User (Login) Information -->
             <div class="col-md-6 mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control border-secondary rounded-3" id="username" name="username" 
+                <input readonly type="text" class="form-control border-secondary rounded-3" id="username" name="username" 
                        value="{{ old('username', optional($user)->username) }}" required>
                 @error('username')
                 <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -28,7 +28,7 @@
             <!-- Employee Information -->
             <div class="col-md-6 mb-3">
                 <label for="first_name" class="form-label">First Name</label>
-                <input type="text" class="form-control border-secondary rounded-3" id="first_name" name="first_name" 
+                <input readonly type="text" class="form-control border-secondary rounded-3" id="first_name" name="first_name" 
                        value="{{ old('first_name', optional($employee)->first_name) }}" required>
                 @error('first_name')
                 <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -39,7 +39,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="second_name" class="form-label">Second Name</label>
-                <input type="text" class="form-control border-secondary rounded-3" id="second_name" name="second_name" 
+                <input readonly type="text" class="form-control border-secondary rounded-3" id="second_name" name="second_name" 
                        value="{{ old('second_name', optional($employee)->second_name) }}" required>
                 @error('second_name')
                 <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -48,7 +48,7 @@
 
             <div class="col-md-6 mb-3">
                 <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" class="form-control border-secondary rounded-3" id="last_name" name="last_name" 
+                <input readonly type="text" class="form-control border-secondary rounded-3" id="last_name" name="last_name" 
                        value="{{ old('last_name', optional($employee)->last_name) }}" required>
                 @error('last_name')
                 <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -88,7 +88,7 @@
 
             <div class="col-md-6 mb-3">
                 <label for="citizenship" class="form-label">Citizenship</label>
-                <input type="text" class="form-control border-secondary rounded-3" id="citizenship" name="citizenship" 
+                <input readonly type="text" class="form-control border-secondary rounded-3" id="citizenship" name="citizenship" 
                        value="{{ old('citizenship', optional($employee)->citizenship) }}" required>
                 @error('citizenship')
                 <div class="alert alert-danger mt-1">{{ $message }}</div>

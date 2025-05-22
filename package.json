@@ -16,7 +16,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^6.3.4",
-    "laravel-vite-plugin": "^1.2.0"
+    "autoprefixer": "^10.4.21",
+    "laravel-vite-plugin": "^1.2.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.7",
+    "vite": "^6.3.4"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.6"
   }
 }

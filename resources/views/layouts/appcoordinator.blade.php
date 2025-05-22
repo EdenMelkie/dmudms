@@ -17,6 +17,11 @@
     @yield('styles')
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        main {
+            margin-bottom: 40px;
+        }
+    </style>
 </head>
 
 <body>

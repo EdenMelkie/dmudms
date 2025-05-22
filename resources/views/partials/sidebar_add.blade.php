@@ -2,7 +2,7 @@
     <nav class="bg-dark text-white p-3 vh-100" style="width: 250px;">
         <h4 class="text-white mb-4"><i class="fas fa-user-shield"></i> Admin Tasks</h4>
         <ul class="nav flex-column">
-
+s
             <li class="nav-item mb-2">
                 <a href="{{ route('admin.create_account') }}" class="nav-link text-white">
                     <i class="fas fa-user-plus"></i> Create Account

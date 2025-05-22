@@ -1,11 +1,9 @@
 <div class="sidebar">
     <div class="p-4 bg-light border rounded-3 shadow-sm">
-        <div class="navbar-brand mb-3">
-            <i class="fas fa-briefcase"></i> Tasks
-        </div>
+
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('home') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('home') }}">
+                <a class="nav-link {{ request()->routeIs('home') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('directorate') }}">
                     <i class="fas fa-home me-2"></i> Home
                 </a>
             </li>

@@ -1,53 +1,57 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    body {
+        display: flex;
+        flex-direction: column;
+    }
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    #app {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
-    <title>{{ config('app.name', 'dmudms') }}</title>
+    main {
+        flex: 1;
+        padding-bottom: 250px; /* Add space here */
+        margin-bottom: 100px;
+    }
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    @yield('style')
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
+    .sidebar {
+        background-color: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+    }
+
+    footer {
+        background-color: #f1f1f1;
+        padding: 1rem;
+        text-align: center;
+    }
+</style>
 
 <body>
     <div id="app">
+        @include('partials.directorate_header')
 
-
-        <div>
-            @include('partials.directorate_header')
-
-        </div>
-
-        <div>
-
-            <main class="py-4">
-                <div class="container-fluid">
-                    <div class="row">
-                        <!-- Sidebar Column -->
-                        <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
-                            @include('partials.sidebar_direct')
-                        </div>
-
-                        <!-- Main Content Column -->
-                        <div class="col-md-9 col-lg-10">
-                            @yield('content')
-                        </div>
+        <main class="py-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 col-lg-2 sidebar">
+                        @include('partials.sidebar_direct')
+                    </div>
+                    <div class="col-md-9 col-lg-10">
+                        @yield('content')
                     </div>
                 </div>
-            </main>
-            @include('partials.footer')
-        </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        @include('partials.footer')
+    </footer>
 </body>
-
-
-
-</html>

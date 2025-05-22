@@ -13,12 +13,11 @@
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <select class="form-control" name="search_by" id="search_by" required>
-                                    <option value="">Select Field</option>
                                     <option value="student_id">Student ID</option>
-                                    <option value="block">Block</option>
+                                    <!-- <option value="block">Block</option>
                                     <option value="room">Room</option>
                                     <option value="status">Status</option>
-                                    <option value="year">Year</option>
+                                    <option value="year">Year</option> -->
                                 </select>
                             </div>
 
@@ -58,7 +57,7 @@
                                     <th>Room</th>
                                     <th>Status</th>
                                     <th>Year</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,7 +70,7 @@
                                     <td>{{ $placement->room }}</td>
                                     <td>{{ $placement->status }}</td>
                                     <td>{{ $placement->year }}</td>
-                                    <td>
+                                    <!-- <td>
                                         @if($placement->status !== 'Getin')
                                         <form action="{{ route('activate', $placement->placement_id) }}" method="POST" onsubmit="return confirmActivate(event)">
                                             @csrf
@@ -80,7 +79,7 @@
                                         @else
                                         <span class="badge badge-success">Activated</span>
                                         @endif
-                                    </td>
+                                    </td> -->
 
                                 </tr>
                                 @endforeach

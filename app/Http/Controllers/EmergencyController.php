@@ -13,6 +13,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Student;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
+
 
 class EmergencyController extends Controller
 {
@@ -116,11 +118,23 @@ class EmergencyController extends Controller
         return view('students.profile', compact('student'));
     }
 
-    public function update(Request $request, Student $student)
-    {
-        $student->update($request->all());
-        return redirect()->route('student.profile')->with('success', 'Student updated successfully.');
+  public function update(Request $request, Student $student)
+{
+    $data = $request->all();
+
+    // Only hash password if it's being updated
+    if (!empty($data['password'])) {
+        $data['password'] = Hash::make($data['password']);
+    } else {
+        // Remove password from the data if not set
+        unset($data['password']);
     }
+
+    $student->update($data);
+
+    return redirect()->route('student.profile')->with('success', 'Student updated successfully.');
+}
+
 
     public function editProfile($student_id)
     {
