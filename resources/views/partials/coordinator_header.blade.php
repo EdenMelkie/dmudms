@@ -1,3 +1,9 @@
+<?php
+if (session('userType') !== 'Coordinator') {
+    header("Location: " . url('/invalid'));
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

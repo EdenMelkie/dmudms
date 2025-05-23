@@ -13,6 +13,7 @@
 
                         @php
                             $fields = [
+                                'employee_id' => 'Employee ID',
                                 'first_name' => 'First Name',
                                 'second_name' => 'Second Name',
                                 'last_name' => 'Last Name',
@@ -29,7 +30,13 @@
                                 <div class="col-md-6">
                                     <input id="{{ $name }}" type="{{ $name === 'email' ? 'email' : 'text' }}"
                                         class="form-control @error($name) is-invalid @enderror"
-                                        name="{{ $name }}" value="{{ old($name) }}" required autocomplete="{{ $name }}">
+                                        name="{{ $name }}" value="{{ old($name) }}" required autocomplete="{{ $name }}"
+                                        placeholder="{{ $name == 'employee_id' ? 'e.g., Emp0001' : '' }}">
+
+                                    @if ($name === 'employee_id')
+                                        <small class="text-muted">Format: Emp0001, Emp0002, etc.</small>
+                                    @endif
+
                                     @error($name)
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror

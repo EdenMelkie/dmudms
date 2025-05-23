@@ -17,9 +17,42 @@ class RegisterController extends Controller
         return view('employees.create');
     }
 
-    public function index()
+    public function resetPassword($id)
     {
-        $employees = Employee::all();
+        $employee = Employee::findOrFail($id);
+
+        // Generate new password: last_name + "1234abcd#"
+        $rawPassword = $employee->last_name . '1234abcd#';
+
+        // Hash and update
+        $employee->password = bcrypt($rawPassword);
+        $employee->save();
+
+        return redirect()->route('employees.index')
+            ->with('success', "Password for {$employee->first_name} {$employee->last_name} has been reset.");
+    }
+
+
+    public function index(Request $request)
+    {
+        $query = Employee::query(); // Start a base query
+
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('employee_id', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('second_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%")
+                    ->orWhere('address', 'LIKE', "%{$search}%")
+                    ->orWhere('citizenship', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $employees = $query->get(); // Execute the query
+
         return view('employees.index', compact('employees'));
     }
 
@@ -74,19 +107,24 @@ class RegisterController extends Controller
     {
         // Validate the incoming request
         $validatedData = $request->validate([
+            'employee_id' => 'required|string|unique:employees,employee_id',
             'last_name' => 'required|string|max:255',
         ]);
 
-        $lastEmployee = Employee::orderBy('employee_id', 'desc')->first();
-        $lastEmployeeId = $lastEmployee ? (int) substr($lastEmployee->employee_id, 3) : 0; // Cast to int to handle the id properly
+        /*
+    // Auto-generate employee ID - now commented out
+    $lastEmployee = Employee::orderBy('employee_id', 'desc')->first();
+    $lastEmployeeId = $lastEmployee ? (int) substr($lastEmployee->employee_id, 3) : 0;
+    $emp = 'Emp' . str_pad($lastEmployeeId + 1, 4, '0', STR_PAD_LEFT);
+
+    while (Employee::where('employee_id', $emp)->exists()) {
+        $lastEmployeeId++;
         $emp = 'Emp' . str_pad($lastEmployeeId + 1, 4, '0', STR_PAD_LEFT);
+    }
+    */
 
-        // Ensure employee_id is unique
-        while (Employee::where('employee_id', $emp)->exists()) {
-            $lastEmployeeId++;
-            $emp = 'Emp' . str_pad($lastEmployeeId + 1, 4, '0', STR_PAD_LEFT);
-        }
-
+        // Use provided employee_id instead of auto-generated
+        $emp = $request->employee_id;
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
@@ -124,7 +162,7 @@ class RegisterController extends Controller
             'username' => $emp,
             'password' => $password,
             'role' => $request->role,
-            'status' => 'active', // Set a default status
+            'status' => 'active',
         ]);
 
         return redirect()->route('employees.index')->with('success', 'Account created successfully.');

@@ -38,7 +38,7 @@
         <br>
         <label for="disability_status">Disability Status:</label>
         <input type="text" name="disability_status" value="{{ $student->disability_status }}">
-        <br>
+        <br>s
         <label for="status">Status:</label>
         <select name="status" required>
             <option value="active" {{ $student->status == 'active' ? 'selected' : '' }}>Active</option>

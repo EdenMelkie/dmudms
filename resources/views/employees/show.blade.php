@@ -43,8 +43,17 @@
                 </tr>
             </table>
 
-            <div class="d-grid mt-3">
+            <div class="d-flex flex-column flex-md-row justify-content-start gap-2 mt-4">
                 <a href="{{ route('employees.index') }}" class="btn btn-primary px-4">Back to List</a>
+
+                {{-- Reset Password Button --}}
+                <form method="POST" action="{{ route('employees.resetPassword', $employee->employee_id) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-danger px-4">
+                        Reset Password
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -1,3 +1,9 @@
+<?php
+if (session('userType') !== 'Registrar') {
+    header("Location: " . url('/invalid'));
+    exit();
+}
+?>
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: lightseagreen;">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="{{ route('registrar') }}">

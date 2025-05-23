@@ -74,7 +74,8 @@
                                     <th>Placement ID</th>
                                     <th>Student ID</th>
                                     <th>Student Name</th>
-                                    <th>Block / Room</th>
+                                    <th>B / R</th>
+                                    <th>Sex</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -86,6 +87,7 @@
                                     <td>{{ $placement->student->student_id }}</td>
                                     <td>{{ $placement->student->first_name }} {{ $placement->student->second_name }} {{ $placement->student->last_name }}</td>
                                     <td>{{ $placement->block }} / {{ $placement->room }}</td>
+                                    <td>{{ $placement->student->gender }}</td>
                                     <td>{{ $placement->status }}</td>
                                     <td>
                                         <!-- Unassign Form -->
@@ -189,50 +191,7 @@
         </div>
     </div>
 
-    <!-- Replace Modal -->
-    <div class="modal fade" id="replaceModal{{ $placement->student_id }}" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <form method="POST" action="{{ route('placements.replace', $placement->student_id) }}">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Replace Student {{ $placement->student_id }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="block">Block</label>
-                            <select name="block" id="blockSelect{{ $placement->student_id }}" class="form-control" required>
-                                @foreach($blocks as $block)
-                                <option value="{{ $block->block_id }}">{{ $block->block_id }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="room_id">Room</label>
-                            <select name="room_id" class="form-control" required>
-                                @foreach($freeRooms as $room)
-                                @if($room->block === $placement->block)
-                                <option value="{{ $room->room_id }}">{{ $room->room_id }} ({{ $room->block }})</option>
-                                @endif
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <!-- Replace Button - Trigger form submission -->
-                        <button type="submit" class="btn btn-success">Replace</button>
-
-                        <!-- Cancel Button - Close the modal -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+     
 
 </div>
 @endsection

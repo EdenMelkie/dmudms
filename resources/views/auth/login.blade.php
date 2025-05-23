@@ -74,6 +74,18 @@
         background: rgba(255, 255, 255, 0.8);
         z-index: 1000;
     }
+
+    .login-avatar {
+        display: block;
+        margin: 0 auto 1.5rem auto;
+        /* centers block and adds bottom margin */
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #007bff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
 <!-- Loading indicator (hidden by default, shown via JS) -->
@@ -86,6 +98,12 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+
+                    <div class="card-body text-center">
+                        <img src="{{ asset('images/login-avatar.png') }}" alt="User Avatar" class="login-avatar">
+                        <!-- form follows here -->
+                    </div>
+
                     @if(session('error'))
                     <div class="error-message">
                         {{ session('error') }}
@@ -165,17 +183,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         var loadingDiv = document.querySelector('.loading');
         var loginForm = document.getElementById('loginForm');
-        
+
         // Show loading indicator
         loadingDiv.style.display = 'flex';
-        
+
         // Check user type
         var userType = "{{ session('userType') }}";
-        
+
         if (userType) {
             try {
                 let routeUrl;
-                
+
                 const routes = {
                     'Admin': "{{ route('admin') }}",
                     'Proctor': "{{ route('proctor') }}",
@@ -185,7 +203,7 @@
                     'Registrar': "{{ route('registrar') }}",
                     'Maintenance': "{{ route('maintenance') }}"
                 };
-                
+
                 if (routes[userType]) {
                     window.location.href = routes[userType];
                 } else {
@@ -199,7 +217,7 @@
         } else {
             showLoginForm();
         }
-        
+
         function showLoginForm() {
             loginForm.style.display = 'block';
             loadingDiv.style.display = 'none';

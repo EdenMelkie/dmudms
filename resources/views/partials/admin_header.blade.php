@@ -1,5 +1,9 @@
-<!-- resources/views/layouts/admin.blade.php -->
-<!DOCTYPE html>
+<?php
+if (session('userType') !== 'Admin') {
+    header("Location: " . url('/invalid'));
+    exit();
+}
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>

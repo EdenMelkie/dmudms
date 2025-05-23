@@ -16,9 +16,14 @@
      <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 <style>
      main {
-            margin-bottom: 40px;
+            margin-bottom: 0px;
+        }
+
+        .cont{
+            margin-bottom: 90px;
         }
 </style>
+@yield('styles')
      <!-- Scripts -->
      @vite(['resources/sass/app.scss', 'resources/js/app.js'])
  </head>
@@ -30,7 +35,7 @@
 
          </div> <!-- Include the header partial -->
 
-         <main class="container-fluid">
+         <main class="container-fluid cont">
              <div class="row">
                  <!-- Sidebar -->
                  <div class="col-md-3 col-lg-2 bg-light min-vh-100">

@@ -73,6 +73,9 @@ Route::prefix('admin')->group(function () {
         Route::put('/{employee}', [RegisterController::class, 'update'])->name('employees.update');
         Route::delete('/{employee}', [RegisterController::class, 'destroy'])->name('employees.destroy');
     });
+Route::patch('/employees/{id}/reset-password', [RegisterController::class, 'resetPassword'])->name('employees.resetPassword');
+Route::patch('/students/{id}/reset-password', [RegistrarController::class, 'resetPassword'])->name('admin.students.resetPassword');
+
     Route::get('/students', [AdminController::class, 'showStudents'])->name('admin.students');
     Route::patch('/students/activate/{id}', [AdminController::class, 'activateStudent'])->name('admin.students.activate');
     Route::post('/students/activate-all', [AdminController::class, 'activateAllStudents'])->name('admin.students.activateAll');
@@ -125,6 +128,10 @@ Route::prefix('directorate')->group(function () {
 /**
  * Placement Routes
  */
+Route::post('/placements/std/{student_id}', [PlacementController::class, 'showStudentPlacement'])->name('placements.std');
+Route::get('/placements/{id}/edit', [PlacementController::class, 'edit'])->name('placements.edit');
+Route::put('/placements/{id}', [PlacementController::class, 'update'])->name('placements.updating');
+
 Route::prefix('placements')->name('placements.')->group(function () {
     Route::get('/', [PlacementController::class, 'index'])->name('index');
     Route::post('assign/{student_id}', [PlacementController::class, 'assignStudentToPlacement'])->name('assignStudentToPlacement');
@@ -223,11 +230,8 @@ Route::put('materials/{id}', [ProctorController::class, 'update'])->name('materi
 Route::delete('materials/{id}', [ProctorController::class, 'destroy'])->name('materials.destroy');
 Route::get('/proctor/placed-students', [ProctorController::class, 'viewPlacedStudents'])->name('proctor.viewPlacedStudents');
 
-
-// Route::get('/student/profile', [EmergencyController::class, 'profile'])->name('student.profile');
-Route::get('/student/edit', [EmergencyController::class, 'edit'])->name('student.edit');
+Route::get('/student/edit1', [EmergencyController::class, 'edit'])->name('student.edit');
 Route::get('/student/profile', [EmergencyController::class, 'showProfile'])->name('student.profile');
-// Route::get('/student/edit/{id}', [EmergencyController::class, 'edit'])->name('student.edit');
 Route::put('/students/{student}', [EmergencyController::class, 'update'])->name('students.update');
 Route::get('/student/edit/{student_id}', [EmergencyController::class, 'editProfile'])->name('student.profileEdit');
 

@@ -11,11 +11,25 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
 
-    public function showStudents()
-    {
-        $students = Student::all(); // fetch all students regardless of status
-        return view('admin.students', compact('students'));
+   public function showStudents(Request $request)
+{
+    $query = Student::query();
+
+    if ($request->has('search') && $request->filled('search')) {
+        $search = $request->input('search');
+
+        $query->where(function ($q) use ($search) {
+            $q->where('student_id', 'LIKE', "%{$search}%")
+              ->orWhere('first_name', 'LIKE', "%{$search}%")
+              ->orWhere('second_name', 'LIKE', "%{$search}%")
+              ->orWhere('last_name', 'LIKE', "%{$search}%");
+        });
     }
+
+    $students = $query->get();
+
+    return view('admin.students', compact('students'));
+}
 
     public function activateStudent($id)
     {

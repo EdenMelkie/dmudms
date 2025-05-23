@@ -25,6 +25,17 @@ class RegistrarController extends Controller
         return view('registrar.index');
     }
 
+    public function resetPassword($id)
+    {
+        $student = Student::findOrFail($id);
+        $rawPassword = $student->last_name . '1234abcd#';
+        $student->password = bcrypt($rawPassword);
+        $student->save();
+
+        return redirect()->route('admin.students')->with('success', "Password reset for {$student->first_name} {$student->last_name}.");
+    }
+
+
     public function showStudents()
     {
         $students = Student::all(); // Fetch all students
@@ -71,6 +82,7 @@ class RegistrarController extends Controller
     public function storeStudent(Request $request)
     {
         $validatedData = $request->validate([
+            'student_id' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'second_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -86,8 +98,8 @@ class RegistrarController extends Controller
 
         $password = Hash::make($validatedData['last_name'] . '1234abcd#');
 
-        Student::create([
-            'student_id' => $newStudentId,
+        Student::create(attributes: [
+            'student_id' => $validatedData['student_id'],
             'first_name' => $validatedData['first_name'],
             'second_name' => $validatedData['second_name'],
             'last_name' => $validatedData['last_name'],
@@ -115,30 +127,37 @@ class RegistrarController extends Controller
 
         if (count($csvData) > 0) {
             $header = $csvData[0];
-            $expectedHeaders = ['first_name', 'second_name', 'last_name', 'email', 'gender', 'batch', 'disability_status'];
+            $expectedHeaders = [
+                'student_id',
+                'first_name',
+                'second_name',
+                'last_name',
+                'email',
+                'gender',
+                'batch',
+                'disability_status'
+            ];
+
             if (array_map('strtolower', $header) !== $expectedHeaders) {
-                return redirect()->back()->with('error', 'Invalid CSV format. Ensure correct column names.');
+                return redirect()->back()->with('error', 'Invalid CSV format. Ensure correct column names and order.');
             }
 
             for ($i = 1; $i < count($csvData); $i++) {
                 $row = $csvData[$i];
-                $lastStudent = Student::orderBy('student_id', 'desc')->first();
-                $lastStudentId = $lastStudent ? substr($lastStudent->student_id, 3) : 0;
-                $newStudentId = 'DMU' . str_pad($lastStudentId + 1, 7, '0', STR_PAD_LEFT);
 
-                $password = Hash::make($row[2] . '1234abcd#');
+                $password = Hash::make($row[3] . '1234abcd#'); // last_name + static part
 
                 Student::create([
-                    'student_id' => $newStudentId,
-                    'first_name' => $row[0],
-                    'second_name' => $row[1],
-                    'last_name' => $row[2],
-                    'email' => $row[3],
-                    'gender' => $row[4],
-                    'batch' => '1',
-                    'status' => 'unactivated',
-                    'disability_status' => $row[6] ?? 'No',
-                    'password' => $password,
+                    'student_id'         => $row[0],
+                    'first_name'         => $row[1],
+                    'second_name'        => $row[2],
+                    'last_name'          => $row[3],
+                    'email'              => $row[4],
+                    'gender'             => $row[5],
+                    'batch'              => $row[6],
+                    'disability_status'  => $row[7],
+                    'status'             => 'unactivated',
+                    'password'           => $password,
                 ]);
             }
 
@@ -149,18 +168,19 @@ class RegistrarController extends Controller
     }
 
 
+
     public function showUploadForm()
     {
         return view('registrar.students.upload');
     }
 
-     /**
+    /**
      * Display notifications
      */
     public function notify()
     {
         $notifications = Notification::orderBy('date', 'desc')->get();
-        
+
         return view('registrar.notification', compact('notifications'));
     }
 

@@ -19,6 +19,11 @@
             @csrf
 
             <div class="mb-3">
+                <label for="student_id" class="form-label">Student ID</label>
+                <input type="text" id="student_id" name="student_id" required class="form-control">
+            </div>
+
+            <div class="mb-3">
                 <label for="first_name" class="form-label">First Name</label>
                 <input type="text" id="first_name" name="first_name" required class="form-control">
             </div>
