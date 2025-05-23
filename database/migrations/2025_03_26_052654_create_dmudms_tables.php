@@ -87,6 +87,7 @@ return new class extends Migration {
             $table->date('request_date');
             $table->string('approved_by', 50);
             $table->date('approved_date');
+            $table->enum('type', ['Read', 'Unread'])->default('Unread');
             $table->timestamps(); // Add timestamps for created_at and updated_at
 
         });

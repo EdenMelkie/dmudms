@@ -1,53 +1,54 @@
- <!doctype html>
- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
- <head>
-     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-     <!-- CSRF Token -->
-     <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <title>DMU-DMS</title>
-     <link rel="shortcut icon" href="images/debremarkos_logo.png" type="image/x-icon">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-     <!-- Fonts -->
-     <link rel="dns-prefetch" href="//fonts.bunny.net">
-     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-     <style>
-         main {
-             margin-bottom: 40px;
-         }
-     </style>
-     <!-- Scripts -->
-     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
- </head>
+    <title>DMU-DMS</title>
+    <link rel="shortcut icon" href="{{ asset('images/debremarkos_logo.png') }}" type="image/x-icon">
 
- <body>
-     <div id="app">
-         <div>
-             @include('partials.header')
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <style>
+        main {
+            margin-bottom: 40px;
+        }
+    </style>
 
-         </div> <!-- Include the header partial -->
+    <!-- Scripts -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+</head>
 
-         <main class="py-4">
-             <div class="container-fluid">
-                 <div class="row">
-                     <!-- Sidebar Column -->
-                     <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
-                         @include('partials.sidebar')
-                     </div>
+<body>
+    <div id="app">
+        <div>
+            @include('partials.header')
+        </div>
 
-                     <!-- Main Content Column -->
-                     <div class="col-md-9 col-lg-10">
-                         @yield('content')
-                     </div>
-                 </div>
-             </div>
-         </main>
+        <main class="py-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar Column -->
+                    <div class="col-md-3 col-lg-2 bg-light border-end" style="min-height: 100vh;">
+                        @include('partials.sidebar')
+                    </div>
 
-     </div>
-     @include('partials.footer')
- </body>
+                    <!-- Main Content Column -->
+                    <div class="col-md-9 col-lg-10">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
- </html>
+    @include('partials.footer')
+</body>
+
+</html>

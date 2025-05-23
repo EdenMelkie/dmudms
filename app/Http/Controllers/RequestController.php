@@ -41,6 +41,16 @@ class RequestController extends Controller
         return redirect()->back()->with('success', 'Request approved successfully.');
     }
 
+   public function viewApprovedReplacements()
+{
+    $requests = StudentRequest::with(['student', 'placed'])
+        ->where('status', 'approved')
+        ->where('type', 'replacement')
+        ->orderByDesc('request_date')
+        ->get();
+
+    return view('directorate.view_requests', compact('requests'));
+}
 
     public function store1(Request $request)
     {
@@ -51,6 +61,7 @@ class RequestController extends Controller
             'request_date' => now(),
             'approved_by' => null,
             'approved_date' => null,
+            'type' => 'replacement',
         ]);
 
         return redirect()->route('replacements.index')->with('success', 'Request submitted!');

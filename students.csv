@@ -1,9 +1,9 @@
 student_id,first_name,second_name,last_name,email,gender,batch,disability_status
-DMU1303888,Abebe,Kebede,Tesfaye,abebe.tesfaye@example.com,Male,1,No
-DMU1303807,Sara,Getachew,Alemu,sara.alemu@example.com,Female,1,Yes
-DMU1303806,Mulu,Bekele,Haile,mulu.haile@example.com,Female,2,No
-DMU1303805,Yonas,Tamiru,Desta,yonas.desta@example.com,Male,1,No
-DMU1303804,Hana,Demissie,Wolde,hana.wolde@example.com,Female,3,No
-DMU1303803,Temesgen,Abate,Bekele,temesgen.bekele@example.com,Male,1,Yes
-DMU1303802,Eyerusalem,Mesfin,Taddese,eyerusalem.taddese@example.com,Female,2,No
-DMU1303801,Binyam,Girma,Hailu,binyam.hailu@example.com,Male,1,No
+DMU1303875,Abebe,Kebede,Tesfaye,abebe.tesfaye@example.com,Male,1,No
+DMU1303876,Sara,Getachew,Alemu,sara.alemu@example.com,Female,1,Yes
+DMU1303886,Mulu,Bekele,Haile,mulu.haile@example.com,Female,2,No
+DMU1303889,Yonas,Tamiru,Desta,yonas.desta@example.com,Male,1,No
+DMU1303884,Hana,Demissie,Wolde,hana.wolde@example.com,Female,3,No
+DMU1303881,Temesgen,Abate,Bekele,temesgen.bekele@example.com,Male,1,Yes
+DMU1303890,Eyerusalem,Mesfin,Taddese,eyerusalem.taddese@example.com,Female,2,No
+DMU1303899,Binyam,Girma,Hailu,binyam.hailu@example.com,Male,1,No

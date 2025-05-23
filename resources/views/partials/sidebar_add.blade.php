@@ -20,6 +20,15 @@
                 </a>
             </li>
 
+            <li class="nav-item nav-link text-white mb-2">
+                <form action="{{ route('employees.resetAccount') }}" method="POST" onsubmit="return confirm('Are you sure you want to reset all passwords?');" class="m-0">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="dropdown-item btn">
+                        <i class="fas fa-redo"></i> Reset Accounts
+                    </button>
+                </form>
+            </li>
             <li class="nav-item mb-2">
                 <a href="{{ route('profile.edit') }}" class="nav-link text-white">
                     <i class="fas fa-edit"></i> Edit Profile

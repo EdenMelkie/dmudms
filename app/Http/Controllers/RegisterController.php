@@ -24,9 +24,10 @@ class RegisterController extends Controller
         // Generate new password: last_name + "1234abcd#"
         $rawPassword = $employee->last_name . '1234abcd#';
 
+        $user = User::findOrFail($id);
         // Hash and update
-        $employee->password = bcrypt($rawPassword);
-        $employee->save();
+        $user->password = bcrypt($rawPassword);
+        $user->save();
 
         return redirect()->route('employees.index')
             ->with('success', "Password for {$employee->first_name} {$employee->last_name} has been reset.");
@@ -218,10 +219,40 @@ class RegisterController extends Controller
 
     public function resetAccount()
     {
-        // Assuming Employee is your model
-        $employees = Employee::all();  // Fetch all employees, or apply any necessary filters
-        return view('admin.reset_account', compact('employees'));  // Pass the $employees variable to the view
+        // Fetch all employees
+        $employees = Employee::all();
+
+        foreach ($employees as $employee) {
+            // Ensure employee is linked to a user
+            $user = User::where('username', $employee->employee_id)->first(); // or match by user_id if available
+
+            if ($user) {
+                $newPassword = $employee->last_name . '1234abcd#';
+                $user->password = Hash::make($newPassword);
+                $user->save();
+            }
+        }
+
+        return view('employees.index', compact('employees'))
+            ->with('success', 'Passwords reset for all employees.');
     }
+
+    public function resetSingleEmployeePassword($employee_id)
+    {
+        $employee = Employee::findOrFail($employee_id);
+        $user = User::where('username', $employee->employee_id)->first(); // or use relation
+
+        if ($user) {
+            $newPassword = $employee->last_name . '1234abcd#';
+            $user->password = Hash::make($newPassword);
+            $user->save();
+
+            return back()->with('success', "Password reset for {$employee->first_name}.");
+        }
+
+        return back()->with('error', "User account not found for employee.");
+    }
+
 
     public function reset()
     {

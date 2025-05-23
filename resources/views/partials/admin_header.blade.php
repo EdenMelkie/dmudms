@@ -3,7 +3,8 @@ if (session('userType') !== 'Admin') {
     header("Location: " . url('/invalid'));
     exit();
 }
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -129,39 +130,49 @@ if (session('userType') !== 'Admin') {
                                     <i class="fas fa-user-graduate"></i> Manage Students
                                 </a>
                             </li>
-                        </ul>
                     </li>
+                    <li>
+                        <form action="{{ route('employees.resetAccount') }}" method="POST" onsubmit="return confirm('Are you sure you want to reset all passwords?');" class="m-0">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="dropdown-item btn">
+                                <i class="fas fa-sync"></i> Reset Accounts
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                </li>
 
-                    <!-- Profile -->
-                    <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            id="profileDropdown"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fas fa-user"></i>
-                            @if(session('username'))
-                            Welcome, {{ session('username') }}
-                            @endif
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="fas fa-edit"></i> Edit Profile
-                                </a>
-                            </li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item btn">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+                <!-- Profile -->
+                <li class="nav-item dropdown">
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="profileDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                        @if(session('username'))
+                        Welcome, {{ session('username') }}
+                        @endif
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </a>
+                        </li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                @csrf
+                                <button type="submit" class="dropdown-item btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
                 </ul>
             </div>
         </div>

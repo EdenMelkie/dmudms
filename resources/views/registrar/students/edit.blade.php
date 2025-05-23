@@ -4,7 +4,12 @@
 <div class="container">
     <h2>Edit Student</h2>
 
-    
+    @if(session('error'))
+    <script>
+        alert("{{ session('error') }}"); // Simple alert for the error message
+    </script>
+    @endif
+
     <form action="{{ route('registrar.students.update', $student->student_id) }}" method="POST">
         @csrf
         @method('PUT') <!-- Ensure the request is recognized as an update -->

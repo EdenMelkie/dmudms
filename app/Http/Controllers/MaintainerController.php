@@ -13,7 +13,9 @@ class MaintainerController extends Controller
      */
     public function index()
     {
-        $requests = Request::where('status', 'approved')
+        $requests = Request::with(['student', 'placed'])
+            ->where('status', 'approved')
+            ->where('type', 'replacement')
             ->join('employees', 'request.approved_by', '=', 'employees.employee_id')
             ->select(
                 'request.*',
@@ -21,9 +23,9 @@ class MaintainerController extends Controller
                 'employees.second_name',
                 'employees.last_name',
                 'employees.email'
-            )
+            )->orderByDesc('request_date')
             ->get();
-
+      
         return view('maintainer.index', compact('requests'));
     }
 }

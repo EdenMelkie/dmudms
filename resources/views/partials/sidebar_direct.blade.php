@@ -7,11 +7,11 @@
                     <i class="fas fa-home me-2"></i> Home
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('search.form') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('placements.search') }}">
-                    <i class="fas fa-search me-2"></i> View Assignments
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('directorate.view.requests') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('directorate.view.requests') }}">
+                    <i class="fas fa-search me-2"></i> View Requests
                 </a>
-            </li> -->
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('directorate.blocks') ? 'active fw-bold text-primary' : '' }} d-flex align-items-center py-2 px-3 rounded-3 mb-2 hover-shadow" href="{{ route('directorate.blocks') }}">
                     <i class="fas fa-chart-line me-2"></i> Manage Blocks

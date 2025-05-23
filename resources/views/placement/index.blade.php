@@ -71,9 +71,9 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Placement ID</th>
                                     <th>Student ID</th>
                                     <th>Student Name</th>
+                                    <th>Batch</th>
                                     <th>B / R</th>
                                     <th>Sex</th>
                                     <th>Status</th>
@@ -83,12 +83,12 @@
                             <tbody>
                                 @foreach($placements as $placement)
                                 <tr data-gender="{{ $placement->student->gender }}" data-disability="{{ $placement->student->disability_status }}">
-                                    <td>{{ $placement->placement_id }}</td>
                                     <td>{{ $placement->student->student_id }}</td>
                                     <td>{{ $placement->student->first_name }} {{ $placement->student->second_name }} {{ $placement->student->last_name }}</td>
+                                    <td>{{ $placement->student->batch }}</td>
                                     <td>{{ $placement->block }} / {{ $placement->room }}</td>
                                     <td>{{ $placement->student->gender }}</td>
-                                    <td>{{ $placement->status }}</td>
+                                    <td>{{ $placement->student->disability_status }}</td>
                                     <td>
                                         <!-- Unassign Form -->
                                         <form method="POST" action="{{ route('placements.unassign', $placement->student_id) }}" style="display:inline;">
@@ -191,7 +191,7 @@
         </div>
     </div>
 
-     
+
 
 </div>
 @endsection

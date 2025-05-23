@@ -20,10 +20,16 @@ class Request extends Model
         'request_date',
         'approved_by',
         'approved_date',
+        'type',
     ];
 
      public function student()
     {
         return $this->hasOne(Student::class, 'student_id', 'student_id');
+    }
+
+      public function placed()
+    {
+        return $this->hasOne(StudentPlacement::class, 'student_id', 'student_id');
     }
 }

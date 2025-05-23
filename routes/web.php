@@ -196,6 +196,8 @@ Route::prefix('registrar')->group(function () {
  * Maintenance Routes
  */
 Route::get('/maintainer', [MaintainerController::class, 'index'])->name('maintainer');
+Route::patch('/admin/employees/reset-accounts', [RegisterController::class, 'resetAccount'])->name('employees.resetAccount');
+Route::put('/admin/employees/reset-account/{employee}', [RegisterController::class, 'resetSingleEmployeePassword'])->name('employees.resetSingle');
 
 /**
  * Notification Routes
@@ -255,3 +257,5 @@ Route::get('replacements/{id}/edit', [RequestController::class, 'edit'])->name('
 Route::put('replacements/{id}', [RequestController::class, 'update'])->name('replacements.update');
 
 Route::delete('/requests/{id}', [RequestController::class, 'destroy'])->name('replacements.destroy');
+Route::get('/directorate/view-requests', [App\Http\Controllers\RequestController::class, 'viewApprovedReplacements'])
+    ->name('directorate.view.requests');

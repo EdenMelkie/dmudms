@@ -135,6 +135,10 @@ class PlacementController extends Controller
     {
         $student = Student::findOrFail($student_id);
 
+        // ✅ Ensure only 'Registered' students are processed
+        if ($student->status !== 'Registered') {
+            return back()->with('error', 'Only students with status Registered can be assigned.');
+        }
         // Get blocks matching student's gender, disability status, and are free
         if ($student->disability_status === 'Yes') {
             $blocks = Block::where('disable_group', 'Yes')
@@ -542,7 +546,7 @@ class PlacementController extends Controller
 
         // For disabled students, ground floor rooms only
         if ($block->disable_group === 'Yes' && $student->disability_status === 'Yes') {
-            if (!$room->room_id>$maxRoom) {
+            if (!$room->room_id > $maxRoom) {
                 return redirect()->back()->with('error', 'Only ground floor rooms can be assigned in this block');
             }
         }

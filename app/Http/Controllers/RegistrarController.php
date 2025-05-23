@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 use Illuminate\Support\Facades\validator;
 
@@ -51,6 +52,11 @@ class RegistrarController extends Controller
     public function updateStudent(Request $request, $id)
     {
         $student = Student::findOrFail($id); // Find the student
+ 
+         if ($student->status == 'unactivated') {
+            return back()->with('error', 'Only students with status Activated can be ultered.');
+        }
+        // Update student info
         $student->update([
             'first_name' => $request->first_name,
             'second_name' => $request->second_name,
@@ -61,8 +67,14 @@ class RegistrarController extends Controller
             'status' => $request->status,
         ]);
 
+        // Remove placement if status is Disciplined or Transferred
+        if (in_array($request->status, ['Disciplined', 'Transferred'])) {
+            DB::table('student_placement')->where('student_id', $id)->delete();
+        }
+
         return redirect()->route('registrar.students')->with('success', 'Student updated successfully.');
     }
+
 
     public function deleteStudent($id)
     {

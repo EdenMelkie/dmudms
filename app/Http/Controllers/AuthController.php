@@ -35,7 +35,8 @@ class AuthController extends Controller
 
             session([
                 'username' => $user->username,
-                'userType' => $user->role
+                'userType' => $user->role,
+                'logged' => "true"
             ]);
 
             // Redirect based on user role
@@ -61,7 +62,9 @@ class AuthController extends Controller
             Auth::loginUsingId($student->student_id); // Log the student in
             session([
                 'username' => $student->student_id,
-                'userType' => 'Student'
+                'userType' => 'Student',
+                'logged' => "true"
+
             ]);
 
             return redirect()->route('student');

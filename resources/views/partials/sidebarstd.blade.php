@@ -25,7 +25,7 @@
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link text-dark sidebar-link" href="{{ route('replacements.index') }}">
-                <i class="fas fa-exchange-alt me-2"></i> Requests
+                <i class="fas fa-exchange-alt me-2"></i> Request Replacement
             </a>
         </li>
         <li class="nav-item mb-2">

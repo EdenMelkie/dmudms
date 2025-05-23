@@ -1,11 +1,13 @@
 @extends('layouts.appadd')
+
 @section('styles')
 <style>
-    main{
+    main {
         margin-bottom: 40px;
     }
 </style>
 @endsection
+
 @section('content')
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -13,7 +15,7 @@
 
         <!-- Search Form -->
         <form method="GET" action="{{ route('employees.index') }}" class="d-flex">
-            <input type="text" name="search" class="form-control me-2" placeholder="Search by name, email..." value="{{ request()->query('search') }}">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search by name, email..." value="{{ request('search') }}">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
 
@@ -23,10 +25,10 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
     <div class="card shadow-sm">
@@ -39,43 +41,49 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Address</th>
-                        <th>Citizenship</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($employees as $employee)
+                    @forelse ($employees as $employee)
                     <tr>
                         <td>{{ $employee->employee_id }}</td>
                         <td>{{ $employee->first_name }} {{ $employee->second_name }} {{ $employee->last_name }}</td>
                         <td>{{ $employee->email }}</td>
                         <td>{{ $employee->phone }}</td>
                         <td>{{ $employee->address }}</td>
-                        <td>{{ $employee->citizenship }}</td>
                         <td class="text-center">
-                            <a href="{{ route('employees.show', $employee) }}" class="btn btn-sm btn-info me-1">
+                            <a href="{{ route('employees.show', $employee) }}" class="btn btn-sm btn-info me-1" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('employees.edit', $employee) }}" class="btn btn-sm btn-warning me-1">
+                            <a href="{{ route('employees.edit', $employee) }}" class="btn btn-sm btn-warning me-1" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('employees.destroy', $employee) }}" method="POST"
-                                class="d-inline">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger"
-                                    onclick="return confirm('Delete this employee?')">
+
+                            <!-- Reset Password -->
+                            <form action="{{ route('employees.resetSingle', $employee->employee_id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Reset this employee password?')">
+                                    <i class="fas fa-arrows-rotate"></i> Reset
+                                </button>
+                            </form>
+
+                            <!-- Delete -->
+                            <form action="{{ route('employees.destroy', $employee) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this employee?')">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                         </td>
                     </tr>
-                    @endforeach
-
-                    @if ($employees->isEmpty())
+                    @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted">No employees found.</td>
+                        <td colspan="6" class="text-center text-muted">No employees found.</td>
                     </tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>

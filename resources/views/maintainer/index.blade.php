@@ -48,11 +48,10 @@
     <table>
         <thead>
             <tr>
-                <th rowspan="2">Request ID</th>
-                <th rowspan="2">Student ID</th>
+                <th rowspan="2">B/R</th>
                 <th rowspan="2">Message</th>
                 <th rowspan="2">Status</th>
-                <th rowspan="2">Request Date</th>
+                <th rowspan="2">Requested By</th>
                 <th rowspan="2">Approved Date</th>
                 <th colspan="2">Approved By</th>
             </tr>
@@ -62,16 +61,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($requests as $request)
+            @foreach($requests as $req)
             <tr>
-                <td>{{ $request->request_id }}</td>
-                <td>{{ $request->student_id }}</td>
-                <td>{{ $request->message }}</td>
-                <td>{{ $request->status }}</td>
-                <td>{{ $request->request_date }}</td>
-                <td>{{ $request->approved_date }}</td>
-                <td>{{ $request->first_name }} {{ $request->second_name }} {{ $request->last_name }}</td>
-                <td>{{ $request->email }}</td>
+                <td>{{ $req->placed?->block }}/{{ $req->placed?->room }}</td>
+                <td>{{ $req->message }}</td>
+                <td>{{ $req->status }}</td>
+                <td>{{ $req->student?->first_name }}</td>
+                <td>{{ $req->approved_date }}</td>
+                <td>{{ $req->first_name }} {{ $req->second_name }} {{ $req->last_name }}</td>
+                <td>{{ $req->email }}</td>
             </tr>
             @endforeach
         </tbody>

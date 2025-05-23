@@ -105,8 +105,7 @@
                 class="w-full max-w-full min-h-[180px] border border-gray-300 rounded-lg p-5 text-gray-900 placeholder-gray-400
                        focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition duration-200
                        ease-in-out resize-none font-medium shadow-sm"
-                placeholder="Please enter the reason for replacement..."
-                required>{{ old('message', 'So, I wanna a replacement') }}</textarea>
+                placeholder="Write a reason why you wanna a replacement..." required></textarea>
         </div>
 
         <!-- Hidden Fields -->
