@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Emergency;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Employee;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -12,9 +14,10 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Student;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Log;
 
 class EmergencyController extends Controller
 {
@@ -34,7 +37,7 @@ class EmergencyController extends Controller
     public function create()
     {
         // Get student ID from session 
-        $studentId = session('username'); 
+        $studentId = session('username');
 
         // Check if emergency info already exists
         $emergency = Emergency::where('student_id', $studentId)->first();
@@ -118,22 +121,22 @@ class EmergencyController extends Controller
         return view('students.profile', compact('student'));
     }
 
-  public function update(Request $request, Student $student)
-{
-    $data = $request->all();
+    public function update(Request $request, Student $student)
+    {
+        $data = $request->all();
 
-    // Only hash password if it's being updated
-    if (!empty($data['password'])) {
-        $data['password'] = Hash::make($data['password']);
-    } else {
-        // Remove password from the data if not set
-        unset($data['password']);
+        // Only hash password if it's being updated
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            // Remove password from the data if not set
+            unset($data['password']);
+        }
+
+        $student->update($data);
+
+        return redirect()->route('student.profile')->with('success', 'Student updated successfully.');
     }
-
-    $student->update($data);
-
-    return redirect()->route('student.profile')->with('success', 'Student updated successfully.');
-}
 
 
     public function editProfile($student_id)
@@ -175,5 +178,38 @@ class EmergencyController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Emergency info updated successfully.');
+    }
+
+    public function viewEmergency($studentId)
+    {
+        // Fetch the student's block
+        $studBlock = DB::table('student_placement')
+            ->where('student_id', $studentId)
+            ->value('block');
+
+        // Fetch all blocks assigned to the current proctor
+        $procBlocks = DB::table('proctor_placement')
+            ->where('proctor_id', session('username'))
+            ->pluck('block')
+            ->toArray();
+
+        // Check if any of the proctor's blocks match the student's block
+        $authorized = $studBlock && in_array($studBlock, $procBlocks);
+
+        // Log the attempt with full array of proctor blocks
+        Log::info('Proctor attempted to view emergency info', [
+            'proctor_id'     => session('username'),
+            'student_id'     => $studentId,
+            'student_block'  => $studBlock,
+            'proctor_blocks' => $procBlocks,
+            'authorized'     => $authorized,
+        ]);
+
+        if ($authorized) {
+            $student = Student::with('emergency')->findOrFail($studentId);
+            return view('proctor.emergency', compact('student'));
+        }
+
+        return redirect()->back()->with('error', "You do not have permission to view this student's emergency info.");
     }
 }

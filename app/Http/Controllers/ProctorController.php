@@ -199,26 +199,24 @@ class ProctorController extends Controller
 
         return view('proctor.edit_materials', compact('material', 'blocks', 'rooms'));
     }
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'block' => 'required|string|max:10',
-            'room' => 'required|integer|unique:materials,room,NULL,NULL,block,' . $request->block . ',id,' . $id, // Unique combination
-            'unlocker' => 'required|in:Original,Copy',
-            'locker' => 'required|integer|min:0|max:6',
-            'chair' => 'required|integer|min:0|max:6',
-            'pure_foam' => 'required|integer|min:0|max:6',
-            'damaged_foam' => 'required|integer|min:0|max:6',
-            'tiras' => 'required|integer|min:0|max:6',
-            'tables' => 'required|integer|min:0|max:6',
-            'chibud' => 'required|integer|min:0|max:6',
-        ]);
+   public function update(Request $request, $id)
+{
+    $material = Material::findOrFail($id);
 
-        $material = Material::findOrFail($id);
-        $material->update($validated);
+    $material->update([
+        'unlocker' => $request->unlocker,
+        'locker' => $request->locker,
+        'chair' => $request->chair,
+        'pure_foam' => $request->pure_foam,
+        'damaged_foam' => $request->damaged_foam,
+        'tiras' => $request->tiras,
+        'tables' => $request->tables,
+        'chibud' => $request->chibud,
+        // don't allow update of block or room
+    ]);
 
-        return redirect()->route('materials.view')->with('success', 'Material updated successfully.');
-    }
+    return redirect()->back()->with('success', 'Material updated successfully.');
+}
 
     public function destroy($id)
     {

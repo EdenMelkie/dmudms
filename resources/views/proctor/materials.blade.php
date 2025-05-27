@@ -64,20 +64,54 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('materials.edit', $material->registration_id) }}" method="GET">
+                                    <form action="{{ route('materials.update', $material->registration_id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+
+                                        {{-- Block and Room (readonly or hidden) --}}
+                                        <input type="hidden" name="block" value="{{ $material->block }}">
+                                        <input type="hidden" name="room" value="{{ $material->room }}">
+
+                                        {{-- Editable fields --}}
                                         <div class="mb-3">
-                                            <label for="block" class="form-label">Block</label>
-                                            <input type="text" class="form-control" id="block" name="block" value="{{ $material->block }}">
+                                            <label for="unlocker" class="form-label">Unlocker</label>
+                                            <input type="text" class="form-control" id="unlocker" name="unlocker" value="{{ $material->unlocker }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="room" class="form-label">Room</label>
-                                            <input type="text" class="form-control" id="room" name="room" value="{{ $material->room }}">
+                                            <label for="locker" class="form-label">Locker</label>
+                                            <input type="text" class="form-control" id="locker" name="locker" value="{{ $material->locker }}">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="chair" class="form-label">Chair</label>
+                                            <input type="number" class="form-control" id="chair" name="chair" value="{{ $material->chair }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pure_foam" class="form-label">Pure Foam</label>
+                                            <input type="number" class="form-control" id="pure_foam" name="pure_foam" value="{{ $material->pure_foam }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="damaged_foam" class="form-label">Damaged Foam</label>
+                                            <input type="number" class="form-control" id="damaged_foam" name="damaged_foam" value="{{ $material->damaged_foam }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tiras" class="form-label">Tiras</label>
+                                            <input type="number" class="form-control" id="tiras" name="tiras" value="{{ $material->tiras }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tables" class="form-label">Tables</label>
+                                            <input type="number" class="form-control" id="tables" name="tables" value="{{ $material->tables }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="chibud" class="form-label">Chibud</label>
+                                            <input type="number" class="form-control" id="chibud" name="chibud" value="{{ $material->chibud }}">
+                                        </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>

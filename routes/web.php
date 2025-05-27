@@ -231,6 +231,7 @@ Route::get('materials/{id}/edit', [ProctorController::class, 'edit'])->name('mat
 Route::put('materials/{id}', [ProctorController::class, 'update'])->name('materials.update');
 Route::delete('materials/{id}', [ProctorController::class, 'destroy'])->name('materials.destroy');
 Route::get('/proctor/placed-students', [ProctorController::class, 'viewPlacedStudents'])->name('proctor.viewPlacedStudents');
+Route::get('/proctor/emergency/{studentId}', [EmergencyController::class, 'viewEmergency'])->name('proctor.viewEmergency');
 
 Route::get('/student/edit1', [EmergencyController::class, 'edit'])->name('student.edit');
 Route::get('/student/profile', [EmergencyController::class, 'showProfile'])->name('student.profile');

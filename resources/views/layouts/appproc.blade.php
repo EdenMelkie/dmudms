@@ -47,8 +47,8 @@
             background-color: #495057;
         }
 
-        main {
-            margin-bottom: 40px;
+        .main-content {
+            margin-bottom: 80px;
         }
     </style>
 
@@ -69,10 +69,18 @@
         <!-- Main Content -->
         <div class="main-content">
             @yield('content')
+            <div class="mt-4">
+                <a href="{{ url()->previous() }}" class="btn btn-secondary rounded-3">
+                    &larr; Back
+                </a>
+            </div>
+
         </div>
 
         @include('partials.footer')
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
