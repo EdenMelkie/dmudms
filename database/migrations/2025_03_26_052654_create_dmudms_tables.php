@@ -97,7 +97,7 @@ return new class extends Migration {
         Schema::create('room', function (Blueprint $table) {
             $table->bigInteger('room_id');
             $table->string('block', 10);
-            $table->enum('status', ['Free', 'Occupied', 'Unavailable', 'Partially'])->default('Free');
+            $table->enum('status', ['Free', 'Occupied', 'Unavailable'])->default('Free');
             $table->integer('capacity')->default(6);
             $table->timestamps();
 
