@@ -37,11 +37,22 @@ class RegistrarController extends Controller
     }
 
 
-    public function showStudents()
+    public function showStudents(Request $request)
     {
-        $students = Student::all(); // Fetch all students
+        $search = $request->input('search');
+
+        if ($search) {
+            $students = Student::where('student_id', 'like', "%{$search}%")
+                ->orWhere('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->get();
+        } else {
+            $students = Student::all();
+        }
+
         return view('registrar.students.index', compact('students'));
     }
+
 
     public function editStudent($id)
     {
@@ -52,8 +63,8 @@ class RegistrarController extends Controller
     public function updateStudent(Request $request, $id)
     {
         $student = Student::findOrFail($id); // Find the student
- 
-         if ($student->status == 'unactivated') {
+
+        if ($student->status == 'unactivated') {
             return back()->with('error', 'Only students with status Activated can be ultered.');
         }
         // Update student info

@@ -55,7 +55,7 @@ class AuthController extends Controller
         // If not found in users, check the students table
         $student = DB::table('students')
             ->where('student_id', $request->username)
-            ->where('status', '!=', 'unactivated')
+            ->whereNotIn('status', ['unactivated', 'Disciplined', 'Transferred'])
             ->first();
 
         if ($student && Hash::check($request->password, $student->password)) {
@@ -71,7 +71,7 @@ class AuthController extends Controller
         }
 
         // If no match is found, return error
-        return redirect()->back()->with('error', 'Invalid username or password')->withInput();
+        return redirect()->back()->with('error', 'Invalid username or password (if you are a student your account may unactivated)')->withInput();
     }
 
     public function logout(Request $request)

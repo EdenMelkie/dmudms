@@ -15,7 +15,7 @@ class MaintainerController extends Controller
     {
         $requests = Request::with(['student', 'placed'])
             ->where('status', 'approved')
-            ->where('type', 'replacement')
+            ->where('type', 'maintenance')
             ->join('employees', 'request.approved_by', '=', 'employees.employee_id')
             ->select(
                 'request.*',

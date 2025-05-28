@@ -50,6 +50,8 @@
         .main-content {
             margin-bottom: 80px;
         }
+
+        
     </style>
 
     @yield('styles')

@@ -17,6 +17,17 @@
         <div class="card-body table-responsive">
             <div class="card shadow-sm mb-4 rounded-4">
                 <div class="card-body table-responsive">
+                    <form method="GET" action="{{ route('registrar.students') }}" class="mb-3">
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
+                                placeholder="Search by Student ID, First Name or Last Name"
+                                value="{{ request('search') }}">
+                            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                    </form>
                     <table class="table table-bordered table-hover table-striped table-sm align-middle w-100 text-center">
                         <thead class="table-dark">
                             <tr class="align-middle">

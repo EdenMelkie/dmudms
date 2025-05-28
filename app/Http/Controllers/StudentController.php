@@ -15,6 +15,19 @@ class StudentController extends Controller
         return view('registrar.students.index', compact('students'));
     }
 
+    public function activateAll()
+    {
+        $updated = Student::where('status', 'unactivated')->update(['status' => 'Registered']);
+        return back()->with('success', "$updated student(s) activated successfully.");
+    }
+
+    public function deactivateAll()
+    {
+        $updated = Student::where('status', '!=', 'unactivated')->update(['status' => 'unactivated']);
+        return back()->with('success', "$updated student(s) deactivated successfully.");
+    }
+
+
     public function index2()
     {
         // Fetch students and check if they are assigned
@@ -136,10 +149,9 @@ class StudentController extends Controller
         return redirect()->route('admin.students')->with('success', 'Student activated successfully.');
     }
 
-   public function activateAllStudents()
-{
-    Student::where('status', 'unactivated')->update(['status' => 'Registered']);
-    return redirect()->route('admin.students')->with('success', 'All unactivated students have been activated.');
-}
-
+    public function activateAllStudents()
+    {
+        Student::where('status', 'unactivated')->update(['status' => 'Registered']);
+        return redirect()->route('admin.students')->with('success', 'All unactivated students have been activated.');
+    }
 }

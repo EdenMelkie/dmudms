@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('block', function (Blueprint $table) {
             $table->string('block_id', 10)->primary();
             $table->string('disable_group', 10);
-            $table->enum('status', ['Free', 'Out of', 'Occupied', '']);
+            $table->string('status', 10);
             $table->unsignedInteger('capacity');
             $table->string('reserved_for', 10);
         });
@@ -33,7 +33,6 @@ return new class extends Migration {
             $table->string('first_name', 50);
             $table->string('second_name', 50);
             $table->string('last_name', 50);
-            $table->string('gender', 10);
             $table->string('email', 50);
             $table->unsignedBigInteger('phone');
             $table->string('address', 50);
@@ -53,7 +52,7 @@ return new class extends Migration {
         Schema::create('materials', function (Blueprint $table) {
             $table->id('registration_id');
             $table->string('block', 10);
-            $table->unsignedBigInteger('room');
+            $table->unsignedInteger('room');
             $table->string('unlocker', 10);
             $table->unsignedInteger('locker');
             $table->unsignedInteger('chair');
@@ -68,7 +67,7 @@ return new class extends Migration {
         Schema::create('notification', function (Blueprint $table) {
             $table->id('notification_id');
             $table->string('registrar_id', 50);
-            $table->string('message', 1000);
+            $table->string('message', 100);
             $table->enum('status', ['Read', 'Unread'])->default('Unread');
             $table->date('date');
         });
@@ -78,8 +77,8 @@ return new class extends Migration {
             $table->string('proctor_id', 50);
             $table->year('year');
             $table->date('first_entry');
-            $table->string('block', 10);
-            $table->unique(['proctor_id', 'block']);
+            $table->unique(['proctor_id', 'block']); // Ensure combination is unique
+
         });
 
         Schema::create('request', function (Blueprint $table) {
@@ -88,45 +87,54 @@ return new class extends Migration {
             $table->string('message', 400);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->date('request_date');
-            $table->string('approved_by', 50)->nullable();
-            $table->date('approved_date')->nullable();
-            $table->enum('type', ['replacement', 'maintenance'])->default('maintenance');
-            $table->timestamps();
+            $table->string('approved_by', 50);
+            $table->date('approved_date');
+            $table->enum('type', ['Read', 'Unread'])->default('Unread');
+            $table->timestamps(); // Add timestamps for created_at and updated_at
+
         });
 
         Schema::create('room', function (Blueprint $table) {
             $table->bigInteger('room_id');
-            $table->string('block', 10);
-            $table->enum('status', ['Free', 'Occupied', 'Unavailable', 'Partially'])->default('Free');
+            $table->string('block', 10);  // Using 'block' as column name
+            $table->enum('status', ['Free', 'Occupied', 'Partially Occupied', 'Unavailable']);
             $table->integer('capacity')->default(6);
             $table->timestamps();
 
+            // Define composite primary key
             $table->primary(['room_id', 'block']);
-            $table->foreign('block')->references('block_id')->on('block')->onDelete('cascade');
+
+            // Foreign key reference (assuming 'block' table has 'block_id' as PK)
+            $table->foreign('block')->references('block_id')->on('block');
         });
+
+
+
 
         Schema::create('students', function (Blueprint $table) {
             $table->string('student_id', 50)->primary();
             $table->string('first_name', 50);
             $table->string('second_name', 50);
             $table->string('last_name', 50);
-            $table->integer('batch');
             $table->string('email', 50);
             $table->string('gender', 10);
             $table->string('disability_status', 10);
-            $table->string('status', 15);
+            $table->string('status', 10);
             $table->string('password', 100);
         });
 
         Schema::create('student_placement', function (Blueprint $table) {
             $table->id('placement_id');
             $table->string('student_id', 50);
-            $table->string('block', 10);
-            $table->bigInteger('room');
+            $table->string('block', 10);  // Matches rooms.block
+            $table->bigInteger('room');   // Matches rooms.room_id
             $table->string('status', 10);
             $table->year('year');
 
-            $table->foreign(['room', 'block'])->references(['room_id', 'block'])->on('room')->onDelete('cascade');
+            // Composite foreign key
+            $table->foreign(['room', 'block'])
+                ->references(['room_id', 'block'])
+                ->on('rooms');
         });
 
         Schema::create('users', function (Blueprint $table) {

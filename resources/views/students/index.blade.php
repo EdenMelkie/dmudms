@@ -9,10 +9,24 @@
 
                 <div class="card-body">
                     @if(session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
+                    <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
 
                     <div class="table-responsive">
+                        <form method="GET" action="{{ route('directorate.students.index') }}" class="mb-3">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    name="search"
+                                    class="form-control"
+                                    placeholder="Search by Student ID, First Name or Last Name"
+                                    value="{{ request('search') }}">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </form>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

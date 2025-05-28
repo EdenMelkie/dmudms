@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel; // if using Laravel Excel
 
 class RegisterController extends Controller
 {
@@ -16,6 +17,80 @@ class RegisterController extends Controller
     {
         return view('employees.create');
     }
+
+
+    public function uploadEmployees(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $data = array_map('str_getcsv', file($file->getRealPath()));
+
+        if (count($data) < 2) {
+            return redirect()->back()->withErrors(['file' => 'The CSV file is empty or has no data rows.']);
+        }
+
+        $header = array_map('trim', $data[0]);
+        unset($data[0]); // Remove header
+
+        $errors = [];
+
+        foreach ($data as $index => $row) {
+            if (count($row) !== count($header)) {
+                $errors["Row " . ($index + 2)][] = 'Column mismatch with header.';
+                continue;
+            }
+
+            $employeeData = array_combine($header, $row);
+            $empId = $employeeData['employee_id'];
+
+            $validator = Validator::make($employeeData, [
+                'employee_id' => 'required|string|unique:employees,employee_id',
+                'first_name' => 'required|string',
+                'second_name' => 'required|string',
+                'last_name' => 'required|string',
+                'gender' => 'required|string|in:Male,Female',
+                'email' => 'required|email|unique:employees,email',
+                'phone' => 'required|string',
+                'address' => 'required|string',
+                'citizenship' => 'required|string',
+                'role' => 'required|string|in:Directorate,Registrar,Maintenance,Admin,Proctor,Coordinator',
+            ]);
+
+            if ($validator->fails()) {
+                $errors[$empId] = $validator->errors()->all();
+                continue;
+            }
+
+            Employee::create([
+                'employee_id' => $empId,
+                'first_name' => $employeeData['first_name'],
+                'second_name' => $employeeData['second_name'],
+                'last_name' => $employeeData['last_name'],
+                'gender' => $employeeData['gender'],
+                'email' => $employeeData['email'],
+                'phone' => $employeeData['phone'],
+                'address' => $employeeData['address'],
+                'citizenship' => $employeeData['citizenship'],
+            ]);
+
+            User::create([
+                'username' => $empId,
+                'password' => Hash::make($employeeData['last_name'] . '1234abcd#'),
+                'role' => $employeeData['role'],
+                'status' => 'active',
+            ]);
+        }
+
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors(['upload_errors' => $errors])->withInput();
+        }
+
+        return redirect()->route('employees.index')->with('success', 'Employees uploaded and registered successfully.');
+    }
+
 
     public function resetPassword($id)
     {

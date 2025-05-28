@@ -80,12 +80,25 @@
             </table>
         </div>
 
-        @if($students->where('status', 'unactivated')->count())
-        <form method="POST" action="{{ route('admin.students.activateAll') }}">
-            @csrf
-            <button class="btn btn-primary mt-3">Activate All Unactivated</button>
-        </form>
-        @endif
+        </table> {{-- End of student table --}}
+
+        {{-- Bulk Action Buttons --}}
+        <div class="mt-4 d-flex gap-3 flex-wrap justify-content-center">
+            @if($students->where('status', 'unactivated')->count())
+            <form method="POST" action="{{ route('admin.students.activateAll') }}">
+                @csrf
+                <button class="btn btn-success">Activate All Unactivated</button>
+            </form>
+            @endif
+
+            @if($students->where('status', '!=', 'unactivated')->count())
+            <form method="POST" action="{{ route('admin.students.deactivateAll') }}">
+                @csrf
+                <button class="btn btn-warning">Deactivate All Activated</button>
+            </form>
+            @endif
+        </div>
+
     </div>
 </div>
 

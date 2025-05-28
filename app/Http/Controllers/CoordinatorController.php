@@ -11,11 +11,24 @@ use App\Models\StudentPlacement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class CoordinatorController extends Controller
 {
     public function assignStore(Request $request)
     {
+
+        $request->validate([
+            'proctor_id' => [
+                'required',
+                Rule::unique('proctor_placement', 'proctor_id')
+                    ->where(fn($query) => $query->where('block', $request->block_id)),
+            ],
+            'block_id' => 'required|exists:block,block_id',
+        ], [
+            'proctor_id.unique' => 'This proctor is already assigned to the selected block.',
+        ]);
+
         // Fetch the block details (block_id and proctor_id)
         $block = Block::where('block_id', $request->block_id)->first();
         Log::info('Fetched block for proctor assignment', [
@@ -182,11 +195,18 @@ class CoordinatorController extends Controller
         // Log incoming request
         Log::info('Received proctor assignment request', $request->all());
 
-        // Validate the incoming request
+        // Validate the incoming request     
         $validated = $request->validate([
-            'employee_id' => 'required|exists:employees,employee_id',
+            'employee_id' => [
+                'required',
+                'exists:employees,employee_id',
+                Rule::unique('proctor_placement', 'proctor_id')
+                    ->where(fn($query) => $query->where('block', $request->block_id)),
+            ],
             'block_id' => 'required|exists:block,block_id',
             'year' => 'required|integer',
+        ], [
+            'proctor_id.unique' => 'This proctor is already assigned to the selected block.',
         ]);
 
         // Retrieve block info

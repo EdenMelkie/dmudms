@@ -59,7 +59,7 @@
             <label for="status" class="form-label">Status</label>
             <select class="form-control" id="status" name="status">
                 <option value="Registered" {{ $student->status == 'Active' ? 'selected' : '' }}>Registered</option>
-                <option value="Desciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Desciplined</option>
+                <option value="Disciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Disciplined</option>
                 <option value="Transfered" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Transferred</option>
                 <!-- <option value="Desciplined" {{ $student->status == 'Inactive' ? 'selected' : '' }}>Desciplined</option> -->
             </select>

@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <!-- <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name', 'DMU_DMS') }}</a> -->
@@ -54,11 +52,20 @@
 <style>
     /* General navbar styles */
     .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1050;
         background: linear-gradient(135deg, #2e7d32, #66bb6a);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         padding: 12px 0;
         border-radius: 0 0 10px 10px;
+        transition: top 0.3s ease;
+        /* smooth sliding */
+
     }
+
+
 
     /* Brand/logo styles */
     .navbar-brand {

@@ -3,6 +3,16 @@
 @section('content')
 <div class="container mt-4">
     <h3 class="mb-3">Assign Proctor to Block: {{ $block->block_id }}</h3>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Validation Error!</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form action="{{ route('proctor.place.store', $block->block_id) }}" method="POST">
         @csrf
@@ -14,7 +24,7 @@
                 <option value="">Select proctor</option> <!-- Ensure this is empty as the default -->
                 @foreach($availableProctors as $proctor)
                 <option value="{{ $proctor->username }}">
-                   {{ $proctor->username }} {{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}
+                    {{ $proctor->username }} {{ $proctor->first_name }} {{ $proctor->second_name }} {{ $proctor->last_name }}
                 </option>
                 @endforeach
             </select>

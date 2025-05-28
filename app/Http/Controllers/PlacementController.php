@@ -135,7 +135,7 @@ class PlacementController extends Controller
     {
         $student = Student::findOrFail($student_id);
 
-        // ✅ Ensure only 'Registered' students are processed
+        // Ensure only 'Registered' students are processed
         if ($student->status !== 'Registered') {
             return back()->with('error', 'Only students with status Registered can be assigned.');
         }
@@ -234,68 +234,50 @@ class PlacementController extends Controller
 
     public function unassignAll()
     {
-        // Step 1: Get all current placements
-        $placements = Room::join('student_placement', function ($join) {
-            $join->on('student_placement.room', '=', 'room.room_id')
-                ->whereColumn('student_placement.block', 'room.block');
-        })
-            ->whereIn('room.room_id', [1, 2])
-            ->select(
-                'room.*',
-                'student_placement.student_id',
-                'student_placement.block as placement_block' // to avoid column name conflict
-            )
-            ->limit(25)
-            ->get();
+        // Step 1: Fetch all placement records
+        $placements = StudentPlacement::all();
 
+        if ($placements->isEmpty()) {
+            return redirect()->back()->with('info', 'No students to unassign.');
+        }
 
-        // Step 2: Prepare data for bulk updates
-        $roomStatusUpdates = [];
-        $studentStatusUpdates = [];
-
-        // Loop through placements and prepare updates
         foreach ($placements as $placement) {
-            $room_id = $placement->room_id;
+            $student_id = $placement->student_id;
+            $room_id = $placement->room;
             $block = $placement->block;
 
-            if (!$room_id || !$block) {
-                continue; // Skip if incomplete data
+            // Step 2: Skip if room or block info is missing
+            if (is_null($room_id) || is_null($block)) {
+                continue;
             }
 
-            // Step 3: Count other students in the same room (excluding current)
-            $otherPlacementsCount = StudentPlacement::where('room', $room_id)
+            // Step 3: Check other students in the same room and block (excluding current student)
+            $otherPlacements = StudentPlacement::where('room', $room_id)
                 ->where('block', $block)
-                ->where('student_id', '!=', $placement->student_id)
+                ->where('student_id', '!=', $student_id)
                 ->count();
 
-            // Step 4: Prepare room status update
-            $roomStatusUpdates[$room_id][$block] = $otherPlacementsCount > 0 ? 'Free' : 'Free';
+            // Step 4: Fetch the room
+            $room = Room::where('room_id', $room_id)->where('block', $block)->first();
 
-            // Step 5: Prepare student status update
-            $studentStatusUpdates[$placement->student_id] = 'Registered';
-        }
-
-        // Step 6: Update room statuses in bulk
-        foreach ($roomStatusUpdates as $room_id => $blocks) {
-            foreach ($blocks as $block => $status) {
+            if ($room) {
+                // Step 5: Set room status to 'Free' (as per current logic)
                 Room::where('room_id', $room_id)
                     ->where('block', $block)
-                    ->update(['status' => $status]);
+                    ->update(['status' => 'Free']);
+            } else {
+                continue; // Skip if room not found
             }
-        }
 
-        // Step 7: Update student statuses in bulk
-        foreach ($studentStatusUpdates as $student_id => $status) {
-            Student::where('student_id', $student_id)
-                ->update(['status' => $status]);
-        }
+            // Step 6: Delete the student's placement
+            $placement->delete();
 
-        // Step 8: Delete all placements at once
-        StudentPlacement::query()->delete();
+            // Step 7: Update student status to 'Registered'
+            Student::where('student_id', $student_id)->update(['status' => 'Registered']);
+        }
 
         return redirect()->back()->with('success', 'All students unassigned successfully.');
     }
-
 
 
     public function unassign($student_id)
@@ -348,15 +330,35 @@ class PlacementController extends Controller
 
 
     // In your PlacementController
-    public function index()
+    public function index(Request $request)
     {
-        $placements = StudentPlacement::with('student')->get();
-        $students = Student::whereDoesntHave('placement')->get();
+        $search = $request->input('search');
+
+        if ($search) {
+            // Search logic
+            $placements = StudentPlacement::with('student')->get()->filter(function ($placement) use ($search) {
+                $student = $placement->student;
+                $fullName = strtolower($student->first_name . ' ' . $student->second_name . ' ' . $student->last_name);
+                return strpos(strtolower($student->student_id), strtolower($search)) !== false
+                    || strpos($fullName, strtolower($search)) !== false;
+            });
+
+            $students = Student::whereDoesntHave('placement')->get()->filter(function ($student) use ($search) {
+                $fullName = strtolower($student->first_name . ' ' . $student->second_name . ' ' . $student->last_name);
+                return strpos(strtolower($student->student_id), strtolower($search)) !== false
+                    || strpos($fullName, strtolower($search)) !== false;
+            });
+        } else {
+            // Default listing logic
+            $placements = StudentPlacement::with('student')->get();
+            $students = Student::whereDoesntHave('placement')->get();
+        }
+
         $freeRooms = Room::where('status', 'Free')->with('blockRelation')->get();
-        $blocks = Block::all(['block_id']); // Only get block_id since that's all we need
+        $blocks = Block::all(['block_id']);
+
         return view('placement.index', compact('placements', 'students', 'freeRooms', 'blocks'));
     }
-
 
     public function getAvailableRooms($student_id)
     {
@@ -439,10 +441,12 @@ class PlacementController extends Controller
             $assigned = false;
 
             foreach ($blocks as $block) {
-                // Skip incompatible blocks
+                // Skip incompatible blocks          
+                // ($block->disability_group === 'Yes' && $student->disability_status !== 'Yes') ||
+
                 if (
-                    ($block->disability_group === 'Yes' && $student->disability_status !== 'Yes') ||
-                    ($block->disability_group === 'No' && $student->disability_status === 'Yes') ||
+                    ($student->disability_status === 'Yes' && $block->disable_group !== 'Yes') ||
+                    ($block->disable_group === 'No' && $student->disability_status === 'Yes') ||
                     ($block->reserved_for && $block->reserved_for !== $student->gender)
                 ) {
                     Log::info("Skipped Block ID: {$block->block_id} : { $block->disable_group }:{$student->disability_status} for student ID: {$student->student_id} due to incompatibility.");
@@ -462,7 +466,7 @@ class PlacementController extends Controller
                     }
 
                     if ($student->disability_status !== 'Yes' && $room->room_id < $maxRoom) {  //No, 
-                        Log::info("Skipped Room {$room->room_id} in Block {$block->block_id} - This is reserved for disabled students, ID: {$student->student_id}");
+                        Log::info("Skipped Room {$room->room_id} in Block {$block->block_id} - This is reserved for {$student->disability_status} students, ID: {$student->student_id}");
                         continue;
                     }
 
@@ -511,16 +515,26 @@ class PlacementController extends Controller
 
 
 
-    public function showStudents()
+    public function showStudents(Request $request)
     {
-        $students = Student::whereDoesntHave('placement')->get();
-        $blocks = Block::all(); // Assuming you have a Block model
+        $search = $request->input('search');
 
-        return view('directorate.students.index', [
-            'students' => $students,
-            'blocks' => $blocks
-        ]);
+        $query = Student::whereDoesntHave('placement');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('student_id', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%");
+            });
+        }
+
+        $students = $query->get();
+        $blocks = Block::all(); // assuming you need blocks too
+
+        return view('directorate.students.index', compact('students', 'blocks'));
     }
+
     public function assignStudent(Request $request, $student_id)
     {
         $request->validate([

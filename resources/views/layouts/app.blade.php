@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -15,23 +14,16 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <style>
-        main {
-            margin-bottom: 40px;
-        }
-    </style>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div id="app">
-        <div>
-            @include('partials.header')
-        </div>
+        @include('partials.header')
 
-        <main class="py-4">
+        <main class="py-4" style="padding-top: 0;">
             <div class="container-fluid">
                 <div class="row">
                     <!-- Sidebar Column -->
@@ -49,6 +41,25 @@
     </div>
 
     @include('partials.footer')
+    <script>
+        let lastScrollTop = 0;
+        const header = document.querySelector('.navbar'); // your header class
+
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop) {
+                // Scrolling down — hide header
+                header.style.top = '-80px'; // height of your navbar
+            } else {
+                // Scrolling up — show header
+                header.style.top = '0';
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
 </body>
+
 
 </html>

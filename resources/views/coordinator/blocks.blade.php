@@ -29,7 +29,7 @@
                     @else
                     <ul class="mb-0 ps-3" style="list-style: none; padding-left: 0;">
                         @foreach ($block->assignedProctors as $proctor)
-                        <li>{{ $proctor->first_name }} {{ $proctor->last_name }}</li>
+                        <li>{{ $proctor->employee_id }} {{ $proctor->first_name }} {{ $proctor->last_name }} </li>
                         @endforeach
                     </ul>
                     @endif

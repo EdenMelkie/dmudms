@@ -20,7 +20,7 @@
         </form>
 
         <a href="{{ route('admin.create_account') }}" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Add Employee
+            <i class="fas fa-user-plus"></i> Register Employee
         </a>
     </div>
 

@@ -19,20 +19,31 @@ use Illuminate\Support\Facades\Log;
 class ProctorController extends Controller
 {
 
-    public function viewPlacedStudents()
+    public function viewPlacedStudents(Request $request)
     {
-        // Get the current proctor's ID from the session
         $proctor_id = session('username');
 
-        // Fetch blocks assigned to the current proctor
+        // Get the blocks assigned to the proctor
         $blocks = ProctorPlacement::where('proctor_id', $proctor_id)
-            ->pluck('block'); // Get blocks assigned to the proctor
+            ->pluck('block');
 
-        // Fetch students with a studentPlacement in those blocks
-        $placements = StudentPlacement::whereIn('block', $blocks)
-            ->with('student') // Eager load the student data
-            ->get();
+        // Start the base query with eager loading
+        $query = StudentPlacement::whereIn('block', $blocks)
+            ->with('student');
 
+        // Check if there's a search input
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+
+            // Filter by student ID or student full name
+            $query->whereHas('student', function ($q) use ($search) {
+                $q->where('student_id', 'like', '%' . $search . '%')
+                    ->orWhereRaw("CONCAT(first_name, ' ', second_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
+            });
+        }
+
+        // Fetch the results
+        $placements = $query->get();
 
         return view('proctor.view_placed_students', compact('placements'));
     }
@@ -168,7 +179,7 @@ class ProctorController extends Controller
         return response()->json($rooms);
     }
 
-    public function view()
+    public function view(Request $request)
     {
         // Step 1: Get the current proctor's username from session
         $proctorId = session('username');
@@ -176,16 +187,29 @@ class ProctorController extends Controller
         // Step 2: Fetch the block assigned to the proctor
         $proctorPlacement = ProctorPlacement::where('proctor_id', $proctorId)->first();
 
-        // If no block is assigned, return empty or with a message
+        // If no block is assigned, return empty
         if (!$proctorPlacement) {
             return view('proctor.materials', ['materials' => collect()]);
         }
 
-        // Step 3: Get the block and fetch materials for that block
         $block = $proctorPlacement->block;
-        $materials = Material::where('block', $block)
-            ->orderByDesc('registration_id')
-            ->get();
+
+        // Step 3: Check for search input
+        $search = $request->input('search');
+
+        $query = Material::where('block', $block);
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('room', 'like', "%{$search}%")
+                    ->orWhere('unlocker', 'like', "%{$search}%")
+                    ->orWhere('locker', 'like', "%{$search}%")
+                    ->orWhere('block', 'like', "%{$search}%")
+                    ->orWhereDate('created_at', $search); // Exact date match (e.g., 2025-05-27)
+            });
+        }
+
+        $materials = $query->orderByDesc('registration_id')->get();
 
         return view('proctor.materials', compact('materials'));
     }
@@ -199,24 +223,24 @@ class ProctorController extends Controller
 
         return view('proctor.edit_materials', compact('material', 'blocks', 'rooms'));
     }
-   public function update(Request $request, $id)
-{
-    $material = Material::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $material = Material::findOrFail($id);
 
-    $material->update([
-        'unlocker' => $request->unlocker,
-        'locker' => $request->locker,
-        'chair' => $request->chair,
-        'pure_foam' => $request->pure_foam,
-        'damaged_foam' => $request->damaged_foam,
-        'tiras' => $request->tiras,
-        'tables' => $request->tables,
-        'chibud' => $request->chibud,
-        // don't allow update of block or room
-    ]);
+        $material->update([
+            'unlocker' => $request->unlocker,
+            'locker' => $request->locker,
+            'chair' => $request->chair,
+            'pure_foam' => $request->pure_foam,
+            'damaged_foam' => $request->damaged_foam,
+            'tiras' => $request->tiras,
+            'tables' => $request->tables,
+            'chibud' => $request->chibud,
+            // don't allow update of block or room
+        ]);
 
-    return redirect()->back()->with('success', 'Material updated successfully.');
-}
+        return redirect()->back()->with('success', 'Material updated successfully.');
+    }
 
     public function destroy($id)
     {

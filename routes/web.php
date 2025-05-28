@@ -64,6 +64,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/create-account', [RegisterController::class, 'create'])->name('admin.create_account');
     Route::get('/update-account', [RegisterController::class, 'update'])->name('admin.update_account');
     Route::get('/reset-account', [AdminController::class, 'reset'])->name('admin.reset_account');
+    Route::post('/employees/upload', [RegisterController::class, 'uploadEmployees'])->name('employee.upload.form');
 
     Route::prefix('employees')->group(function () {
         Route::get('/', [RegisterController::class, 'index'])->name('employees.index');
@@ -73,14 +74,16 @@ Route::prefix('admin')->group(function () {
         Route::put('/{employee}', [RegisterController::class, 'update'])->name('employees.update');
         Route::delete('/{employee}', [RegisterController::class, 'destroy'])->name('employees.destroy');
     });
-Route::patch('/employees/{id}/reset-password', [RegisterController::class, 'resetPassword'])->name('employees.resetPassword');
-Route::patch('/students/{id}/reset-password', [RegistrarController::class, 'resetPassword'])->name('admin.students.resetPassword');
+    Route::patch('/employees/{id}/reset-password', [RegisterController::class, 'resetPassword'])->name('employees.resetPassword');
+    Route::patch('/students/{id}/reset-password', [RegistrarController::class, 'resetPassword'])->name('admin.students.resetPassword');
 
     Route::get('/students', [AdminController::class, 'showStudents'])->name('admin.students');
     Route::patch('/students/activate/{id}', [AdminController::class, 'activateStudent'])->name('admin.students.activate');
     Route::post('/students/activate-all', [AdminController::class, 'activateAllStudents'])->name('admin.students.activateAll');
     Route::patch('/admin/students/{id}/deactivate', [AdminController::class, 'deactivateStudent'])->name('admin.students.deactivate');
 });
+Route::post('/admin/students/activate-all', [StudentController::class, 'activateAll'])->name('admin.students.activateAll');
+Route::post('/admin/students/deactivate-all', [StudentController::class, 'deactivateAll'])->name('admin.students.deactivateAll');
 
 /**
  * Registration Routes
