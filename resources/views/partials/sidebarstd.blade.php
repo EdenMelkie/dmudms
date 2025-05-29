@@ -1,23 +1,23 @@
 <style>
-.sidebar-link {
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-    padding: 8px 12px;
-}
+    .sidebar-link {
+        border-radius: 5px;
+        transition: background-color 0.2s ease;
+        padding: 8px 12px;
+    }
 
-.sidebar-link:hover {
-    background-color: #f0f0f0;
-    text-decoration: none;
-}
+    .sidebar-link:hover {
+        background-color: #f0f0f0;
+        text-decoration: none;
+    }
 </style>
 
 <div class="sidebar p-3 bg-light border-end h-100">
     <ul class="nav flex-column">
-        <li class="nav-item mb-2">
+        <!-- <li class="nav-item mb-2">
             <a class="nav-link text-dark sidebar-link" href="{{ route('student') }}">
                 <i class="fas fa-home me-2"></i> Home
             </a>
-        </li>
+        </li> -->
         <li class="nav-item mb-2">
             <a class="nav-link text-dark sidebar-link" href="{{ route('view1') }}">
                 <i class="fas fa-bed me-2"></i> View Placement
@@ -41,6 +41,11 @@
         <li class="nav-item mb-2">
             <a class="nav-link text-dark sidebar-link" href="{{ route('requests.create') }}">
                 <i class="fas fa-file-signature me-2"></i> Submit Requests
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link text-dark sidebar-link" href="{{ route('exit_papers.create') }}">
+                <i class="fas fa-file-alt"></i> Exit Paper Form
             </a>
         </li>
         <li class="nav-item mb-2">

@@ -19,8 +19,8 @@
             color: #f8f9fa;
             padding: 15px 0;
             text-align: center;
-            position: relative;
-            bottom: auto;
+            position: fixed;
+            bottom: 0px;
             width: 100%;
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
             z-index: 1030;

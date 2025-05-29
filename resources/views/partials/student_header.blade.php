@@ -100,6 +100,7 @@
                             <li><a class="dropdown-item" href="{{ route('emergency.create') }}"><i class="fas fa-exclamation-triangle"></i> Manage Emergency</a></li>
                             <li><a class="dropdown-item" href="{{ route('emergency.index') }}"><i class="fas fa-file-signature"></i> View Emergency</a></li>
                             <li><a class="dropdown-item" href="{{ route('requests.create') }}"><i class="fas fa-file-signature"></i> Submit Requests</a></li>
+                            <li><a class="dropdown-item" href="{{ route('exit_papers.create') }}"><i class="fas fa-file-alt"></i> Exit Paper Form</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

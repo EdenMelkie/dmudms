@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 
 class CoordinatorController extends Controller
 {
+
     public function assignStore(Request $request)
     {
 
@@ -287,12 +288,12 @@ class CoordinatorController extends Controller
 
 
 
-    public function destroy($employee_id)
+    public function destroy($id)
     {
-        // Delete the proctor's assignment
-        ProctorPlacement::where('proctor_id', $employee_id)->delete();
+        $placement = ProctorPlacement::findOrFail($id);
+        $placement->delete();
 
-        return redirect()->route('coordinator.placement')->with('success', 'Proctor assignment deleted successfully!');
+        return redirect()->back()->with('success', 'Proctor placement deleted successfully.');
     }
 
     public function update(Request $request, $id)

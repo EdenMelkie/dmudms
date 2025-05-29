@@ -4,6 +4,7 @@ if (session('userType') !== 'Proctor') {
     exit();
 }
 ?>
+
 <head>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -81,6 +82,7 @@ if (session('userType') !== 'Proctor') {
                         <li><a class="dropdown-item" href="{{ route('requests.proctor') }}"><i class="fas fa-envelope-open-text me-1"></i> Manage Requests</a></li>
                         <li><a class="dropdown-item" href="{{ route('materials.view') }}"><i class="fas fa-tools me-1"></i> Report Issues</a></li>
                         <li><a class="dropdown-item" href="{{ route('proctor.viewPlacedStudents') }}"><i class="fas fa-user-graduate me-1"></i> Student Placement</a></li>
+                        <li><a class="dropdown-item" href="{{ route('exit_papers.viewByProctor') }}"><i class="fas fa-user-graduate me-1"></i> view Exit Papers</a></li>
                     </ul>
                 </li>
 

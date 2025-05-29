@@ -70,9 +70,9 @@ return new class extends Migration {
             $table->id('exit_id');
             $table->string('stud_id', 50);
             $table->date('request_date');
-            $table->date('approved_date');
             $table->string('type', 200);
-            $table->unsignedInteger('color');
+            $table->enum('status', ['pending', 'printed']);
+            $table->string('color');
             $table->unsignedInteger('number');
 
             $table->foreign('stud_id')->references('student_id')->on('students')->onDelete('cascade');

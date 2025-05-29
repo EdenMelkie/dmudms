@@ -45,13 +45,7 @@
 
         .sidebar .nav-link:hover {
             background-color: #495057;
-        }
-
-        .main-content {
-            margin-bottom: 80px;
-        }
-
-        
+        }        
     </style>
 
     @yield('styles')
@@ -79,7 +73,7 @@
 
         </div>
 
-        @include('partials.footer')
+        @include('partials.footerP')
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

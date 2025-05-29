@@ -16,9 +16,13 @@ class ExitPaper extends Model
     protected $fillable = [
         'stud_id',
         'request_date',
-        'approved_date',
         'type',
         'color',
         'number',
+        'status'
     ];
+
+    public function student(){
+        return $this->hasOne('students','stud_id','student_id');
+    }
 }

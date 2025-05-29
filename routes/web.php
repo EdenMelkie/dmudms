@@ -15,10 +15,12 @@ use App\Http\Controllers\{
     BlockController,
     RegistrarController,
     MaintainerController,
-    PlacementController
+    PlacementController,
+    ExitPaperController
 };
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\PostDec;
+
 
 /**
  * Static Pages
@@ -166,6 +168,8 @@ Route::prefix('coordinator')->group(function () {
     Route::put('/proctor/update1/{id}', [CoordinatorController::class, 'updateproc'])->name('proctor.update1');
     Route::get('/proctor/place/{block_id}', [CoordinatorController::class, 'assignForm'])->name('proctor.place');
     Route::get('/proctor/edit1/{id}', [CoordinatorController::class, 'edit1'])->name('proctor.edit1');
+    Route::delete('/proctor-placement/{id}', [CoordinatorController::class, 'destroy'])->name('proctor.destroy');
+
 });
 
 Route::post('/coordinator/proctor/place/{block_id}', [CoordinatorController::class, 'assignStore'])
@@ -263,3 +267,9 @@ Route::put('replacements/{id}', [RequestController::class, 'update'])->name('rep
 Route::delete('/requests/{id}', [RequestController::class, 'destroy'])->name('replacements.destroy');
 Route::get('/directorate/view-requests', [App\Http\Controllers\RequestController::class, 'viewApprovedReplacements'])
     ->name('directorate.view.requests');
+
+Route::get('/exit-papers/create', [ExitPaperController::class, 'create'])->name('exit_papers.create');
+Route::post('/exit-papers', [ExitPaperController::class, 'store'])->name('exit_papers.store');
+Route::put('/exit-papers/update-by-date', [ExitPaperController::class, 'updateByDate'])->name('exit_papers.updateByDate');
+Route::get('/exit-papers/view', [ExitPaperController::class, 'viewByProctor'])->name('exit_papers.viewByProctor');
+Route::post('/exit-papers/mark-printed', [ExitPaperController::class, 'markAsPrinted'])->name('exit_papers.markAsPrinted');

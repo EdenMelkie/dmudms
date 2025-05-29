@@ -31,6 +31,10 @@
                 <i class="fas fa-user-edit"></i> View Student Placement
             </a>
         </li>
+        <li class="nav-item mb-2">
+            <a href="{{ route('exit_papers.viewByProctor') }}" class="nav-link text-white">
+                <i class="fas fa-user-graduate me-1"></i> view Exit Papers </a>
+        </li>
 
         <li class="nav-item mb-2">
             <a href="{{ route('profile.edit') }}" class="nav-link text-white">
