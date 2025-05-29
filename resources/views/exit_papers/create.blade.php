@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Number</label>
-                            <input type="number" name="number[]" class="form-control" placeholder="e.g., 2" required>
+                            <input type="number" name="number[]" min="1" class="form-control" placeholder="e.g., 2" required>
                         </div>
                         <div class="col-md-1 d-flex align-items-end">
                             <button type="button" class="btn btn-danger remove-row">&times;</button>

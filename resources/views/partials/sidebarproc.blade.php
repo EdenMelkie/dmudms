@@ -1,13 +1,5 @@
 <nav class="p-3">
-    <h4><i class="fas fa-user-shield"></i> Proctor Tasks</h4>
     <ul class="nav flex-column">
-        <li class="nav-item">
-            <a href="{{ route('proctor') }}" class="nav-link text-white">
-                <i class="fas fa-home"></i> Homepage
-            </a>
-        </li>
-
-
         <li class="nav-item mb-2">
             <a href="{{ route('proctor.blockProctors') }}" class="nav-link text-white">
                 <i class="fas fa-door-open"></i> View Placement
@@ -22,7 +14,7 @@
 
         <li class="nav-item mb-2">
             <a href="{{ route('materials.view') }}" class="nav-link text-white">
-                <i class="fas fa-exclamation-triangle"></i> Report Property Issues
+                <i class="fas fa-exclamation-triangle"></i> Register Room status
             </a>
         </li>
 

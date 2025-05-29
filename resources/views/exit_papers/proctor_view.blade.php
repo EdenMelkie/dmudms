@@ -50,7 +50,6 @@
             @endphp
 
             @if($studentPapers->isNotEmpty())
-
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
@@ -64,7 +63,7 @@
                 </thead>
                 <tbody>
                     @foreach ($studentPapers as $index => $paper)
-                    <tr>
+                    <tr class="{{ $paper->status === 'printed' ? 'printed-row' : '' }}">
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $paper->type }}</td>
                         <td>{{ $paper->color }}</td>
@@ -110,19 +109,28 @@
             })
             .then(data => {
                 console.log(data.message);
-                printDiv('print-' + studentId);
+                printDivFiltered('print-' + studentId);
             })
             .catch(error => alert("Error: " + error));
     }
 
+    function printDivFiltered(divId) {
+        const div = document.getElementById(divId);
+        const clone = div.cloneNode(true);
 
-    function printDiv(divId) {
-        const printContents = document.getElementById(divId).innerHTML;
-        const originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        location.reload(); // Reload to restore layout and fetch updated data
+        // Remove rows with class 'printed-row' so they won't be printed
+        clone.querySelectorAll('.printed-row').forEach(row => row.remove());
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write('<style>table {width: 100%; border-collapse: collapse;} th, td {border: 1px solid #000; padding: 8px;}</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(clone.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
     }
 </script>
 

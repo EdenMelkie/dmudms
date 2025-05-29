@@ -1,0 +1,4 @@
+employee_id,first_name,second_name,last_name,gender,email,phone,address,citizenship,role
+Emp0001,Alemu,Abebe,Tiruneh,Male,alemu@gmail,911223344,Debremarkos,Ethiopian,Admin
+Emp0002,Birhanu,Tadele,Simeneh,Male,birhanu@gmail.com,922334455,Bahir Dar,Ethiopian,Proctor
+Emp0003,Etsub,Simeneh,guadu,Female,etsub@gmail.com,933445566,Gondar,Ethiopian,Coordinator

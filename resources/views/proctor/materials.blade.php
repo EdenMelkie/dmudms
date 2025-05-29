@@ -2,9 +2,17 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="text-center mb-4 text-success fw-bold">📋 Registered Materials</h2>
 
     <!-- Search Form -->
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('materials.create') }}"
+            class="btn btn-outline-success btn-lg fw-semibold shadow-sm d-flex align-items-center gap-2"
+            style="border-width: 2px;">
+            <i class="fas fa-plus fa-lg"></i>
+            <span>Register New Materials</span>
+        </a>
+    </div>
     <fieldset class="border rounded p-4 shadow-sm mb-4 bg-light">
         <legend class="w-auto px-3 fw-semibold text-primary">🔍 Search</legend>
         <form method="GET" action="{{ route('materials.view') }}" class="row g-3 justify-content-center">
@@ -32,6 +40,8 @@
         <i class="fas fa-info-circle"></i> No materials registered yet.
     </div>
     @else
+
+    <h2 class="text-center mb-4 text-success fw-bold">📋 Registered Materials</h2>
 
     <!-- Materials Table -->
     <div class="card shadow">
@@ -157,11 +167,6 @@
             </table>
         </div>
 
-        <div class="mt-4 text-end px-3">
-            <a href="{{ route('materials.create') }}" class="btn btn-success btn-lg shadow">
-                <i class="fas fa-plus"></i> Register New Materials
-            </a>
-        </div>
     </div>
     @endif
 </div>

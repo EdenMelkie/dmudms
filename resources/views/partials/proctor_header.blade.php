@@ -6,10 +6,7 @@ if (session('userType') !== 'Proctor') {
 ?>
 
 <head>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  
 
     <style>
         /* Custom dropdown on hover */
@@ -80,7 +77,7 @@ if (session('userType') !== 'Proctor') {
                     <ul class="dropdown-menu" aria-labelledby="proctorDropdown">
                         <li><a class="dropdown-item" href="{{ route('proctor.blockProctors') }}"><i class="fas fa-users-cog me-1"></i> View Placement</a></li>
                         <li><a class="dropdown-item" href="{{ route('requests.proctor') }}"><i class="fas fa-envelope-open-text me-1"></i> Manage Requests</a></li>
-                        <li><a class="dropdown-item" href="{{ route('materials.view') }}"><i class="fas fa-tools me-1"></i> Report Issues</a></li>
+                        <li><a class="dropdown-item" href="{{ route('materials.view') }}"><i class="fas fa-tools me-1"></i> Register materials</a></li>
                         <li><a class="dropdown-item" href="{{ route('proctor.viewPlacedStudents') }}"><i class="fas fa-user-graduate me-1"></i> Student Placement</a></li>
                         <li><a class="dropdown-item" href="{{ route('exit_papers.viewByProctor') }}"><i class="fas fa-user-graduate me-1"></i> view Exit Papers</a></li>
                     </ul>

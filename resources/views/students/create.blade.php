@@ -72,8 +72,8 @@
                 <label for="disability_status">Disability Status:</label>
                 <select name="disability_status" id="disability_status" class="form-control">
                     <option value="">Select Disability Status</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                 </select><br><br>
             </div>
 

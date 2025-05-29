@@ -20,6 +20,7 @@ class Request extends Model
         'request_date',
         'approved_by',
         'approved_date',
+        'image_path',
         'type',
     ];
 

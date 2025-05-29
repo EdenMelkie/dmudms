@@ -121,12 +121,13 @@ return new class extends Migration {
             $table->id('request_id');
             $table->string('student_id', 50);
             $table->string('message', 400);
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'done'])->default('pending');
             $table->date('request_date');
             $table->string('approved_by', 50)->nullable();
             $table->date('approved_date')->nullable();
             $table->enum('type', ['replacement', 'maintenance'])->default('maintenance');
             $table->timestamps();
+            $table->string('image_path')->nullable();
 
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->foreign('approved_by')->references('employee_id')->on('employees')->onDelete('set null');

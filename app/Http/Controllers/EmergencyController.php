@@ -51,7 +51,6 @@ class EmergencyController extends Controller
 
     public function store(Request $request)
     {
-        // Get student ID from session username
         $username = session('username');
         $student = Student::where('student_id', $username)->first();
 
@@ -59,29 +58,44 @@ class EmergencyController extends Controller
             return back()->withErrors(['Student not found.']);
         }
 
-        // Check if an emergency record already exists
         $existingEmergency = Emergency::where('student_id', $student->student_id)->first();
-
         if ($existingEmergency && $existingEmergency->emergence_id) {
             return redirect()->route('emergency.edit', ['emergency' => $existingEmergency->emergence_id])
                 ->with('info', 'Emergency contact already exists. You can update it.');
         }
 
-        // If not exists, create new emergency record
+        // Validate input
+        $request->validate([
+            'father_name'        => 'required|string|max:255',
+            'grand_father'       => 'required|string|max:255',
+            'grand_grand_father' => 'required|string|max:255',
+            'mother_name'        => 'required|string|max:255',
+            'phone'              => ['required', 'regex:/^(09|07)\d{8}$/'],
+            'region'             => 'required|string|max:255',
+            'woreda'             => 'required|string|max:255',
+            'kebele'             => 'required|string|max:255',
+        ], [
+            'phone.regex' => 'Phone must start with 09 or 07 and be exactly 9 digits.',
+        ]);
+        // Format phone number to international
+        $formattedPhone = '+251' . substr($request->phone, 1);
+
+        // Save data
         Emergency::create([
-            'student_id' => $student->student_id,
-            'father_name' => $request->father_name,
-            'grand_father' => $request->grand_father,
+            'student_id'         => $student->student_id,
+            'father_name'        => $request->father_name,
+            'grand_father'       => $request->grand_father,
             'grand_grand_father' => $request->grand_grand_father,
-            'phone' => $request->phone,
-            'region' => $request->region,
-            'woreda' => $request->woreda,
-            'kebele' => $request->kebele,
-            'mother_name' => $request->mother_name,
+            'mother_name'        => $request->mother_name,
+            'phone'              => $formattedPhone,
+            'region'             => $request->region,
+            'woreda'             => $request->woreda,
+            'kebele'             => $request->kebele,
         ]);
 
         return redirect()->back()->with('success', 'Emergency info saved successfully.');
     }
+
 
 
 

@@ -667,9 +667,9 @@ class PlacementController extends Controller
         // --- Disability-specific logic ---
         if ($placement->student->disability_status === 'Yes') {
             if (
-                ($block->capacity == 79 && $room->room_id < 25) ||
-                ($block->capacity == 24 && $room->room_id < 7) ||
-                ($block->capacity == 29 && $room->room_id < 10)
+                ($block->capacity == 79 && $room->room_id > 25) ||
+                ($block->capacity == 24 && $room->room_id > 7) ||
+                ($block->capacity == 29 && $room->room_id > 10)
             ) {
                 Log::warning("Room not suitable for disabled student", ['room_id' => $room->room_id]);
                 return back()->with('error', 'This room is not suitable for students with a disability.');

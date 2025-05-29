@@ -4,7 +4,7 @@
 <div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-lg max-w-3xl">
     <h2 class="text-3xl font-extrabold mb-6">Edit Replacement Request</h2>
 
-    <form action="{{ route('replacements.update', $request->request_id) }}" method="POST" enctype="multipart/form-data" autocomplete="off"
+    <form action="{{ route('requests.update', $request->request_id) }}" method="POST" enctype="multipart/form-data" autocomplete="off"
         class="space-y-6 bg-white p-8 rounded-lg shadow-md">
         @csrf
         @method('PUT')
@@ -34,9 +34,13 @@
                 <img src="{{ asset($request->image_path) }}"
                     alt="Current Image"
                     width="100px"
-                    class="object-cover border rounded shadow hover:scale-150 transition-transform duration-300"> </a>
+                    class="object-cover border rounded shadow hover:scale-150 transition-transform duration-300">
+            </a>
             @endif
+
         </div>
+
+
 
         <!-- Submit Button -->
         <div class="text-right">
@@ -45,7 +49,7 @@
                        focus:ring-4 focus:ring-blue-500 focus:outline-none
                        text-white font-bold px-8 py-3 rounded-lg shadow-xl transition duration-300
                        transform hover:scale-105">
-                Update Request.
+                Update Request
             </button>
         </div>
     </form>

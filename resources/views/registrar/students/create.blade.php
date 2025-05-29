@@ -15,6 +15,13 @@
         </div>
         @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+
+
         <form action="{{ route('students.store') }}" method="POST" class="p-4 border rounded shadow-sm">
             @csrf
 
@@ -60,8 +67,8 @@
             <div class="mb-3">
                 <label for="disability_status" class="form-label">Disability Status</label>
                 <select name="disability_status" id="disability_status" class="form-control">
-                    <option value="Yes">Normal</option>
-                    <option value="No">Disabled</option>
+                    <option value="No">Normal</option>
+                    <option value="Yes">Disabled</option>
                 </select>
             </div>
 

@@ -13,6 +13,18 @@
 </div>
 @endif
 
+
+<!-- Error Message -->
+@if(session('error'))
+<div class="max-w-2xl mx-auto mb-10" style="background-color: black; color: white;">
+    <div class="bg-red-50 border border-red-300 text-red-800 px-6 py-4 rounded-lg shadow-md">
+        <div class="font-semibold text-lg">
+            ⚠️ {{ session('error') }}
+        </div>
+    </div>
+</div>
+@endif
+
 <!-- Divider -->
 <hr class="my-10 border-gray-300">
 
@@ -32,6 +44,7 @@
                     <th scope="col" class="py-3 px-4">Reason</th>
                     <th scope="col" class="py-3 px-4">Status</th>
                     <th scope="col" class="py-3 px-4">Date</th>
+                    <th scope="col" class="py-3 px-4">Document</th>
                     <th scope="col" class="py-3 px-4">Actions</th>
                 </tr>
             </thead>
@@ -52,11 +65,32 @@
                         @endif
                     </td>
                     <td class="align-middle">{{ $req->request_date }}</td>
+                    <td class="align-middle">
+                        @if($req->image_path)
+                        <a href="{{ asset($req->image_path) }}" target="_blank">
+                            <img src="{{ asset($req->image_path) }}" alt="Image" style="width: 35px; height: auto; border-radius: 4px;">
+                        </a>
+                        @else
+                        <span class="text-muted">No Image</span>
+                        @endif
+                    </td>
+
                     <td class="align-middle d-flex gap-2">
 
                         <!-- Edit Button -->
                         <a href="{{ route('replacements.edit', $req->request_id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
 
+                        @if($req->status === 'approved')
+                        <!-- Mark as Done Button -->
+                        <form action="{{ route('requests.markDone', $req->request_id) }}" method="POST" class="m-0 p-0">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm btn-outline-success"
+                                onclick="return confirm('Mark this request as done?')">
+                                Mark as Done
+                            </button>
+                        </form>
+                        @endif
                         <!-- Delete Button -->
                         <form action="{{ route('replacements.destroy', $req->request_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this request?')" class="m-0 p-0">
                             @csrf
@@ -89,7 +123,8 @@
         action="{{ route('replacements.store') }}"
         method="POST"
         class="space-y-8 bg-white p-10 rounded-xl shadow-lg max-w-3xl mx-auto"
-        autocomplete="off">
+        autocomplete="off"
+        enctype="multipart/form-data">
         @csrf
 
         <div>
@@ -106,6 +141,11 @@
                        focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition duration-200
                        ease-in-out resize-none font-medium shadow-sm"
                 placeholder="Write a reason why you wanna a replacement..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" name="image" class="form-control">
         </div>
 
         <!-- Hidden Fields -->

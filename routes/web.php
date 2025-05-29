@@ -39,6 +39,8 @@ Route::view('/help', 'help')->name('help');
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/password/forgot', [App\Http\Controllers\Auth\ManualResetController::class, 'showForm'])->name('password.request');
+Route::post('/password/forgot', [App\Http\Controllers\Auth\ManualResetController::class, 'resetToDefault'])->name('password.reset.default');
 
 /**
  * Role-Based Dashboards
@@ -262,7 +264,10 @@ Route::get('/request/replacements', [RequestController::class, 'index'])->name('
 Route::post('/requests', [RequestController::class, 'store1'])->name('replacements.store');
 
 Route::get('replacements/{id}/edit', [RequestController::class, 'edit'])->name('replacements.edit');
+Route::get('requests/{id}/edit', [RequestController::class, 'edit1'])->name('requests.edit');
 Route::put('replacements/{id}', [RequestController::class, 'update'])->name('replacements.update');
+Route::put('requests/{id}', [RequestController::class, 'update1'])->name('requests.update');
+Route::patch('/requests/{id}/done', [RequestController::class, 'markAsDone'])->name('requests.markDone');
 
 Route::delete('/requests/{id}', [RequestController::class, 'destroy'])->name('replacements.destroy');
 Route::get('/directorate/view-requests', [App\Http\Controllers\RequestController::class, 'viewApprovedReplacements'])

@@ -112,16 +112,21 @@ class RegistrarController extends Controller
             'email' => 'required|email|unique:students,email',
             'gender' => 'required|string',
             'batch' => 'required|integer|min:1|max:7',
-            'disability_status' => 'nullable|string',
+            'disability_status' => 'required|string',
         ]);
 
+        // Check if the student_id already exists
+        if (Student::where('student_id', $validatedData['student_id'])->exists()) {
+            return redirect()->back()->withInput()->with('error', 'This student ID (' . $validatedData['student_id'] . ') is already registered.');
+        }
+
         $lastStudent = Student::orderBy('student_id', 'desc')->first();
-        $lastStudentId = $lastStudent ? substr($lastStudent->student_id, offset: 3) : 0;
+        $lastStudentId = $lastStudent ? substr($lastStudent->student_id, 3) : 0;
         $newStudentId = 'DMU' . str_pad($lastStudentId + 1, 7, '0', STR_PAD_LEFT);
 
         $password = Hash::make($validatedData['last_name'] . '1234abcd#');
 
-        Student::create(attributes: [
+        Student::create([
             'student_id' => $validatedData['student_id'],
             'first_name' => $validatedData['first_name'],
             'second_name' => $validatedData['second_name'],
@@ -136,6 +141,7 @@ class RegistrarController extends Controller
 
         return redirect()->route('registrar.students')->with('success', 'Student created successfully!');
     }
+
 
     // Handle student registration via file upload
 
@@ -165,13 +171,22 @@ class RegistrarController extends Controller
                 return redirect()->back()->with('error', 'Invalid CSV format. Ensure correct column names and order.');
             }
 
+            $skippedIds = [];
+
             for ($i = 1; $i < count($csvData); $i++) {
                 $row = $csvData[$i];
+                $studentId = $row[0];
+
+                // Check for duplicate student_id
+                if (Student::where('student_id', $studentId)->exists()) {
+                    $skippedIds[] = $studentId;
+                    continue;
+                }
 
                 $password = Hash::make($row[3] . '1234abcd#'); // last_name + static part
 
                 Student::create([
-                    'student_id'         => $row[0],
+                    'student_id'         => $studentId,
                     'first_name'         => $row[1],
                     'second_name'        => $row[2],
                     'last_name'          => $row[3],
@@ -184,7 +199,13 @@ class RegistrarController extends Controller
                 ]);
             }
 
-            return redirect()->route('registrar.students')->with('success', 'Students uploaded successfully!');
+            // Prepare feedback message
+            $message = 'Students uploaded successfully!';
+            if (count($skippedIds) > 0) {
+                $message .= ' However, the following IDs were already registered So, skipped: ' . implode(', ', $skippedIds);
+            }
+
+            return redirect()->route('registrar.students')->with('success', $message);
         }
 
         return redirect()->back()->with('error', 'Empty CSV file.');

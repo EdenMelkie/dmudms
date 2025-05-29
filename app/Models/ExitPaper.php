@@ -18,6 +18,7 @@ class ExitPaper extends Model
         'request_date',
         'type',
         'color',
+        'approved_date',
         'number',
         'status'
     ];
