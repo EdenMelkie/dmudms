@@ -114,6 +114,8 @@ class RegistrarController extends Controller
             'batch' => 'required|integer|min:1|max:7',
             'disability_status' => 'required|string',
         ]);
+        //            'department' => 'required|string|max:40',
+
 
         // Check if the student_id already exists
         if (Student::where('student_id', $validatedData['student_id'])->exists()) {
@@ -138,6 +140,8 @@ class RegistrarController extends Controller
             'disability_status' => $validatedData['disability_status'] ?? 'No',
             'password' => $password,
         ]);
+        //            'department' => $validatedData['department'],
+
 
         return redirect()->route('registrar.students')->with('success', 'Student created successfully!');
     }
