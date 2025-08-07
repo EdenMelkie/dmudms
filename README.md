@@ -52,23 +52,21 @@ Built with modern web technologies, this system combines the robustness of **Lar
 - Room transfer and swap functionality
 
 ### 👮 Proctor System
-- Duty scheduling
+- Aprove Requests
 - Incident reporting
 - Communication tools
 
 ### 🔍 Powerful Search & Filters
 - Instant student lookup
 - Room availability filters
-- Historical data tracking
+- Material Registration and print exit paper
 
 ### 🔐 Secure Access Control
 - Role-based permissions (Admin, Proctor, Student)
 - Activity audit logs
-- Two-factor authentication
 
 ### 📱 Responsive Design
 - Fully functional on all devices
-- Dark/Light mode support
 - Accessible interface
 
 ---
@@ -129,7 +127,7 @@ Built with modern web technologies, this system combines the robustness of **Lar
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/dormitory-management.git
+git clone https://github.com/EdenMelkie/dmudms.git
 cd dormitory-management
 
 # Install PHP dependencies
@@ -173,7 +171,7 @@ php artisan serve
 
 # License
 --------
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the LICENSE.md file for details. ውሸት
 
 🌿 Where Technology Meets Community Living
 -----------------------------------------
